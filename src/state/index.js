@@ -8,5 +8,5 @@ export const store = createStore({
       state.username = payload;
     })
   },
-
+  
 });

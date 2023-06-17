@@ -9,9 +9,20 @@ import Login from './Login';
 // change name because its just a login pop up
 export default function Register() {
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  // !!! Todo: when a user is logged in-> remove the login button and only show profile icon
+  //       maybe i should make 'authenticated' in store !!!
+
+        // const [isAuthenticated, setIsAuthenticated] = useState(null);
+        
+        // useEffect(() => {
+        //   const loggedInUser = localStorage.getItem("access");
+        //   if (loggedInUser) {
+        //       setIsAuthenticated(loggedInUser);
+        //   }
+        // }, []);
 
   return (
     <>

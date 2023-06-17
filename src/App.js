@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
+import { StoreProvider } from 'easy-peasy';
 
 import MyNavbar from './components/common/Navbar';
 import GetCountries from './pages/country/GetCountries';
@@ -10,15 +11,10 @@ import Logout from './components/auth/Logout';
 import GetFlightsByCountryId from './pages/country/GetFlightsByCountry';
 import Register from './components/auth/Register';
 import Danny from './components/danny';
-// pathname: `/flights/${country.name}`
-import { StoreProvider } from 'easy-peasy';
-
 import {store} from './state/';
 
 
 export default function App() {
-
-
   return (
     <StoreProvider store={store}>
       <BrowserRouter>
@@ -39,12 +35,12 @@ export default function App() {
           <Route path="/flights"> */}
             {/* <Route index element={<getall/>}/>    */}
             {/* <Route path=":country" element={<GetFlightsByCountryId/>}/>
-          </Route>
+          </Route>*/}
 
-          <Route path="*" element={< NotFound/>} /> */}
+          <Route path="*" element={< NotFound/>} /> 
         </Routes>
       </BrowserRouter>
     </StoreProvider>
   );
-}
+};
 

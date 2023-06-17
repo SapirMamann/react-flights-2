@@ -1,38 +1,73 @@
-import React, { useState } from 'react';
+import React from 'react'
+import { Nav, Navbar, Button, Form, NavDropdown, Offcanvas } from 'react-bootstrap';
 
-import { CheckGroup } from '../../api/auth/CheckGroup';
 
+export default function Sidebar(props) {
+  const username = props.username
 
-export default function Sidebar() {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-  
-    const toggleSidebar = () => {
-      setSidebarOpen(!sidebarOpen);
-    };
-  
-    const closeSidebar = () => {
-      setSidebarOpen(false);
-    };
-  
   return (
-    <div className="sidebar-container">
-      <button className="toggle-button" onClick={toggleSidebar}>
-        ☰
-      </button>
-      <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-        
-        {/* content for sidebar */}
-        <ul className='sidebar-links'>
-          <li><a href="/bla">Bla</a></li>
+    <div>
+      {/* Toggle menu: */}
+      <Navbar.Toggle aria-controls={`offcanvasNavbar-expand`} />
+      <Navbar.Offcanvas
+        id={`offcanvasNavbar-expand`}
+        aria-labelledby={`offcanvasNavbarLabel-expand`}
+        placement="end"
+        defaultShow={false} // Set defaultShow to false
+      > 
+        {/* Header of the toggle menu: */}
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>
+            Hello, {username}
+          </Offcanvas.Title>
+        </Offcanvas.Header>
 
-          {/* admin logged in-> he can also see this */}
-          <CheckGroup groups={['Administrator']}>
-            <li><a href="/">All countries</a></li>
-            <li><a href="/users">All users</a></li>
-          </CheckGroup>
-        </ul>
-      </div>
+        {/* Body of the toggle menu: */}
+        <Offcanvas.Body>
+          <Nav className="justify-content-end flex-grow-1 pe-3">
+            {/* First link */}
+            <Nav.Link href="#action1">Home</Nav.Link>
+            {/* Second link */}
+            <Nav.Link href="#action2">Link</Nav.Link>
+            {/* Third section (dropdown) */}
+            <NavDropdown
+              title="Dropdown"
+              id={`offcanvasNavbarDropdown-expand`}
+            >
+              <NavDropdown.Item href="#action3">
+                Action
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action4">
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action5">
+                Something else here
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+
+          {/* Search section: */}
+          <Form className="d-flex">
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+              />
+            <Button variant="outline-success">Search</Button>
+          </Form>
+          {/* End search section */}
+
+        </Offcanvas.Body>
+
+        <>
+          <Button href='/about' variant="info">
+            About
+          </Button>
+        </>
+        <br/>
+      </Navbar.Offcanvas>  
     </div>
-  );
+  )
 }
-  

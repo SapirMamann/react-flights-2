@@ -12,7 +12,7 @@ import Input from '../common/Input';
 
 
 export default function Login() {
-  const [authenticated, setauthenticated] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ export default function Login() {
   useEffect(() => {
     const loggedInUser = localStorage.getItem("access");
     if (loggedInUser) {
-        setauthenticated(loggedInUser);
+        setIsAuthenticated(loggedInUser);
     }
   }, []);
 
@@ -60,8 +60,8 @@ export default function Login() {
   };
 
 
-  //Authenticated (logged in) user cant access login page
-  if (authenticated) {
+  //IsAuthenticated (logged in) user cant access login page
+  if (isAuthenticated) {
     return <Navigate replace to="/" />;
   } 
 
