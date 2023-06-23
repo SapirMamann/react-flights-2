@@ -16,11 +16,13 @@ export default function Sidebar(props) {
         defaultShow={false} // Set defaultShow to false
       > 
         {/* Header of the toggle menu: */}
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>
-            Hello, {username}
-          </Offcanvas.Title>
-        </Offcanvas.Header>
+        {username &&
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>
+              Hello, {username}
+            </Offcanvas.Title>
+          </Offcanvas.Header>
+        }
 
         {/* Body of the toggle menu: */}
         <Offcanvas.Body>

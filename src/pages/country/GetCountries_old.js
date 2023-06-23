@@ -1,20 +1,37 @@
-import React, {useEffect, useState} from 'react'
-import { useStoreActions } from 'easy-peasy';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPen, faXmark } from '@fortawesome/free-solid-svg-icons'
 
-import http from '../../api/http'
-import FlightSearch from '../../components/flight/FlightSearch';
+import http from '../../api/http';
 import { CheckGroup } from '../../api/auth/CheckGroup';
 import EditCountry from '../../components/country/EditCountry';
 import GetFlightsByCountryId from './GetFlightsByCountry';
+import FlightSearch from '../../components/flight/SearchFlight';
 
 
-function GetCountries() {
+export default function GetCountries_old() {
+  // it wont update when an admin loggs in so he can see buttons and also after name change
   const [countries, setCountries] = useState([])
   const [countryID, setCountryID] = useState('')
-  const setIsAdmin = useStoreActions(actions => actions.user.setIsAdmin);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [token, setToken] = useState(null)
+  const navigate = useNavigate()
 
-  
+  // doesnt work
+  function checkToken() {
+    const refresh= localStorage.getItem('refresh')
+    // console.log(refresh)
+    setToken(refresh)
+    navigate(0)
+  }
+
+  const toggleOverlay = (id) => {
+    setShowOverlay(!showOverlay);
+    setCountryID(id)
+    console.log("here",id)   
+  }
+
   const getCountries = async () => {
     await http
             .get('http://localhost:8000/api/countries/')
@@ -30,15 +47,15 @@ function GetCountries() {
 
 
   return (
-    <>      
-      {/* flight search box */} 
+    <>
+      {/* flight search box */}
       <FlightSearch/>
       
       {/* Country boxes */}
-      <h1>Explore destinations</h1>
+      <h1 className='title'>Explore destinations</h1>
 
       {/* Each box has a country name, an edit button, and a button */}
-      <div>
+      <div className="country-container">
         {countries.map(country =>
           <div key={country.id}>
 
@@ -52,20 +69,19 @@ function GetCountries() {
               Flights
             </Link>
             
-              {/* {isAdmin && <button>Edit</button>} */}
             {/* Edit button will only be displayed when an admin is logged in */}
-            {/* <CheckGroup groups={['Administrator']}> */}
+            <CheckGroup groups={['Administrator']}>
               {/* overlay. passing the country id to the handler of this click */}
-              {/* <button onClick={() => toggleOverlay(country.id)} className='pen_button'> */}
-                {/* <FontAwesomeIcon icon={faPen} />                 */}
-              {/* </button> */}
-            {/* </CheckGroup> */}
+              <button onClick={() => toggleOverlay(country.id)} className='pen_button'>
+                <FontAwesomeIcon icon={faPen} />                
+              </button>
+            </CheckGroup>
           </div>
         )}
       </div>
 
       {/* Overlay details */}
-      {/* {showOverlay && (
+      {showOverlay && (
         <div className="overlay">
           <div className="overlay-content">
             <EditCountry id={countryID} />
@@ -76,21 +92,21 @@ function GetCountries() {
             </button>
           </div>
         </div>
-      )} */}
+      )}
 
       {/* All flights */}
       {/* <GetFlights/> */}
 
       {/* display list of countries and edit buttons */}
-      {/* <CheckGroup groups={['Administrator']}> */}
+      <CheckGroup groups={['Administrator']}>
           {/* link to add country */}
-          {/* <Link className='center_link'
+          <Link className='center_link'
               to={{
                   pathname: '/add_country'
               }}
           >
           Add country
-          </Link> */}
+          </Link>
 
           {/* list of countries with a button to edit/ delete each country */}
           {/* <div className='list-container'>
@@ -117,9 +133,7 @@ function GetCountries() {
               </ul>
           </div> */}
       <br/><br/>
-      {/* </CheckGroup>; */}
-    </>
-  )
-}
-
-export default GetCountries;
+      </CheckGroup>;
+    </>    
+  );
+};

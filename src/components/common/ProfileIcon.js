@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIdCardClip } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.css';
+// import Button from 'react-bootstrap/Button';
+
+import Logout from "../auth/Logout";
+
 
 const ProfileIcon = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -32,6 +36,7 @@ const ProfileIcon = () => {
         aria-labelledby="profileIconDropdown"
       >
         <li><a className="dropdown-item" href="/bla">Bla</a></li>
+        <li><Logout/></li>
         {/* add: logged in -> he can see log out */}
       </ul>
     </div>

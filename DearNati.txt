@@ -1,0 +1,23 @@
+1. Why is it wrong to do try and except in the api calls?
+  What if the api call fails? shouldnt we display that error?
+
+2. I dont know how to debug django and react. 
+  Please show me how you are doing this. 
+  (i have a problem with register view- 
+  validate password and user_role )
+
+3. I should redo home page. getcountries
+  it has an unknown problem that it just keep rendering 
+  and never stops  
+  and i should redo the edit buttons display because its not 
+  the best way to check if a user is an admin everytime
+  this component renders.
+  so i should have a state? (redux) 
+
+4. Everytime i call an api endpoint, 
+  i should call the variable i created on the api folder.
+  cant remember how you did this.
+
+5. navbar component - not that important but i would
+  like to know what i did wrong with darkmode.
+

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Navigate, useNavigate } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
 
 import http from '../../api/http';
 
@@ -37,7 +38,8 @@ export default function Logout() {
   
 
   return (
-    <button onClick={() => submitHandler()} className='logout-button'>Log out</button>
+    // <button onClick={() => submitHandler()} >Log out</button>
+    <Button onClick={() => submitHandler()} variant="light">Logout</Button>
   )
 }
 

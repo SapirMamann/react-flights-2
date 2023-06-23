@@ -5,7 +5,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import { Container, Nav, Navbar, Button, Form, NavDropdown, Offcanvas } from 'react-bootstrap';
 
 import ProfileIcon from './ProfileIcon';
-import Register from '../auth/Register';
+import LoginOptions from '../auth/LoginOptions';
 import GetCurrentUserData from '../../api/user/UserApi';
 import Sidebar from './Sidebar';
 
@@ -24,14 +24,16 @@ export default function MyNavbar() {
     localStorage.setItem('darkMode', darkMode);
   }, [darkMode]);
 
-  // !!! It doesnt effevtively work: !!!
+  // !!! It doesnt effevtively work: !!! i separate it to another useeffect
   useEffect(() => {
     // Retrieve the dark mode state from local storage
     const storedDarkMode = localStorage.getItem('darkMode');
     if (storedDarkMode !== null) {
       setDarkMode(darkMode);
     };
+  }, []);
 
+  useEffect(() => {
     // Fetch the username from the API
     GetCurrentUserData()
       .then((response) => {
@@ -77,8 +79,8 @@ export default function MyNavbar() {
           
           {/* Profile and Register section */}
           <div className='ms-auto d-flex align-items-center'>
-            <Register />
-            <ProfileIcon />
+              <LoginOptions />
+              {username && <ProfileIcon />}
           </div>
           {/* End of Profile and Register section */}
           
@@ -88,4 +90,4 @@ export default function MyNavbar() {
       </Navbar>
     </>
   );
-}
+};

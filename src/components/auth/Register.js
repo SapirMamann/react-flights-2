@@ -1,57 +1,115 @@
-import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
+import React from 'react'
+import { Formik, Form, setFieldError, isInteger } from "formik";
+import { number, object, ref, string } from "yup";
+import { Link, useNavigate } from "react-router-dom";
+import {ToastContainer, toast } from 'react-toastify';
 
-import Login from './Login';
+import Input from '../common/Input';
+import http from '../../api/http';
 
-// change name because its just a login pop up
+
 export default function Register() {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const navigate = useNavigate();
+  // !!! Add naviugate if user is authenticated and logged in he cant access to this page
 
-  // !!! Todo: when a user is logged in-> remove the login button and only show profile icon
-  //       maybe i should make 'authenticated' in store !!!
+  const RegisterValidation = object().shape({
+    username: string()
+              .required("A username is required")
+              .min(3, "Must be at least 3 characters"),
 
-        // const [isAuthenticated, setIsAuthenticated] = useState(null);
-        
-        // useEffect(() => {
-        //   const loggedInUser = localStorage.getItem("access");
-        //   if (loggedInUser) {
-        //       setIsAuthenticated(loggedInUser);
-        //   }
-        // }, []);
+    email: string()
+            .required("An email is required")
+            .email("Valid email required"),
+
+    password: string()
+                .required("A password is required")
+                .min(8, "Must be at least 8 characters"),
+
+    password2: string()
+                .required("This field is required")
+                .min(8, "Must be at least 8 characters")
+                .oneOf([ref('password')], 'Passwords must match'),
+
+    user_role: number()
+                .required("Group is required"),
+  });
+
+  const submitHandler = async (values) => {
+    console.debug('values', values);
+    console.log( values['user_role']) 
+    const response = await 
+      http
+        .post('http://localhost:8000/api/auth/register/', values)
+        .then((response) => {
+          console.log('response', response)
+          // If it worked -> redirect to home page
+          navigate('/');
+        })
+        .catch((error) => {
+          console.log(response.status);
+          console.log('Registration failed.', error.message)
+          console.debug(error)
+          console.debug('Register failed', error.response.data)
+          // Set an error message for the form
+          // for (const [key, value] of Object.entries(error.response.data)) {
+          //   toast.error(`Register failed. ${key}: ${value[0]}`, {
+          toast.error(`Login failed. ${error.response.data.detail}`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      );
+  }
+
 
   return (
     <>
-      {/* Log in button on navbar */}
-      <Button style={{color : 'black', background: 'none', border: 'none', fontSize: '25px'}} onClick={handleShow}>
-         <FontAwesomeIcon icon={faArrowRightToBracket} /> Log in
-      </Button>
-      {/* End of log in button on navbar */}
-
-      <Modal show={show} onHide={handleClose}>
-        {/* Header of pop up*/}
-        <Modal.Header closeButton>
-          <Modal.Title>
-            Welcome to Your account! <br/>
-            Log in and manage your bookings.
-          </Modal.Title>
-        </Modal.Header>
-        {/* End of header */}
-        
-        {/* Body of pop up- login form */}
-        <Modal.Body>  
-          {/* <Login/> */}    
-          <Button style={{ display: 'flex', justifyContent: 'center', }} variant="outline-primary" href="/login">
-            Continue with username
-          </Button>    
-        </Modal.Body>
-        {/* End of body  */}
-      </Modal>
+      <ToastContainer />
+      <Formik
+        initialValues={{
+          username: "add",
+          email: "add@ddd.com",
+          password: "admin1234",
+          password2: "admin1234",
+          user_role: 1,  //probleeeeeeeeeeeeeeeeeeeeeeem
+        }}
+        onSubmit={(e) => submitHandler(e)}
+        validationSchema={RegisterValidation}
+      >
+      {() => {
+        return (
+          <Form>
+            <div>
+              <Input type="text" name="username" label="Username"/>
+              <br/>
+              <Input type="text" name="email" label="Email"/>
+              <br/>
+              <Input type="password" name="password" label="Password"/>
+              <br/>
+              <Input type="password" name="password2" label="Password"/>
+              <br/>
+              <label>Choose group</label>
+              <br/>
+              <select name="user_role">
+                <option value="1">Administrator</option>    
+                <option selected value="2">Customer</option>
+                <option value="3">Airline company</option>
+              </select>
+              <button type="submit">Register</button>
+            </div>
+              <p>Already have an account?
+                <Link to="/login">Login</Link>
+              </p>
+          </Form>
+        );
+      }}
+      </Formik>
     </>
   );
-}
-
+};

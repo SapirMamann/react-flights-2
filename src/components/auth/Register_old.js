@@ -8,7 +8,7 @@ import Input from '../common/Input';
 import http from '../../api/http';
 
 
-export default function Register() {
+export default function RegisterOld() {
   const navigate = useNavigate();
 
   const RegisterValidation = object().shape({
