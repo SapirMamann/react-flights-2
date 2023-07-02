@@ -1,170 +1,143 @@
-import React, { useEffect, useState } from 'react';
+import React, {useState} from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import { Formik, Form, setFieldError } from "formik";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Formik, Form, setFieldError } from "formik";
-import { object, ref, string, date, shape } from "yup";
-import { ToastContainer, toast } from 'react-toastify';
+import Select from "react-select";
+import makeAnimated from 'react-select/animated';
 
+import Input from '../common/Input';
+import { useEffect } from 'react';
 import { getAllCountries } from '../../api/country/CountryApi';
+import { getFlightsByParameters } from '../../api/flight/FlightApi';
 
 
 export default function FlightSearch() {
-  const [departureTime, setDepartureTime] = useState(new Date());
-
-  const [formData, setFormData] = useState({
-    origin_country: '',
-    destination_country: '',
-    departure_time: '',
-  });
-
   const [originCountries, setOriginCountries] = useState([]);
   const [destinationCountries, setDestinationCountries] = useState([]);
+  const [departureTime, setDepartureTime] = useState(new Date());
+  
+  const [selectedOriginCountry, setSelectedOriginCountry] = useState('');
+  const [selectedDestinationCountry, setSelectedDestinationCountry] = useState('');
+  const [selectedDateTime, setSelectedDateTime] = useState(null);
 
-  const handleChange = (e) => {
-    // console.log(e, "e");
-    // console.log(e.target.value, "e name");
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,  // e.target.name is the name of the input field, e.target.value is the ID of the selected country
-    });
+  const animatedComponents = makeAnimated();
 
-    // with a given origin country, delete that country from the options in destination countries:
-    // // Remove the selected origin country from the destination countries
-    // if (e.target.name === 'origin_country') {
-    //   const newDestinationCountries = destinationCountries.filter(
-    //     (country) => country.id !== parseInt(e.target.value)
-    //   );
-    //   setDestinationCountries(newDestinationCountries);
-    // };
-
-    // // Remove the selected destination country from the origin countries
-    // if (e.target.name === 'destination_country') {
-    //   const newOriginCountries = originCountries.filter(
-    //     (country) => country.id !== parseInt(e.target.value)
-    //   );
-    //   setOriginCountries(newOriginCountries);
-    // };
+  const submitHandler = (values) => {
+    console.log('Origin Country:', values.origin_country);
+    console.log('Destination Country:', values.destination_country);
+    console.log('Departure Time:', values.departure_time);
+    getFlightsByParameters(2)
+      .then((response) => {
+      console.log("ok", response)
+      })
   };
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    console.log('formData', formData);
-  };
-
+  
   useEffect(() => {
     getAllCountries()
-      .then((response) => {
-        console.log("FlightSearch useeffect getAllCountries", response);
-        setDestinationCountries(response.data);
-        setOriginCountries(response.data);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
+    .then((response) => {
+      console.log("FlightSearch useeffect getAllCountries", response);
+      setOriginCountries(response.data);
+      console.log("originCountries", response.data);
+      setDestinationCountries(response.data);
+    })
+    .catch((error) => {
+      console.log("FlightSearch useeffect getAllCountries error", error);
+    });
   }, []);
+
+  // Making the origin countries an array (where each object has a value and label) so the Select can display countries:
+  const options = originCountries.map(country => ({
+    value: country.id,
+    label: country.name
+  }));
+  
+  // Handling the change of the origin country:
+  const handleOriginCountryChange = (selectedOption) => {
+    console.log("selectedOption", selectedOption);
+    setSelectedOriginCountry(selectedOption);
+  };
+
+  // Handling the change of the destination country:
+  const handleDestinationCountryChange = (selectedOption) => {
+    setSelectedDestinationCountry(selectedOption);
+  };
+
+  // Handling the change of the time:
+  const handleDateTimeChange = (date) => {
+    setSelectedDateTime(date);
+  };
+  
+  //style for countries selector
+  const animatedComponentsStyles = {
+    control: (provided) => ({
+      ...provided,
+      border: '1px solid gray',
+      borderRadius: '4px',
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? 'lightblue' : 'white',
+    }),
+  };
 
 
   return (
-    //       <label>From:</label>
-    //       {/* Drop down of origin countries: */}
-    //       <select name="origin_country" onChange={handleChange}>
-    //         {originCountries.map((country) => {
-    //             return(
-    //               <option value={country.id}>{country.name}</option>
-    //             )
-    //         })}
-    //       </select>
-    //       {/* <input type="text" id="from" name="from" value={formData.from} onChange={handleChange} /> */}
-    //     </div>
-
-    //     <div name="Destination countries">
-    //       <label>To:</label>
-    //       {/* Drop down of destination countries: */}
-    //       <select name="destination_country" onChange={handleChange}>
-    //         {destinationCountries.map((country) => {
-    //             return(
-    //               <option value={country.id}>{country.name}</option>
-    //             )
-    //           })}
-    //       </select>
-    //     </div>
-
-    //     {/* <div name="Departure time">
-    //       <label>Departure Time:</label>
-    //       <input type="datetime-local" value={formData.departure_time} onChange={handleChange} />
-    //     </div> */}
-
-    //     <div name="Departure time">
-    //     <label>Departure time</label>
-    //       <DatePicker
-    //         selected={departureTime}
-    //         // onChange={(date) => setDepartureTime(date)}
-    //         dateFormat="yyyy-MM-dd'T'HH:mm:ss'Z'"
-    //         showTimeinput
-    //         timeinputLabel="Time:"
-    //         withPortal
-    //         name="departure_time"
-    //       />
-    //     </div>
-
-    //     {/* Submit button: */}
-    //     <button type="submit">
-    //       <FontAwesomeIcon icon={faSearch} />
-    //     </button>
-    //   </form>
-    // </div>
-    <>
-       <h1>Search flight</h1>
-       <ToastContainer />
-       <Formik
+    <div>
+      <ToastContainer/>
+      <Formik
         initialValues={{
           origin_country: "",
           destination_country: "",
-          departure_time: "2023-04-30T10:50:38Z",
+          departure_time: "",
         }}
-        onSubmit={(e) => submitHandler(e)}
+        onSubmit={(values) => submitHandler(values)}
         // validationSchema={searchFlightValidation}
-      >
+        >
         {() => {
           return (
-            <Form className='input'>
+            <Form>
               <div>
                 {/* Drop down of origin countries: */}
                 <label>From:</label>
-                <select name="origin_country" onChange={handleChange}>
-                  {originCountries.map((country) => {
-                    return(
-                      <option value={country.id}>{country.name}</option>
-                    )
-                  })}
-                </select>
-                {/* <input type="text" id="from" name="from" value={formData.from} onChange={handleChange} />  */}
-
-                <br/>
+                <Select 
+                  name="origin_country"
+                  options={options}
+                  value={selectedOriginCountry}
+                  onChange={handleOriginCountryChange}
+                  //adding a style to the selector:
+                  components={animatedComponents}
+                  styles={animatedComponentsStyles}  
+                  placeholder="Select origin country"              
+                />
+                  
                 {/* Drop down of destination countries: */}
                 <label>To:</label>
-                <select name="destination_country" onChange={handleChange}>
-                  {destinationCountries.map((country) => {
-                      return(
-                        <option value={country.id}>{country.name}</option>
-                      )
-                    })}
-                </select>
+                <Select 
+                  name="destination_country"
+                  options={options}
+                  value={selectedDestinationCountry}
+                  onChange={handleDestinationCountryChange}
+                  //adding a style to the selector:
+                  components={animatedComponents}
+                  styles={animatedComponentsStyles}   
+                  placeholder="Select destination country"             
+                />
 
-
-                <br/>
                 {/* <input type="text" name="destination_country" label="Destination country"/> */}
                 <label className='label'>Departure time:</label>
                 <DatePicker
+                  name="departure_time"
                   selected={departureTime}
-                  onChange={(date) => setDepartureTime(date)}
+                  onChange={(date) => {
+                    handleDateTimeChange(date)
+                  }}
                   dateFormat="yyyy-MM-dd'T'HH:mm:ss'Z'"
                   showTimeInput
                   timeInputLabel="Time:"
                   withPortal
-                  name="departure_time"
                 />
                 <button type="submit">
                   <FontAwesomeIcon icon={faSearch} />
@@ -173,7 +146,7 @@ export default function FlightSearch() {
             </Form>
           );
         }}
-      </Formik>
-    </>
+      </Formik>  
+    </div>
   );
 };

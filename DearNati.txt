@@ -18,12 +18,9 @@
   how can i know what requests are being processed after some 
   component is mounted.. (hope i used the right words)
 
-  well you can either use a breakpoint or console.log()   eifo sheho i wrote that i dont know how to debug
-  well
-
-4. Everytime i call an api endpoint, 
-  i should call the variable i created on the api folder.
-  cant remember how you did this.
+4. V Everytime i call an api endpoint, 
+      i should call the variable i created on the api folder.
+      cant remember how you did this.
 
 5. navbar component - not that important but i would
   like to know what i did wrong with darkmode.
@@ -46,3 +43,8 @@
   Cannot read properties of undefined (reading 'map')
 
 12. update ticket api file
+
+13. why state in index.js doesnt set username
+
+14. Must fix !!!!!!! the http.js. it makes the token to be expired,
+  and causing authorization problem on the site.

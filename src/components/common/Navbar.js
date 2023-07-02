@@ -33,7 +33,8 @@ export default function MyNavbar() {
     if (storedDarkMode !== null) {
       setDarkMode(darkMode);
     };
-  });
+    console.log("navbar- log the username", {username})
+  }, []);
 
   // useEffect(() => {
   //   // Fetch the username from the API
@@ -86,6 +87,7 @@ export default function MyNavbar() {
               <LoginOptions />
               {username && <ProfileIcon />}
           </div>
+          {<ProfileIcon/>}
           {/* End of Profile and Register section */}
           
           {/* Sidebar container */}
