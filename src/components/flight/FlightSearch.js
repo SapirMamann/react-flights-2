@@ -7,7 +7,7 @@ import { Formik, Form, setFieldError } from "formik";
 import { object, ref, string, date, shape } from "yup";
 import { ToastContainer, toast } from 'react-toastify';
 
-import { getAllCountries } from '../../api/country/countryApi';
+import { getAllCountries } from '../../api/country/CountryApi';
 
 
 export default function FlightSearch() {
@@ -46,8 +46,6 @@ export default function FlightSearch() {
     //   );
     //   setOriginCountries(newOriginCountries);
     // };
-
-    
   };
 
   const submitHandler = (e) => {

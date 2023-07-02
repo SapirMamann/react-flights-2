@@ -1,32 +1,43 @@
-import React, {useEffect, useState} from 'react'
-import { useStoreActions } from 'easy-peasy';
+import React, {useEffect, useState} from 'react';
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
 import http from '../../api/http'
 import FlightSearch from '../../components/flight/FlightSearch';
 import { CheckGroup } from '../../api/auth/CheckGroup';
 import EditCountry from '../../components/country/EditCountry';
 import GetFlightsByCountryId from './GetFlightsByCountry';
+import { getAllCountries } from '../../api/country/CountryApi';
 
 
 function GetCountries() {
-  const [countries, setCountries] = useState([])
-  const [countryID, setCountryID] = useState('')
-  const setIsAdmin = useStoreActions(actions => actions.user.setIsAdmin);
+  const [countries, setCountries] = useState([]);
+  const [countryID, setCountryID] = useState('');
+  const [showOverlay, setShowOverlay] = useState(false);
+  // const setIsAdmin = useStoreActions(actions => actions.user.setIsAdmin);
+  // const isAdmin = useStoreState((state) => state.user.isAdmin);
 
-  
+  const toggleOverlay = (id) => {
+    setShowOverlay(!showOverlay);
+    setCountryID(id)
+    console.log("here",id)   
+  };
+
+
+  // am i doing async twice for no reason? :(  
   const getCountries = async () => {
-    await http
-            .get('http://localhost:8000/api/countries/')
-            .then(response => {
-                setCountries(response.data)
-            })
-            .catch(error => console.log(error))
-  }
+    await getAllCountries()
+    .then(response => {
+      setCountries(response.data)
+    })
+    .catch(error => console.log(error))
+  };
 
   useEffect(() => {
     getCountries()
-  }, [])
+  }, []);
 
 
   return (
@@ -36,6 +47,18 @@ function GetCountries() {
       
       {/* Country boxes */}
       <h1>Explore destinations</h1>
+      {/* 
+
+      ill write another question i have. 
+
+      i thought it is a bad practice to check evrey render if a user has a permission 
+      so this is the reason i created this additional  view in my django. 
+      thayt will just return if this user is an admin/not.
+      buut it created this problem i told you about(refrehses 80 times)
+ehy the helll it goes to this login page every time i wanna see just the main page 
+
+    where does it do that? where do u lick? ma ze lick
+      */}
 
       {/* Each box has a country name, an edit button, and a button */}
       <div>
@@ -52,20 +75,19 @@ function GetCountries() {
               Flights
             </Link>
             
-              {/* {isAdmin && <button>Edit</button>} */}
             {/* Edit button will only be displayed when an admin is logged in */}
-            {/* <CheckGroup groups={['Administrator']}> */}
-              {/* overlay. passing the country id to the handler of this click */}
-              {/* <button onClick={() => toggleOverlay(country.id)} className='pen_button'> */}
-                {/* <FontAwesomeIcon icon={faPen} />                 */}
-              {/* </button> */}
-            {/* </CheckGroup> */}
+            {/* overlay. passing the country id to the handler of this click */}
+            {/* {isAdmin &&  */}
+              <button onClick={() => toggleOverlay(country.id)} className='pen_button'> 
+                <FontAwesomeIcon icon={faPen} />                 
+              </button>
+            {/* } */}
           </div>
         )}
       </div>
 
       {/* Overlay details */}
-      {/* {showOverlay && (
+      {showOverlay && (
         <div className="overlay">
           <div className="overlay-content">
             <EditCountry id={countryID} />
@@ -76,7 +98,7 @@ function GetCountries() {
             </button>
           </div>
         </div>
-      )} */}
+      )}
 
       {/* All flights */}
       {/* <GetFlights/> */}

@@ -14,6 +14,13 @@
   this component renders.
   so i should have a state? (redux) 
 
+  another question related to this,
+  how can i know what requests are being processed after some 
+  component is mounted.. (hope i used the right words)
+
+  well you can either use a breakpoint or console.log()   eifo sheho i wrote that i dont know how to debug
+  well
+
 4. Everytime i call an api endpoint, 
   i should call the variable i created on the api folder.
   cant remember how you did this.
@@ -21,3 +28,19 @@
 5. navbar component - not that important but i would
   like to know what i did wrong with darkmode.
 
+6. Passing a date to flight search component has a problem.
+
+7. In api calls folder:  is there a point to use async and await ?
+
+8. why for example in main page every time this component is mounted it sends 
+  multiple requests?
+  
+9.Change files name to be first capital letter
+
+10. Change all api calls to be from the api folder and not manually written
+
+11. After login theres a problem :
+ Uncaught runtime errors:
+  ×
+  ERROR
+  Cannot read properties of undefined (reading 'map')

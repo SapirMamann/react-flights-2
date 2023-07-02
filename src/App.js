@@ -10,7 +10,6 @@ import Login from './components/auth/Login';
 import Logout from './components/auth/Logout';
 import GetFlightsByCountryId from './pages/country/GetFlightsByCountry';
 import Register from './components/auth/Register';
-import Danny from './components/danny';
 import {store} from './state/';
 
 
@@ -24,7 +23,6 @@ export default function App() {
           <Route path="/register" element={<Register/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/logout" element={<Logout/>}/>
-          <Route path="/danny" element={<Danny/>}/>
 
 {/*          <Route path="/countries">
             <Route index element={<GetFlightsByCountryId/>}/>   

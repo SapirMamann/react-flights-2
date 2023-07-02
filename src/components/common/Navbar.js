@@ -14,6 +14,8 @@ export default function MyNavbar() {
   const [darkMode, setDarkMode] = useState(true);
   const setUsername = useStoreActions((actions) => actions.user.setUsername);
   const username = useStoreState((state) => state.user.username);
+  const setIsAdmin = useStoreActions(actions => actions.user.setIsAdmin);
+  const isAdmin = useStoreState((state) => state.user.isAdmin);
 
   const toggleDarkMode = (event) => {
     event.preventDefault();
@@ -31,19 +33,21 @@ export default function MyNavbar() {
     if (storedDarkMode !== null) {
       setDarkMode(darkMode);
     };
-  }, []);
+  });
 
-  useEffect(() => {
-    // Fetch the username from the API
-    GetCurrentUserData()
-      .then((response) => {
-        console.log("username", response.username);
-        setUsername(response.username);
-      })
-      .catch((error) => {
-        console.error("error fetching current user data", error);
-      })
-  }, []);
+  // useEffect(() => {
+  //   // Fetch the username from the API
+  //   GetCurrentUserData()
+  //     .then((response) => {
+  //       console.log("username", response.username);
+  //       setUsername(response.username);
+  //       setIsAdmin(response.isAdmin);
+  //     })
+  //     .catch((error) => {
+  //       console.error("error fetching current user data", error);
+  //     })
+  // }, []);
+
 
   return (
     <>

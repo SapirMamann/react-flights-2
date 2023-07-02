@@ -23,11 +23,16 @@ export default function Login() {
                       .required("password is required")
   })
 
-  useEffect(() => {
+  const checkIfAuthenticated = () => {
     const loggedInUser = localStorage.getItem("access");
     if (loggedInUser) {
         setIsAuthenticated(loggedInUser);
-    }
+    };
+  };
+
+  // I want to check if the user is logged in only once.
+  useEffect(() => {
+    checkIfAuthenticated();
   }, []);
 
   const submitHandler = (event) => {
@@ -36,6 +41,7 @@ export default function Login() {
     // Send a POST request to the API endpoint with the form data (event)
     http
         .post('http://127.0.0.1:8000/api/auth/login/', event)
+        // ApiLogin(event)
         .then((response) => {
           console.log('response', response)
           // Save the refresh & access token to local storage
@@ -60,7 +66,7 @@ export default function Login() {
   };
 
 
-  //IsAuthenticated (logged in) user cant access login page
+  // IsAuthenticated (logged in) user cant access login page
   if (isAuthenticated) {
     return <Navigate replace to="/" />;
   } 

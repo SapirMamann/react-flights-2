@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 
 import http from '../http';
 
+
 function CheckGroup({children, groups}){
 
     const [isVisible, setVisible]  = useState(false)
 
     useEffect(() => {
-
         http.get('http://localhost:8000/api/groups/check/',
             {params: {
                 groups: groups.join(", ")       //replace "+" with "_" maybe in airline company
