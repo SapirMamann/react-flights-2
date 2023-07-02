@@ -30,7 +30,8 @@ function GetCountries() {
   const getCountries = async () => {
     await getAllCountries()
     .then(response => {
-      setCountries(response.data)
+      setCountries(response.data);
+      console.log(response.data)
     })
     .catch(error => console.log(error))
   };
@@ -57,7 +58,6 @@ function GetCountries() {
       buut it created this problem i told you about(refrehses 80 times)
 ehy the helll it goes to this login page every time i wanna see just the main page 
 
-    where does it do that? where do u lick? ma ze lick
       */}
 
       {/* Each box has a country name, an edit button, and a button */}

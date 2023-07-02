@@ -35,7 +35,7 @@
 8. why for example in main page every time this component is mounted it sends 
   multiple requests?
   
-9.Change files name to be first capital letter
+9.Change files name to be first capital letter (index.js, http, etc.)
 
 10. Change all api calls to be from the api folder and not manually written
 
@@ -44,3 +44,5 @@
   ×
   ERROR
   Cannot read properties of undefined (reading 'map')
+
+12. update ticket api file

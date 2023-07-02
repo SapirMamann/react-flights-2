@@ -11,6 +11,7 @@ import Logout from './components/auth/Logout';
 import GetFlightsByCountryId from './pages/country/GetFlightsByCountry';
 import Register from './components/auth/Register';
 import {store} from './state/';
+import AboutPage from './pages/About';
 
 
 export default function App() {
@@ -28,13 +29,14 @@ export default function App() {
             <Route index element={<GetFlightsByCountryId/>}/>   
             <Route path=":id" element={<EditCountry/>}/>
             <Route path="edit" element={<EditCountry/>}/>
-          </Route>
-
+            </Route>
+            
           <Route path="/flights"> */}
             {/* <Route index element={<getall/>}/>    */}
             {/* <Route path=":country" element={<GetFlightsByCountryId/>}/>
           </Route>*/}
 
+          <Route path="/about" element={<AboutPage/>}/>
           <Route path="*" element={< NotFound/>} /> 
         </Routes>
       </BrowserRouter>

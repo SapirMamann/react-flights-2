@@ -18,7 +18,7 @@ export const getFlightByID = async (id) => {
   // using http for permissions check
   const response = await http.get(`http://127:0.0.1:8000/api/flights/${id}`);
   console.log("api response for getFlightByID", response);
-  return response.data;
+  return response;
 };
 
 
@@ -27,5 +27,5 @@ export const getFlightsByParameters= async (originCountry, destinationCountry, d
   // using http for permissions check
   const response = await http.get(`http://127:0.0.1:8000/api/flights/`);  //add this function in django
   console.log("api response for getFlightsByParameters", response);
-  return response.data;
+  return response;
 };

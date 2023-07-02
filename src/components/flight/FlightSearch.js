@@ -56,8 +56,9 @@ export default function FlightSearch() {
   useEffect(() => {
     getAllCountries()
       .then((response) => {
-        setDestinationCountries(response);
-        setOriginCountries(response);
+        console.log("FlightSearch useeffect getAllCountries", response);
+        setDestinationCountries(response.data);
+        setOriginCountries(response.data);
       })
       .catch((e) => {
         console.error(e);
