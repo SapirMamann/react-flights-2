@@ -5,10 +5,10 @@ import { faPen, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
 import http from '../../api/http'
-import FlightSearch from '../../components/flight/FlightSearch';
+import FlightSearch from '../flight/FlightSearch';
 import { CheckGroup } from '../../api/auth/CheckGroup';
-import EditCountry from '../../components/country/EditCountry';
-import GetFlightsByCountryId from './GetFlightsByCountry';
+import EditCountry from './EditCountry';
+import GetFlightsByCountryId from '../flight/GetFlightsByCountry';
 import { getAllCountries } from '../../api/country/CountryApi';
 
 

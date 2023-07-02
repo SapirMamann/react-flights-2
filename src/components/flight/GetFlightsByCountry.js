@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
 import http from '../../api/http';
-import FlightDetail from '../../components/flight/FlightDetail';
+import FlightDetail from './FlightDetail';
 
 export default function GetFlightsByCountryId(props) {
   const {country} = useParams();

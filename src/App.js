@@ -3,12 +3,12 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { StoreProvider } from 'easy-peasy';
 
 import MyNavbar from './components/common/Navbar';
-import GetCountries from './pages/country/GetCountries';
+import GetCountries from './components/country/GetCountries';
 import EditCountry from './components/country/EditCountry';
 import NotFound from './components/common/NotFound';
 import Login from './components/auth/Login';
 import Logout from './components/auth/Logout';
-import GetFlightsByCountryId from './pages/country/GetFlightsByCountry';
+import GetFlightsByCountryId from './components/flight/GetFlightsByCountry';
 import Register from './components/auth/Register';
 import {store} from './state/';
 import AboutPage from './pages/About';
