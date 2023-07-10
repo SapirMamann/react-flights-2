@@ -47,7 +47,9 @@ export default function MyNavbar() {
 
   // useEffect(() => {
   //   // Fetch the username from the API
-  //   GetCurrentUserData()
+  //   try{
+
+  //     GetCurrentUserData()
   //     .then((response) => {
   //       console.log("username", response.username);
   //       setUsername(response.username);
@@ -56,6 +58,9 @@ export default function MyNavbar() {
   //     .catch((error) => {
   //       console.error("error fetching current user data", error);
   //     })
+  //   } catch (error) {
+  //     console.debug("Error fetching in MyNavbar", error);
+  //   };
   // }, []);
 
 

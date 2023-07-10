@@ -13,10 +13,10 @@ export const store = createStore({
       state.username = payload;
     }),
 
-    isAdmin: false,
-    setIsAdmin: action((state, payload) => {
-      state.isAdmin = payload;
-    })
+    // isAdmin: false,
+    // setIsAdmin: action((state, payload) => {
+    //   state.isAdmin = payload;
+    // })
   },
   
 });

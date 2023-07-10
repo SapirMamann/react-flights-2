@@ -25,7 +25,6 @@ function GetCountries() {
     console.log("here",id)   
   };
 
-
   const getCountriesList = () => {
     getAllCountries()
     .then(response => {
@@ -47,18 +46,6 @@ function GetCountries() {
       
       {/* Country boxes */}
       <h1>Explore destinations</h1>
-      {/* 
-
-      ill write another question i have. 
-
-      i thought it is a bad practice to check evrey render if a user has a permission 
-      so this is the reason i created this additional  view in my django. 
-      thayt will just return if this user is an admin/not.
-      buut it created this problem i told you about(refrehses 80 times)
-ehy the helll it goes to this login page every time i wanna see just the main page 
-
-      */}
-
       {/* Each box has a country name, an edit button, and a button */}
       <div>
         {countries.map(country =>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Formik, Form, setFieldError, isInteger } from "formik";
 import { number, object, ref, string } from "yup";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,7 +10,6 @@ import http from '../../api/http';
 
 export default function Register() {
   const navigate = useNavigate();
-  // !!! Add naviugate if user is authenticated and logged in he cant access to this page
 
   const RegisterValidation = object().shape({
     username: string()
@@ -65,7 +64,7 @@ export default function Register() {
           });
         }
       );
-  }
+  };
 
 
   return (
@@ -77,7 +76,7 @@ export default function Register() {
           email: "add@ddd.com",
           password: "admin1234",
           password2: "admin1234",
-          user_role: 1,  //probleeeeeeeeeeeeeeeeeeeeeeem
+          user_role: "",  //probleeeeeeeeeeeeeeeeeeeeeeem
         }}
         onSubmit={(e) => submitHandler(e)}
         validationSchema={RegisterValidation}

@@ -50,3 +50,6 @@
   Must fix !!!!!!! the http.js. it makes the token to be expired,
   and causing authorization problem on the site.
   
+15. decode token component does not work
+
+16.for example in register if password not match i want it a toast
