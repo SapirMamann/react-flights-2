@@ -11,7 +11,6 @@ import Input from '../common/Input';
 import {isAuthenticated} from '../../api/http.js';
 
 export default function Login() {
-
   const navigate = useNavigate();
   const isLoggedIn = isAuthenticated();
 
@@ -20,41 +19,26 @@ export default function Login() {
                       .required("username is required"),
     password: string()
                       .required("password is required")
-  })
-
-  // const checkIfAuthenticated = () => {
-  //   const loggedInUser = localStorage.getItem("access");
-  //   if (loggedInUser) {
-  //     console.log("User is logged in");
-  //     setIsAuthenticated(loggedInUser);
-  //   };
-  // };
-
-  // I want to check if the user is logged in only once.
-  // useEffect(() => {
-  //   checkIfAuthenticated();
-  // }, []);
-  useEffect(() => {
-    console.log('here login')
-  })
+  });
 
   const submitHandler = (event) => {
-    console.log('login submission', event)
+    console.log('login submission', event);
 
     // Send a POST request to the API endpoint with the form data (event)
     http
         .post('http://127.0.0.1:8000/api/auth/login/', event)
         // ApiLogin(event)
         .then((response) => {
-          console.log('response of login fetching', response)
+          console.log('Response of login fetching', response)
           // Save the refresh & access token to local storage
           localStorage.setItem("access", response.data.access)
           localStorage.setItem("refresh", response.data.refresh)
           // localStorage.setItem("user_name", event.username)
+          // After a successful login, redirect the user to the home page
           navigate('/');
         })
         .catch((error) => {
-          console.error("login fetching error", Object.entries(error.response.data))
+          console.error("Login fetching error", Object.entries(error.response.data))
           toast.error(`Login failed. ${error.response.data.detail}`, {
             position: "top-center",
             autoClose: 5000,
@@ -74,7 +58,7 @@ export default function Login() {
   if (isLoggedIn) {
     console.log("Authenticated user cant access login page")
     return <Navigate replace to="/"/>;
-  } 
+  }; 
 
   // Otherwise return login form: 
   return( 

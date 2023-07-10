@@ -46,5 +46,7 @@
 
 13. why state in index.js doesnt set username
 
-14. Must fix !!!!!!! the http.js. it makes the token to be expired,
+14. 10.7: i fixed it. there was a problem on the profileicon component it tried to get the username but couldnt
+  Must fix !!!!!!! the http.js. it makes the token to be expired,
   and causing authorization problem on the site.
+  
