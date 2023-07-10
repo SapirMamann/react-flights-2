@@ -6,7 +6,7 @@ import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
 import Login from './Login';
-import { isAuthenticted } from '../../api/http';
+import { isAuthenticated } from '../../api/http';
 
 
 // change name because its just a login pop up
@@ -14,15 +14,11 @@ export default function LoginOptions() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const navigate = useNavigate();
-  // !!! Todo: when a user is logged in-> remove the login button and only show profile icon
-  //       maybe i should make 'authenticated' in store !!!
   
-  // i should navigate to recent page because authenticated user cant access it
-  // return isAuthenticted() ? (
-  //   navigate(-1)
-  // ) : (
-    return (
+  const navigate = useNavigate();
+
+
+  return (
     <>
       {/* Log in button on navbar */}
       <Button style={{color : 'black', background: 'none', border: 'none', fontSize: '25px'}} onClick={handleShow}>

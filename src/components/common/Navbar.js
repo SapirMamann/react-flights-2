@@ -8,6 +8,7 @@ import ProfileIcon from './ProfileIcon';
 import LoginOptions from '../auth/LoginOptions';
 import GetCurrentUserData from '../../api/user/UserApi';
 import Sidebar from './Sidebar';
+import { isAuthenticated } from '../../api/http';
 
 
 export default function MyNavbar() {
@@ -16,6 +17,7 @@ export default function MyNavbar() {
   const username = useStoreState((state) => state.user.username);
   const setIsAdmin = useStoreActions(actions => actions.user.setIsAdmin);
   const isAdmin = useStoreState((state) => state.user.isAdmin);
+  const isLoggedIn = isAuthenticated()
 
   const toggleDarkMode = (event) => {
     event.preventDefault();
@@ -89,13 +91,16 @@ export default function MyNavbar() {
           </Navbar.Brand>
           {/* End of icon+ name */}
           
-          {/* Profile and Register section */}
+          {/* Show login options button when user is unauthenticated,
+              Otherwise, show profile icon */}
           <div className='ms-auto d-flex align-items-center'>
+            {isLoggedIn ? (
+              <ProfileIcon/>
+            ) : (
               <LoginOptions />
-              {username && <ProfileIcon />}
+            )};
           </div>
-          {<ProfileIcon/>}
-          {/* End of Profile and Register section */}
+          {/* End of login and Profile section */}
           
           {/* Sidebar container */}
           <Sidebar username={username}/>

@@ -8,51 +8,53 @@ import Button from 'react-bootstrap/Button';
 
 import http from '../../api/http';
 import Input from '../common/Input';
-
+import {isAuthenticated} from '../../api/http.js';
 
 export default function Login() {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   const navigate = useNavigate();
+  const isLoggedIn = isAuthenticated();
 
-  const LoginValidation = object().shape({
+  const loginValidation = object().shape({
     username: string()
                       .required("username is required"),
     password: string()
                       .required("password is required")
   })
 
-  const checkIfAuthenticated = () => {
-    const loggedInUser = localStorage.getItem("access");
-    if (loggedInUser) {
-      console.log("User is logged in");
-      setIsAuthenticated(loggedInUser);
-    };
-  };
+  // const checkIfAuthenticated = () => {
+  //   const loggedInUser = localStorage.getItem("access");
+  //   if (loggedInUser) {
+  //     console.log("User is logged in");
+  //     setIsAuthenticated(loggedInUser);
+  //   };
+  // };
 
   // I want to check if the user is logged in only once.
   // useEffect(() => {
   //   checkIfAuthenticated();
   // }, []);
+  useEffect(() => {
+    console.log('here login')
+  })
 
   const submitHandler = (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
-    console.log('event', event)
+    console.log('login submission', event)
 
     // Send a POST request to the API endpoint with the form data (event)
     http
         .post('http://127.0.0.1:8000/api/auth/login/', event)
         // ApiLogin(event)
         .then((response) => {
-          console.log('response', response)
+          console.log('response of login fetching', response)
           // Save the refresh & access token to local storage
           localStorage.setItem("access", response.data.access)
           localStorage.setItem("refresh", response.data.refresh)
           // localStorage.setItem("user_name", event.username)
-          // navigate('/');
+          navigate('/');
         })
         .catch((error) => {
-          console.error(Object.entries(error.response.data))
+          console.error("login fetching error", Object.entries(error.response.data))
           toast.error(`Login failed. ${error.response.data.detail}`, {
             position: "top-center",
             autoClose: 5000,
@@ -67,11 +69,14 @@ export default function Login() {
   };
 
 
-  // IsAuthenticated (logged in) user cant access login page
-  // if (isAuthenticated) {
-  //   return <Navigate replace to="/" />;
-  // } 
+  // Logged in user can't access login page
+  // Replace used for if the user clicks the back button, they will skip the previous route and go further back in the history stack
+  if (isLoggedIn) {
+    console.log("Authenticated user cant access login page")
+    return <Navigate replace to="/"/>;
+  } 
 
+  // Otherwise return login form: 
   return( 
     <>
       <ToastContainer />
@@ -81,7 +86,7 @@ export default function Login() {
             password: "",
         }}
         onSubmit={(e) => submitHandler(e)}
-        validationSchema={LoginValidation}
+        validationSchema={loginValidation}
       >
         {() => {
           return (
@@ -98,7 +103,7 @@ export default function Login() {
               <hr/>
               <div>
                 <p>Don't have an account?</p>
-                <p> <Link to="/register">Register</Link></p>
+                <p><Link to="/register">Register</Link></p>
               </div>
             </Form>
           );

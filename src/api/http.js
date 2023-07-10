@@ -38,7 +38,7 @@ export const DJANGO_API_URL  = 'http://localhost:8000';
 
 
 
-export const isAuthenticted = () => {
+export const isAuthenticated = () => {
   const access = localStorage.getItem('access');
   return access !== null;
 };
