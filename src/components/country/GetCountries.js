@@ -26,18 +26,17 @@ function GetCountries() {
   };
 
 
-  // am i doing async twice for no reason? :(  
-  const getCountries = async () => {
-    await getAllCountries()
+  const getCountriesList = () => {
+    getAllCountries()
     .then(response => {
       setCountries(response.data);
-      console.log(response.data)
+      console.log("getCountriesList", response.data);
     })
-    .catch(error => console.log(error))
+    .catch(error => console.log("getCountriesList", error))
   };
 
   useEffect(() => {
-    getCountries()
+    getCountriesList()
   }, []);
 
 

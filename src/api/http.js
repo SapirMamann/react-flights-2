@@ -2,44 +2,116 @@ import React from 'react';
 import axios from 'axios';
 
 
+let accessToken = localStorage.getItem('access');
+
 const http = (
-    // If the user is logged in, then we will 
-    // use the access token to make requests to the Django API.
-    // Otherwise, we won't include the Authorization header.
-    localStorage.getItem('access') 
-    ?
-    axios.create({
-        timeout: 20000,
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('access')}`,     
-        },
-    })
-    :
-    axios.create({
-        timeout: 20000,
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-    })
+  // If the user is logged in, then we will 
+  // use the access token to make requests to the Django API.
+  // Otherwise, we won't include the Authorization header.
+  // If a request takes longer than the specified timeout value, Axios will abort the request and reject the Promise with an error indicating a timeout occurred.
+  localStorage.getItem('access') 
+  ?
+  axios.create({
+    timeout: 20000,
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('access')}`,     
+    },
+  })
+  :
+  axios.create({
+    timeout: 20000,
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
 )
 
 
+
 // 1. for testing Django locally
-// 2. for 'production'
 export const DJANGO_API_URL  = 'http://localhost:8000';
+
+// 2. for 'production'
+
 
 
 export const isAuthenticted = () => {
-    const  access = localStorage.getItem('access');
-    return access !== null;
+  const access = localStorage.getItem('access');
+  return access !== null;
 };
 
 
 
+// An interceptor to refresh the access token if it has expired.
+const api = axios.create({
+  baseURL: DJANGO_API_URL, 
+});
+  
+api.interceptors.request.use(
+  (config) => {
+    // Retrieve the access token from localStorage
+    const access = localStorage.getItem('access');
 
+    // If access token exists, add it to the Authorization header
+    if (access) {
+      config.headers.Authorization = `Bearer ${access}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    console.debug("access token has an error.", error);
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    // Check if the error is due to an expired access token
+    if (error.response && error.response.status === 401) {
+      const refresh = localStorage.getItem('refresh');
+
+      // If refresh token exists, send a request to refresh the access token
+      if (refresh) {
+        try {
+          const response = await axios.post('/refresh-token/', {
+            refresh: refresh,
+          });
+
+          // Update the access token in localStorage
+          localStorage.setItem('access', response.data.access);
+
+          // Retry the original request with the new access token
+          const originalRequest = error.config;
+          originalRequest.headers.Authorization = `Bearer ${response.data.access}`;
+          return axios(originalRequest);
+        } catch (error) {
+          // If the refresh request fails, clear the stored tokens and redirect to login
+          console.debug("Refresh token can't update the access token.", error);
+          localStorage.removeItem('access');
+          localStorage.removeItem('refresh');
+          window.location.href = '/login'; 
+        }
+      } else {
+        // If refresh token is not available, clear the stored tokens and redirect to login
+        console.debug("Refresh token is not available.", error);
+        localStorage.removeItem('access');
+        localStorage.removeItem('refresh');
+        window.location.href = '/login'; 
+      }
+    } 
+
+    return Promise.reject(error);
+  }
+);
+
+//nati:
 
 // An interceptor to refresh the access token if it has expired.
 // Runs before requests are handled by then or catch

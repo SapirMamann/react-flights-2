@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import {useNavigate} from "react-router-dom";
 import { Formik, Form, setFieldError } from "formik";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -8,8 +9,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import makeAnimated from 'react-select/animated';
 
-import Input from '../common/Input';
-import { useEffect } from 'react';
 import { getAllCountries } from '../../api/country/CountryApi';
 import { getFlightsByParameters } from '../../api/flight/FlightApi';
 
@@ -18,6 +17,8 @@ export default function FlightSearch() {
   const [originCountries, setOriginCountries] = useState([]);
   const [destinationCountries, setDestinationCountries] = useState([]);
   const [departureTime, setDepartureTime] = useState(new Date());
+
+  const[desiredFlights, setDesiredFlights] = useState([]);
   
   const [selectedOriginCountry, setSelectedOriginCountry] = useState('');
   const [selectedDestinationCountry, setSelectedDestinationCountry] = useState('');
@@ -25,13 +26,15 @@ export default function FlightSearch() {
 
   const animatedComponents = makeAnimated();
 
+  const navigate = useNavigate()
+
   const submitHandler = (values) => {
     console.log('Origin Country:', values.origin_country);
     console.log('Destination Country:', values.destination_country);
     console.log('Departure Time:', values.departure_time);
     getFlightsByParameters(2)
       .then((response) => {
-      console.log("ok", response)
+        console.log("Response of flight search", response);
       })
   };
   
@@ -70,7 +73,7 @@ export default function FlightSearch() {
     setSelectedDateTime(date);
   };
   
-  //style for countries selector
+  // Style for countries selector
   const animatedComponentsStyles = {
     control: (provided) => ({
       ...provided,
@@ -98,12 +101,13 @@ export default function FlightSearch() {
         >
         {() => {
           return (
-            <Form>
+            <Form name='Flight-search-form'>
               <div>
                 {/* Drop down of origin countries: */}
-                <label>From:</label>
+                <label for="origin_country">From:</label>
                 <Select 
                   name="origin_country"
+                  id="origin_country"
                   options={options}
                   value={selectedOriginCountry}
                   onChange={handleOriginCountryChange}
@@ -114,9 +118,10 @@ export default function FlightSearch() {
                 />
                   
                 {/* Drop down of destination countries: */}
-                <label>To:</label>
+                <label for="destination_country">To:</label>
                 <Select 
                   name="destination_country"
+                  id="destination_country"
                   options={options}
                   value={selectedDestinationCountry}
                   onChange={handleDestinationCountryChange}
@@ -127,9 +132,10 @@ export default function FlightSearch() {
                 />
 
                 {/* <input type="text" name="destination_country" label="Destination country"/> */}
-                <label className='label'>Departure time:</label>
+                <label for="departure_time">Departure time:</label>
                 <DatePicker
                   name="departure_time"
+                  id="departure_time"
                   selected={departureTime}
                   onChange={(date) => {
                     handleDateTimeChange(date)

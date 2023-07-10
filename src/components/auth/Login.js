@@ -6,7 +6,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Button from 'react-bootstrap/Button';
 
-
 import http from '../../api/http';
 import Input from '../common/Input';
 
@@ -26,16 +25,18 @@ export default function Login() {
   const checkIfAuthenticated = () => {
     const loggedInUser = localStorage.getItem("access");
     if (loggedInUser) {
-        setIsAuthenticated(loggedInUser);
+      console.log("User is logged in");
+      setIsAuthenticated(loggedInUser);
     };
   };
 
   // I want to check if the user is logged in only once.
-  useEffect(() => {
-    checkIfAuthenticated();
-  }, []);
+  // useEffect(() => {
+  //   checkIfAuthenticated();
+  // }, []);
 
   const submitHandler = (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
     console.log('event', event)
 
     // Send a POST request to the API endpoint with the form data (event)
@@ -48,7 +49,7 @@ export default function Login() {
           localStorage.setItem("access", response.data.access)
           localStorage.setItem("refresh", response.data.refresh)
           // localStorage.setItem("user_name", event.username)
-          navigate('/');
+          // navigate('/');
         })
         .catch((error) => {
           console.error(Object.entries(error.response.data))
@@ -67,9 +68,9 @@ export default function Login() {
 
 
   // IsAuthenticated (logged in) user cant access login page
-  if (isAuthenticated) {
-    return <Navigate replace to="/" />;
-  } 
+  // if (isAuthenticated) {
+  //   return <Navigate replace to="/" />;
+  // } 
 
   return( 
     <>

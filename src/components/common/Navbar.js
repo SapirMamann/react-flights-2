@@ -21,20 +21,27 @@ export default function MyNavbar() {
     event.preventDefault();
     setDarkMode(!darkMode);
   };
-  
-  useEffect(() => {
+
+  const handleDarkModeDoesNotExist = () => {
     localStorage.setItem('darkMode', darkMode);
-  }, [darkMode]);
+  };
 
   // !!! It doesnt effevtively work: !!! i separate it to another useeffect
   useEffect(() => {
     // Retrieve the dark mode state from local storage
     const storedDarkMode = localStorage.getItem('darkMode');
-    if (storedDarkMode !== null) {
-      setDarkMode(darkMode);
-    };
+    if (storedDarkMode){
+      setDarkMode(storedDarkMode);
+    } else {
+      handleDarkModeDoesNotExist();
+    }
     console.log("navbar- log the username", {username})
   }, []);
+  
+  useEffect(() => {
+    localStorage.setItem('darkMode', darkMode);
+  }, [darkMode]);
+
 
   // useEffect(() => {
   //   // Fetch the username from the API
