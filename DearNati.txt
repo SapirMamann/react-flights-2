@@ -53,3 +53,8 @@
 15. decode token component does not work
 
 16.for example in register if password not match i want it a toast
+
+
+
+for today 12.7:
+page for all flights in a desired country and each fligth detail page

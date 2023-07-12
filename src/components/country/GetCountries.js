@@ -27,11 +27,11 @@ function GetCountries() {
 
   const getCountriesList = () => {
     getAllCountries()
-    .then(response => {
-      setCountries(response.data);
-      console.log("getCountriesList", response.data);
-    })
-    .catch(error => console.log("getCountriesList", error))
+      .then(response => {
+        setCountries(response.data);
+        console.log("getCountriesList", response.data);
+      })
+      .catch(error => console.debug("getCountriesList fetching error", error))
   };
 
   useEffect(() => {

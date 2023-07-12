@@ -36,7 +36,7 @@ export default function App() {
             
           <Route path="/flights"> 
             <Route index element={<GetFlightsPage/>}/>   
-            {/* <Route path=":country" element={<GetFlightsByCountryId/>}/> */}
+            <Route path=":country" element={<GetFlightsByCountryId/>}/>
           </Route>
 
           <Route path="/about" element={<AboutPage/>}/>
