@@ -56,9 +56,8 @@ export default function GetCountries() {
     <>      
       <h1>Explore destinations</h1>
       {/* If admin -> display button of add country */}
-      <Link to='/countries/add'>
-        add country
-      </Link>
+      <Link to='/countries/add'>add country</Link>
+      
       {/* Each box has a country name, an edit button, and a button */}
       <CardGroup>
         <Row>

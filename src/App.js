@@ -16,6 +16,7 @@ import GetFlightsPage from './components/flight/GetFlights';
 import DecodeToken from './api/auth/DecodeToken';
 import AddFlight from './components/flight/AddFlight';
 import AddCountry from './components/country/AddCountry';
+import BookFlight from './components/flight/BookFlight';
 
 
 export default function App() {
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="/flights"> 
             <Route index element={<GetFlightsPage/>}/>   
             <Route path=":country" element={<GetFlightsByCountryId/>}/>
+            <Route path=":flight_id/book" element={<BookFlight/>}/>
             <Route path="add" element={<AddFlight/>}/>
           </Route>
 

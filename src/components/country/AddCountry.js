@@ -1,20 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import React from 'react';
 import { Formik, Form, setFieldError } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import { object, ref, string, date, shape } from "yup";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {default as bsForm} from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import { CheckGroup } from '../../api/auth/CheckGroup';
-import Input from '../common/Input';
-import http from '../../api/http';
 import { addNewCountry } from '../../api/country/CountryApi'
 
-export default function AddCountry() {
-  
+
+export default function AddCountry() {  
   const AddCountryValidation = object().shape({
     name: string()
                 .required("Name is required")

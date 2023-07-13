@@ -14,10 +14,10 @@ export const getAllFlights = async () => {
 
 
 // Getting flight from api by passing id.
-export const getFlightByID = async (id) => {
+export const getFlightByID = (id) => {
   // using http for permissions check
-  const response = await http.get(`http://127.0.0.1:8000/api/flights/${id}`);
-  console.log("api response for getFlightByID", response);
+  const response = http.get(`http://127.0.0.1:8000/api/flights/${id}`);
+  console.log("api response for getFlightByID", response, id);
   return response;
 };
 
