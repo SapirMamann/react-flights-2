@@ -1,8 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useStoreActions, useStoreState } from 'easy-peasy';
+import Card from 'react-bootstrap/Card';
+import CardGroup from 'react-bootstrap/CardGroup';
+import { Row, Col } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Overlay from 'react-bootstrap/Overlay';
+import {useFloating} from '@floating-ui/react';
 
 import http from '../../api/http'
 import FlightSearch from '../flight/FlightSearch';
@@ -10,19 +16,26 @@ import { CheckGroup } from '../../api/auth/CheckGroup';
 import EditCountry from './EditCountry';
 import GetFlightsByCountryId from '../flight/GetFlightsByCountry';
 import { getAllCountries } from '../../api/country/CountryApi';
+import AddCountry from './AddCountry';
 
 
-function GetCountries() {
+export default function GetCountries() {
   const [countries, setCountries] = useState([]);
   const [countryID, setCountryID] = useState('');
+
+  const navigate = useNavigate();
+  const {refs, floatingStyles} = useFloating();
+
+  const target = useRef(null);
   const [showOverlay, setShowOverlay] = useState(false);
+
   // const setIsAdmin = useStoreActions(actions => actions.user.setIsAdmin);
   // const isAdmin = useStoreState((state) => state.user.isAdmin);
 
   const toggleOverlay = (id) => {
     setShowOverlay(!showOverlay);
-    setCountryID(id)
-    console.log("here",id)   
+    setCountryID(id);
+    console.log("here",id);  
   };
 
   const getCountriesList = () => {
@@ -31,60 +44,99 @@ function GetCountries() {
         setCountries(response.data);
         console.log("getCountriesList", response.data);
       })
-      .catch(error => console.debug("getCountriesList fetching error", error))
+      .catch(error => console.debug("getCountriesList fetching error", error));
   };
 
   useEffect(() => {
-    getCountriesList()
+    getCountriesList();
   }, []);
 
 
   return (
     <>      
-      {/* flight search box */} 
-      <FlightSearch/>
-      
-      {/* Country boxes */}
       <h1>Explore destinations</h1>
+      {/* If admin -> display button of add country */}
+      <Link to='/countries/add'>
+        add country
+      </Link>
       {/* Each box has a country name, an edit button, and a button */}
-      <div>
-        {countries.map(country =>
-          <div key={country.id}>
+      <CardGroup>
+        <Row>
+          {countries.map(country =>
+            <Col key={country.id} xs={12} sm={6} md={4}>
+              <Card>
+                {/* <Card.Img variant="top" src="holder.js/100px160" /> */}
+                <Card.Body>
+                  <Card.Title name="country name">
+                    {/* make first letter capitalized */}
+                    {country.name.charAt(0).toUpperCase() + country.name.slice(1)}
+                  </Card.Title>
+                  <Card.Text>
+                    {/* Button to see flights to this country */}
+                    <Link to={{pathname: `/flights/${country.name}`}}>
+                      Flights
+                    </Link>
+                    {/* Edit button will only be displayed when an admin is logged in */}
+                    {/* overlay. passing the country id to the handler of this click */}
+                    {/* {isAdmin &&  */}
+                    {/* <button onClick={() => toggleOverlay(country.id)}>  */}
+                    <Button ref={target} onClick={() => toggleOverlay(country.id)}> 
+                      <FontAwesomeIcon icon={faPen} />                 
+                    </Button>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          )}
+        </Row>
+      </CardGroup>
+      <br/>
+          {/* Overlay details */}
+          {/* {showOverlay && (
+            <div className="overlay">
+              <div className="overlay-content">
+                <EditCountry id={countryID} />
+                <button className="delete-button">Delete</button>
+                <br/>
+                <button onClick={toggleOverlay}  className='x_button'>
+                  <FontAwesomeIcon icon={faXmark} />
+                </button>
+              </div>
+            </div>
+          )} */}
 
-            {/* make first letter capitalized */}
-            <p>{country.name.charAt(0).toUpperCase() + country.name.slice(1)}</p>
-            
-            {/* Button to see flights to this country */}
-            <Link to={{
-              pathname: `/flights/${country.name}`
-            }}>
-              Flights
-            </Link>
-            
-            {/* Edit button will only be displayed when an admin is logged in */}
-            {/* overlay. passing the country id to the handler of this click */}
-            {/* {isAdmin &&  */}
-              <button onClick={() => toggleOverlay(country.id)} className='pen_button'> 
-                <FontAwesomeIcon icon={faPen} />                 
-              </button>
-            {/* } */}
-          </div>
-        )}
-      </div>
+        
 
-      {/* Overlay details */}
-      {showOverlay && (
-        <div className="overlay">
-          <div className="overlay-content">
+
+      <Overlay target={target.current} show={showOverlay} placement="right">
+        {({
+          placement: _placement,
+          arrowProps: _arrowProps,
+          show: _show,
+          popper: _popper,
+          hasDoneInitialMeasure: _hasDoneInitialMeasure,
+          ...props
+        }) => (
+          <div
+            {...props}
+            style={{
+              position: 'absolute',
+              backgroundColor: 'rgba(255, 100, 100, 0.85)',
+              padding: '2px 10px',
+              color: 'white',
+              borderRadius: 3,
+              ...props.style,
+            }}
+          >
+            Delete
             <EditCountry id={countryID} />
-            <button className="delete-button">Delete</button>
-            <br/>
+            
             <button onClick={toggleOverlay}  className='x_button'>
               <FontAwesomeIcon icon={faXmark} />
             </button>
           </div>
-        </div>
-      )}
+        )}
+      </Overlay>
 
       {/* All flights */}
       {/* <GetFlights/> */}
@@ -124,10 +176,7 @@ function GetCountries() {
                   )}
               </ul>
           </div> */}
-      <br/><br/>
       {/* </CheckGroup>; */}
     </>
-  )
-}
-
-export default GetCountries;
+  );
+};

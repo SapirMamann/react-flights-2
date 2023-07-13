@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 // import Button from 'react-bootstrap/Button';
 
 import Logout from "../auth/Logout";
+import { useEffect } from "react";
 
 
 const ProfileIcon = () => {
@@ -17,6 +18,10 @@ const ProfileIcon = () => {
   const closeMenu = () => {
     setMenuOpen(false);
   };
+
+  useEffect(() => {
+
+  }, [])
 
   return (
     <div className="dropdown">

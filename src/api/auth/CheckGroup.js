@@ -14,7 +14,7 @@ function CheckGroup({children, groups}){
             }}
         )
             .then(response => setVisible(response.data.result))
-            .catch(error => console.log(error));
+            .catch(error => console.log("CheckGroup fetching error", error));
     }, []);
 
     return(

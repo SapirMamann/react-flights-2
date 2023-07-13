@@ -28,6 +28,11 @@ export default function MyNavbar() {
     localStorage.setItem('darkMode', darkMode);
   };
 
+  useEffect(() => {
+
+  }, [username])
+
+  
   // !!! It doesnt effevtively work: !!! i separate it to another useeffect
   useEffect(() => {
     // Retrieve the dark mode state from local storage

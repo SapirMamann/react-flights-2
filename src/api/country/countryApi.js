@@ -5,6 +5,15 @@ import http from "../http";
 
 // is there a point to use async and wait here?
 
+export function addNewCountry(data) {
+  // using http for permissions check
+  const response = http.post('http://127.0.0.1:8000/api/countries/', data);
+  console.log("api response for addCountry", response, data);
+  return response;
+};
+
+
+
 // Getting all countries from api
 export function getAllCountries() {
   // using http for permissions check

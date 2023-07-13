@@ -25,13 +25,6 @@ export default function GetFlightsByCountryId(props) {
     getFlightsData();
   }, []);
 
-  // const handleClick = (flightId) => {
-  //   if (flightId === clickedFlightId) {
-  //     setClickedFlightId(null);
-  //   } else {
-  //     setClickedFlightId(flightId);
-  //   };
-  // };
 
   return (
     <div>
@@ -41,19 +34,10 @@ export default function GetFlightsByCountryId(props) {
         // Display the filtered data 
         flights.map(flight => (      
           <div key={flight.id}>
-            <FlightDetail
-              id={flight.id}
-              // country={country}
-              // airline_company={flight.airline_company}
-              // remaining_tickets={flight.remaining_tickets}
-            />
-            {/* {flight.id === clickedFlightId && (
-              <Flight
-              />
-            )} */}
+            <FlightDetail id={flight.id}/>
           </div>
         ))
-        ) : (
+      ) : (
         // If there are no flights ->
         <p>No flights available..</p>
       )}
