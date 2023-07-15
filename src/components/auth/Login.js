@@ -5,6 +5,8 @@ import { object, string } from "yup";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Button from 'react-bootstrap/Button';
+import {default as bsForm} from 'react-bootstrap/Form';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 import http from '../../api/http';
 import Input from '../common/Input';
@@ -75,20 +77,31 @@ export default function Login() {
         {() => {
           return (
             <Form>
-            <div className="form-group">
-                {/* <Form.Control type="text" name="username" placeholder="Username" />
-                <Form.Control type="password" name="password" placeholder="Password" />
-                <br/>
-                <Button variant="primary" type="submit">Login</Button> */}
+            <div>
               </div>
-                <Input type="text" name="username" placeholder="p"/>
-                <Input type="password" name="password"/>
-                <button type="submit">Login</button>    
+              <div>                
+                <FloatingLabel controlId="floatingInput" label="Username">
+                  <bsForm.Control name="username" type="text" placeholder="Username" />
+                </FloatingLabel>
+              </div>
+              <div>
+                <FloatingLabel controlId="floatingPassword" label="Password">
+                  <bsForm.Control name="password" type="password" placeholder="Password" />
+                </FloatingLabel>
+              </div>
+              <br/>
+              <div name="submit button" className="d-grid gap-2">
+                <Button type="submit" variant="secondary" size="lg">
+                  Login
+                </Button>
+              </div>
+
               <hr/>
               <div>
                 <p>Don't have an account?</p>
                 <p><Link to="/register">Register</Link></p>
               </div>
+              
             </Form>
           );
         }}
