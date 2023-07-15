@@ -78,31 +78,11 @@ export default function Login() {
         {() => {
           return (
             <Form>
-              <div>                
-                <FloatingLabel controlId="floatingInput" label="Username">
-                  <Field
-                    name="username"
-                    type="text"
-                    placeholder="Username"
-                    as={bsForm.Control}
-                  />
-                </FloatingLabel>
-              </div>
-              <div>
-                <FloatingLabel controlId="floatingPassword" label="Password">
-                  <Field
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    as={bsForm.Control}
-                  />
-                </FloatingLabel>
-              </div>
-              <br/>
-              <div name="submit button" className="d-grid gap-2">
-                <Button type="submit" variant="secondary" size="lg">
-                  Login
-                </Button>
+            <div className="form-group">
+                {/* <Form.Control type="text" name="username" placeholder="Username" />
+                <Form.Control type="password" name="password" placeholder="Password" />
+                <br/>
+                <Button variant="primary" type="submit">Login</Button> */}
               </div>
 
               <hr/>
