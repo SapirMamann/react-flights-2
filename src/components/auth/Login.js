@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate, Link, useNavigate } from "react-router-dom";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import { object, string } from "yup";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Button from 'react-bootstrap/Button';
+import {default as bsForm} from 'react-bootstrap/Form';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 import http from '../../api/http';
 import Input from '../common/Input';
 import {isAuthenticated} from '../../api/http.js';
+
 
 export default function Login() {
   const navigate = useNavigate();
@@ -75,20 +78,39 @@ export default function Login() {
         {() => {
           return (
             <Form>
-            <div className="form-group">
-                {/* <Form.Control type="text" name="username" placeholder="Username" />
-                <Form.Control type="password" name="password" placeholder="Password" />
-                <br/>
-                <Button variant="primary" type="submit">Login</Button> */}
+              <div>                
+                <FloatingLabel controlId="floatingInput" label="Username">
+                  <Field
+                    name="username"
+                    type="text"
+                    placeholder="Username"
+                    as={bsForm.Control}
+                  />
+                </FloatingLabel>
               </div>
-                <Input type="text" name="username" placeholder="p"/>
-                <Input type="password" name="password"/>
-                <button type="submit">Login</button>    
+              <div>
+                <FloatingLabel controlId="floatingPassword" label="Password">
+                  <Field
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    as={bsForm.Control}
+                  />
+                </FloatingLabel>
+              </div>
+              <br/>
+              <div name="submit button" className="d-grid gap-2">
+                <Button type="submit" variant="secondary" size="lg">
+                  Login
+                </Button>
+              </div>
+
               <hr/>
               <div>
                 <p>Don't have an account?</p>
                 <p><Link to="/register">Register</Link></p>
               </div>
+              
             </Form>
           );
         }}
@@ -96,5 +118,4 @@ export default function Login() {
     </>
   )
 }
-
 
