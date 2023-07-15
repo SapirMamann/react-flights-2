@@ -5,9 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
-import Login from './Login';
-import { isAuthenticated } from '../../api/http';
-
 
 // change name because its just a login pop up
 export default function LoginOptions() {

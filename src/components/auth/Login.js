@@ -8,9 +8,8 @@ import Button from 'react-bootstrap/Button';
 import {default as bsForm} from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
-import http from '../../api/http';
-import Input from '../common/Input';
 import {isAuthenticated} from '../../api/http.js';
+import {ApiLogin} from '../../api/auth/AuthApi';
 
 
 export default function Login() {
@@ -26,11 +25,8 @@ export default function Login() {
 
   const submitHandler = (event) => {
     console.log('login submission', event);
-
     // Send a POST request to the API endpoint with the form data (event)
-    http
-        .post('http://127.0.0.1:8000/api/auth/login/', event)
-        // ApiLogin(event)
+    ApiLogin(event)
         .then((response) => {
           console.log('Response of login fetching', response)
           // Save the refresh & access token to local storage
