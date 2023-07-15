@@ -34,7 +34,7 @@ export default function DecodeToken() {
           setUser(response.data);
         })
         .catch(error => console.debug("Error fetching user in decode token", error));
-    }
+    };
   }, [userID]);
 
   //api call to check if user is customer

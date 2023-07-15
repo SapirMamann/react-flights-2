@@ -7,17 +7,17 @@ import http from "../http";
 export const getAllFlights = async () => {
   // using http for permissions check
   const response = await http.get('http://127.0.0.1:8000/api/flights/');
-  console.log("api response for getAllFlights", response);
+  console.log("Api response for getAllFlights", response);
   return response.data;
 };
 
 
 
 // Getting flight from api by passing id.
-export const getFlightByID = (id) => {
+export const getFlightByID = (flightID) => {
   // using http for permissions check
-  const response = http.get(`http://127.0.0.1:8000/api/flights/${id}`);
-  console.log("api response for getFlightByID", response, id);
+  const response = http.get(`http://127.0.0.1:8000/api/flights/${flightID}`);
+  console.log("Api response for getFlightByID", response, flightID);
   return response;
 };
 
@@ -28,7 +28,7 @@ export const getFlightByID = (id) => {
 export const getFlightsByParameters = async (originCountry) => {
   // using http for permissions check
   const response = await http.get(`http://127.0.0.1:8000/api/searchflights/?origin_country=2`);  //add this function in django
-  console.log("api response for getFlightsByParameters", response);
+  console.log("Api response for getFlightsByParameters", response);
   return response;
 };
 
@@ -39,6 +39,6 @@ export const getFlightsByCountry = (country) => {
   // using http for permissions check
   // This view is set to "allow any permission"
   const response = http.get(`http://127.0.0.1:8000/api/get_flights/${country}`);
-  console.log("api response for getFlightsByCountry", response);
+  console.log("Api response for getFlightsByCountry", response);
   return response;
 };

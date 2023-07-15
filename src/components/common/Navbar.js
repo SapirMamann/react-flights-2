@@ -6,7 +6,7 @@ import { Container, Nav, Navbar, Button, Form, NavDropdown, Offcanvas } from 're
 
 import ProfileIcon from './ProfileIcon';
 import LoginOptions from '../auth/LoginOptions';
-import GetCurrentUserData from '../../api/user/UserApi';
+import getCurrentUserData from '../../api/user/UserApi';
 import Sidebar from './Sidebar';
 import { isAuthenticated } from '../../api/http';
 
