@@ -58,3 +58,13 @@
 
 for today 12.7:
 page for all flights in a desired country and each fligth detail page
+
+
+flight detail
+book flight
+
+admin state
+
+
+decode token needs to be fixed. because the view of get user by id has permission.
+tried printing permission of request.user in this view but it doesnt seems to get there... weird..
