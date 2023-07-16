@@ -68,3 +68,7 @@ admin state
 
 decode token needs to be fixed. because the view of get user by id has permission.
 tried printing permission of request.user in this view but it doesnt seems to get there... weird..
+
+
+
+LIKE BOOK FLIGHT WHY IT RENDERS TWICE?

@@ -30,7 +30,7 @@ export default function GetFlightsByCountryId(props) {
     <div>
       <h1>Book a flight to {country.charAt(0).toUpperCase() + country.slice(1)}</h1>
       
-      {flights ? (
+      {flights.length !== 0 ? (
         // Display the filtered data 
         flights.map(flight => (      
           <div key={flight.id}>

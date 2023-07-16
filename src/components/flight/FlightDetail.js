@@ -19,7 +19,7 @@ export default function FlightDetail(props) {
   const getFlight = () => {
     getFlightByID(props.id)
       .then(response => {
-        // console.log("getFlight in FlightDetail", response.data);
+        console.log("getFlight in FlightDetail", response.data);
         setFlight(response.data);
       })
       .catch(error => {
