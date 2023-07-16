@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
 
-import http from '../http';
+import { getUserByID } from '../../api/user/UserApi';
 
 
 export default function DecodeToken() {
@@ -9,14 +9,19 @@ export default function DecodeToken() {
   const [userID, setUserID] = useState(null);
   
   const getUserInfo = () => {
-    //Get the access token from local storage
+    // Get the access token from local storage
     const token = localStorage.getItem('access');
-    // console.log(token)
-    //Decode the access token(using jwt decode library)
-    const decodedToken = jwt_decode(token);
-    //Getting the user id from the decoded token
-    setUserID(decodedToken.user_id);
-    // console.log("userid", userID)
+    if (token) {
+      try {
+        // Decode the access token (using jwt decode library)
+        const decodedToken = jwt_decode(token);
+        console.log("decodedToken", decodedToken)
+        // Getting the user id from the decoded token
+        setUserID(decodedToken.user_id);
+      } catch (error) {
+        console.debug('Error decoding token:', error);
+      }
+    }
   };
 
   useEffect(() => {
@@ -27,8 +32,7 @@ export default function DecodeToken() {
     console.log('user_id', userID); // prints the user_id of the token
     //Fetching user data with api call passing the user_id      
     if (userID) {
-      http
-        .get(`http://127.0.0.1:8000/api/users/${userID}`)
+      getUserByID(userID)
         .then((response) => {
           console.log('DecodeToken fetching', response.data);
           setUser(response.data);
@@ -39,14 +43,11 @@ export default function DecodeToken() {
 
   //api call to check if user is customer
 
-  return user ? (
-    <div>
-      {userID}
-      {user.last_login}
-    </div>
-  ) : (
-    <p>No token to decode</p>
-  );
+  // Check if the user is an admin
+  const isAdmin = user && user.is_staff;
+
+
+  return isAdmin || "user not found";
 };
 
 

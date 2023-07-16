@@ -21,7 +21,8 @@ const ProfileIcon = () => {
 
   useEffect(() => {
 
-  }, [])
+  }, []);
+  
 
   return (
     <div className="dropdown">

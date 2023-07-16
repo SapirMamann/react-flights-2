@@ -13,10 +13,10 @@ import Register from './components/auth/Register';
 import { store } from './state';
 import AboutPage from './pages/About';
 import GetFlightsPage from './components/flight/GetFlights';
-import DecodeToken from './api/auth/DecodeToken';
 import AddFlight from './components/flight/AddFlight';
 import AddCountry from './components/country/AddCountry';
 import BookFlight from './components/flight/BookFlight';
+import Bla from './components/common/bla';
 
 
 export default function App() {
@@ -29,7 +29,8 @@ export default function App() {
           <Route path="/register" element={<Register/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/logout" element={<Logout/>}/>
-          <Route path="/de" element={<DecodeToken/>}/>
+          {/* <Route path="/de" element={<DecodeToken/>}/> */}
+          <Route path="/bla" element={<Bla/>}/>
 
          <Route path="/countries">
            <Route path="add" element={<AddCountry/>}/>
