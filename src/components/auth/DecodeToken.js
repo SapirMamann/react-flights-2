@@ -26,7 +26,7 @@ export default function DecodeToken() {
 
   useEffect(() => {
     getUserInfo();
-  }, []);
+  }, []); 
   
   useEffect(() => {
     console.log('user_id', userID); // prints the user_id of the token
