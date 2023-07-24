@@ -72,3 +72,7 @@ tried printing permission of request.user in this view but it doesnt seems to ge
 
 
 LIKE BOOK FLIGHT WHY IT RENDERS TWICE?
+
+
+Note!!
+decode token return changed

@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import makeAnimated from 'react-select/animated';
+import { object, ref, string, date, shape } from "yup";
 
 import { getAllCountries } from '../../api/country/CountryApi';
 import { getFlightsByParameters } from '../../api/flight/FlightApi';
@@ -26,7 +27,7 @@ export default function FlightSearch() {
 
   const animatedComponents = makeAnimated();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const submitHandler = (values) => {
     console.log('Origin Country:', values.origin_country);
@@ -36,6 +37,23 @@ export default function FlightSearch() {
       .then((response) => {
         console.log("Response of flight search", response);
       })
+      .catch(error => {
+        console.log('creation error:', error.message)
+        // console.warn(Object.entries(error.response))
+        console.error(Object.entries(error.response.data))
+        for (const [key, value] of Object.entries(error.response.data)) {
+          toast.error(`Searching flights failed. ${value[0]}`, {
+          position: "top-left",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        };
+      });
   };
   
   useEffect(() => {
@@ -51,6 +69,16 @@ export default function FlightSearch() {
     });
   }, []);
 
+  const searchFlightValidation = object().shape({
+    origin_country: string()
+                    .required("Origin country is required"),
+                    //  .min(3, "Must be at least 3 characters"),
+    destination_country: string()
+                        .required("Destination country is required"),
+    departure_time: string()
+                    .required("Departure time is required"),
+  })
+      
   // Making the origin countries an array (where each object has a value and label) so the Select can display countries:
   const options = originCountries.map(country => ({
     value: country.id,
@@ -83,6 +111,7 @@ export default function FlightSearch() {
     option: (provided, state) => ({
       ...provided,
       backgroundColor: state.isFocused ? 'lightblue' : 'white',
+      color: state.isFocused ? 'white' : 'black',
     }),
   };
 
@@ -97,7 +126,7 @@ export default function FlightSearch() {
           departure_time: "",
         }}
         onSubmit={(values) => submitHandler(values)}
-        // validationSchema={searchFlightValidation}
+        validationSchema={searchFlightValidation}
         >
         {() => {
           return (

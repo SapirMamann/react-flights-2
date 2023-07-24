@@ -76,7 +76,7 @@ export default function Register() {
           email: "add@ddd.com",
           password: "admin1234",
           password2: "admin1234",
-          user_role: "",  //probleeeeeeeeeeeeeeeeeeeeeeem
+          user_role: "2",  //probleeeeeeeeeeeeeeeeeeeeeeem
         }}
         onSubmit={(e) => submitHandler(e)}
         validationSchema={RegisterValidation}

@@ -47,7 +47,8 @@ export default function DecodeToken() {
   const isAdmin = user && user.is_staff;
 
 
-  return isAdmin || "user not found";
+  // return isAdmin || "user not found";
+  return user
 };
 
 

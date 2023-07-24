@@ -1,4 +1,3 @@
-import React from 'react';
 import { action, createStore } from 'easy-peasy';
 
 
@@ -13,7 +12,7 @@ export const store = createStore({
       state.username = payload;
     }),
 
-  isAdmin: false,
+    isAdmin: false,
     setIsAdmin: action((state, payload) => {
       state.isAdmin = payload;
     })

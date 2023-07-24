@@ -13,10 +13,10 @@ import { isAuthenticated } from '../../api/http';
 
 export default function MyNavbar() {
   const [darkMode, setDarkMode] = useState(true);
-  const setUsername = useStoreActions((actions) => actions.user.setUsername);
   const username = useStoreState((state) => state.user.username);
-  const setIsAdmin = useStoreActions(actions => actions.user.setIsAdmin);
+  const setUsername = useStoreActions((actions) => actions.user.setUsername);
   const isAdmin = useStoreState((state) => state.user.isAdmin);
+  const setIsAdmin = useStoreActions(actions => actions.user.setIsAdmin);
   const isLoggedIn = isAuthenticated()
 
   const toggleDarkMode = (event) => {
@@ -53,8 +53,7 @@ export default function MyNavbar() {
   // useEffect(() => {
   //   // Fetch the username from the API
   //   try{
-
-  //     GetCurrentUserData()
+  //     getCurrentUserData()
   //     .then((response) => {
   //       console.log("username", response.username);
   //       setUsername(response.username);
@@ -98,6 +97,7 @@ export default function MyNavbar() {
 
             {/* Site name */}
             <h1 className="ms-1">s.Flights</h1>
+            <p>{ username }</p>
           </Navbar.Brand>
           {/* End of icon+ name */}
           

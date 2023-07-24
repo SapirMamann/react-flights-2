@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik, Form, setFieldError, Field } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import { object, ref, string, date, shape } from "yup";
@@ -7,30 +7,49 @@ import Button from 'react-bootstrap/Button';
 import {default as bsForm} from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
-
 import { CheckGroup } from '../../api/auth/CheckGroup';
 import { addNewCountry } from '../../api/country/CountryApi'
+import { addNewCustomer } from '../../api/customer/CustomerApi';
+import DecodeToken from '../auth/DecodeToken';
 
 
 export default function CreateCustomer() {
+  const user = DecodeToken();
+
   const createCustomerValidation = object().shape({
-    name: string()
-                .required("Name is required")
+    first_name: string()
+                .required("first name is required")
+                .min(2, "Must be at least 2 characters"),
+    last_name: string()
+                .required("Last name is required")
+                .min(2, "Must be at least 2 characters"),
+    address: string()
+                .required("Address is required")
+                .min(2, "Must be at least 2 characters"),
+    phone: string()
+                .required("Phone is required")
+                .min(2, "Must be at least 2 characters"),
+    credit_card: string()
+                .required("Credit card is required")
                 .min(2, "Must be at least 2 characters"),
     });
         
   const submitHandler = (event) => {
+    console.log("CreateCustomer", event)
+    // eventWithUser = [...event, { user: }]
+    
+    console.log("CreateCustomer", event)
     // Send a POST request to the API endpoint with the form data
-    addNewCountry(event)
+    addNewCustomer(event)
       .then(response => {
-        console.log("Add country fetching", response.data)
-        toast.success('Country added successfully!');
+        console.log("Add customer fetching", response.data)
+        toast.success('Customer added successfully!');
       })
       .catch(error => {
         console.log('creation error:', error.message)
         // console.warn(Object.entries(error.response))
-        console.error(Object.entries(error.response.data))
-        for (const [key, value] of Object.entries(error.response.data)) {
+        console.error(Object.entries(error.response))
+        for (const [key, value] of Object.entries(error.response)) {
           toast.error(`Saving failed. ${value[0]}`, {
           position: "top-left",
           autoClose: 5000,
@@ -45,6 +64,12 @@ export default function CreateCustomer() {
       });
   };
 
+  useEffect(() => {
+    console.log(user)
+  }, []);
+
+  //add if statement to check if user is logged in(has an account)
+  //if he doesnt display user creation form as well as the customer creation form.
 
   return (
     <div>
@@ -65,9 +90,14 @@ export default function CreateCustomer() {
           {() => {
             return (
               <Form>
-                <div>        
-                  <p name="First name">
-                    <FloatingLabel controlId="floatingPassword" label="First name">
+                <div>   
+                  <Field
+                    type="hidden"
+                    value=""
+                    name="user"
+                  />     
+                  <div name="First name">
+                    <FloatingLabel controlId="first_name" label="First name">
                     <Field
                       name="first_name"
                       type="text"
@@ -75,9 +105,9 @@ export default function CreateCustomer() {
                       as={bsForm.Control}
                     />
                     </FloatingLabel>
-                  </p>
-                  <p name="Last name">
-                    <FloatingLabel controlId="floatingPassword" label="Last name">
+                  </div>
+                  <div name="Last name">
+                    <FloatingLabel controlId="last_name" label="Last name">
                     <Field
                       name="last_name"
                       type="text"
@@ -85,9 +115,9 @@ export default function CreateCustomer() {
                       as={bsForm.Control}
                     />
                     </FloatingLabel>
-                  </p>
-                  <p name="Address">
-                    <FloatingLabel controlId="floatingPassword" label="Address">
+                  </div>
+                  <div name="Address">
+                    <FloatingLabel controlId="address" label="Address">
                     <Field
                       name="address"
                       type="text"
@@ -95,9 +125,9 @@ export default function CreateCustomer() {
                       as={bsForm.Control}
                     />
                     </FloatingLabel>
-                  </p>
-                  <p name="Phone">
-                    <FloatingLabel controlId="floatingPassword" label="Phone">
+                  </div>
+                  <div name="Phone">
+                    <FloatingLabel controlId="phone" label="Phone">
                     <Field
                       name="phone"
                       type="text"
@@ -105,9 +135,9 @@ export default function CreateCustomer() {
                       as={bsForm.Control}
                     />
                     </FloatingLabel>
-                  </p>
-                  <p name="Credit card">
-                    <FloatingLabel controlId="floatingPassword" label="Credit card">
+                  </div>
+                  <div name="Credit card">
+                    <FloatingLabel controlId="credit_card" label="Credit card">
                     <Field
                       name="credit_card"
                       type="text"
@@ -115,13 +145,13 @@ export default function CreateCustomer() {
                       as={bsForm.Control}
                     />
                     </FloatingLabel>
-                  </p>
+                  </div>
                   
-                  <p name="submit button" className="d-grid gap-2">
+                  <div name="submit button" className="d-grid gap-2">
                     <Button type="submit" variant="secondary" size="lg">
                       Submit
                     </Button>
-                  </p>
+                  </div>
                 </div>
               </Form>
             );
