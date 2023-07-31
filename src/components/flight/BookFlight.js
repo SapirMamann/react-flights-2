@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
+import CreateCustomer from '../customer/CreateCustomer';
 import { getFlightByID } from '../../api/flight/FlightApi';
-import AddCustomer from '../customer/CreateCustomer';
+import { addNewTicket } from '../../api/ticket/TicketApi';
+import { useStoreState } from 'easy-peasy';
 
 
 export default function BookFlight() {
-  const {flight_id} = useParams();
+  const { flight_id } = useParams();
+  // const user = useStoreState(state => state.user);
+  const user = 'y'
   const [selectedFlight, setSelectedFlight] = useState([]);
+  const data = { flight_no: flight_id, user: user }
 
   const getFlightDetails = () => {
     getFlightByID(flight_id)
@@ -22,8 +27,14 @@ export default function BookFlight() {
     getFlightDetails();
   }, []);
 
+  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>30.07
   const bookingSubmissionHandler = () => {
-    console.log('booked')
+    try {
+      addNewTicket(data);
+      console.log('booked');
+    }catch (e){
+      console.error('Booking failed', e)
+    }
   };
 
 
@@ -47,9 +58,9 @@ export default function BookFlight() {
 
 
             {/* if anonymous -> user needs to create user customer
-            if logged (is customer/ not customer, he has to fill information)
+            if logged (is customer/ not customer, he has to fill in formation)
               -> display customer fields */}
-            <AddCustomer/>
+            <CreateCustomer/>
           </div>
         </div>
       ) : (

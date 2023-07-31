@@ -8,7 +8,7 @@ import http from "../http";
 export function addNewCountry(data) {
   // using http for permissions check
   const response = http.post('http://127.0.0.1:8000/api/countries/', data);
-  console.log("api response for addCountry", response, data);
+  console.log("api response for addNewCountry", response, data);
   return response;
 };
 

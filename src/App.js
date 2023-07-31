@@ -18,6 +18,7 @@ import AddCountry from './components/country/AddCountry';
 import BookFlight from './components/flight/BookFlight';
 import Bla from './components/common/bla';
 import CreateCustomer from './components/customer/CreateCustomer';
+import Trying from './components/common/trying';
 
 
 export default function App() {
@@ -33,6 +34,7 @@ export default function App() {
           {/* <Route path="/de" element={<DecodeToken/>}/> */}
           <Route path="/bla" element={<Bla />} />
           <Route path="/cust" element={<CreateCustomer />} />
+          <Route path="/try" element={<Trying />} />
 
           <Route path="/countries">
             <Route path="add" element={<AddCountry />} />
