@@ -76,3 +76,14 @@ LIKE BOOK FLIGHT WHY IT RENDERS TWICE?
 
 Note!!
 decode token return changed
+
+
+
+get username in backend has a problem:
+  i think its because im using a customized user model. (is inheriting
+  from abstarctuser but it wont get the functioallity for example
+  is authenticated
+  im getting anonymous even though a user is logged in react.)
+
+
+  do i have to use await async in api requests

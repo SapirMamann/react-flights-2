@@ -19,7 +19,9 @@ import BookFlight from './components/flight/BookFlight';
 import Bla from './components/common/bla';
 import CreateCustomer from './components/customer/CreateCustomer';
 import Trying from './components/common/trying';
-
+import DecodeToken from './components/auth/DecodeToken'
+import GetUserTickets from './components/ticket/GetUserTickets';
+import EditFlight from './components/flight/EditFlight';
 
 export default function App() {
   return (
@@ -31,7 +33,7 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
-          {/* <Route path="/de" element={<DecodeToken/>}/> */}
+          <Route path="/de" element={<DecodeToken/>}/>
           <Route path="/bla" element={<Bla />} />
           <Route path="/cust" element={<CreateCustomer />} />
           <Route path="/try" element={<Trying />} />
@@ -45,10 +47,13 @@ export default function App() {
 
           <Route path="/flights">
             <Route index element={<GetFlightsPage />} />
+            <Route path="add" element={<AddFlight />} />
             <Route path=":country" element={<GetFlightsByCountryId />} />
             <Route path=":flight_id/book" element={<BookFlight />} />
-            <Route path="add" element={<AddFlight />} />
+            <Route path=":flight_id/edit" element={<EditFlight />} />
           </Route>
+
+          <Route path="/tickets" element={GetUserTickets} />
 
           <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={< NotFound />} />

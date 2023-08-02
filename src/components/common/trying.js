@@ -8,7 +8,11 @@ const Trying = () => {
 
     useEffect(() => {
         console.log("useEffect in trying");
-        fetchUsername();
+        try {
+            fetchUsername();
+        } catch (e) {
+            console.error('fetching username failed', e)            
+        }
     }, []);
 
 

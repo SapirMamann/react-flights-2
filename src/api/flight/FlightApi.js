@@ -42,3 +42,14 @@ export const getFlightsByCountry = (country) => {
   console.log("Api response for getFlightsByCountry", response);
   return response;
 };
+
+
+
+// For editing flights based on their ID.
+export const editFlightByID = (flight_id) => {
+  // using http for permissions check
+  // This view is set to "allow any permission"
+  const response = http.get(`http://127.0.0.1:8000/api/get_flights/${country}`);
+  console.log("Api response for getFlightsByCountry", response);
+  return response;
+};

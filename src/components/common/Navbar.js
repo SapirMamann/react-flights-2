@@ -50,22 +50,24 @@ export default function MyNavbar() {
   }, [darkMode]);
 
 
-  // useEffect(() => {
-  //   // Fetch the username from the API
-  //   try{
-  //     getCurrentUserData()
-  //     .then((response) => {
-  //       console.log("username", response.username);
-  //       setUsername(response.username);
-  //       setIsAdmin(response.isAdmin);
-  //     })
-  //     .catch((error) => {
-  //       console.error("error fetching current user data", error);
-  //     })
-  //   } catch (error) {
-  //     console.debug("Error fetching in MyNavbar", error);
-  //   };
-  // }, []);
+  useEffect(() => {
+    // If access token exist- Fetch the username from the API
+    if (localStorage.getItem('access')) {
+      try {
+        getCurrentUserData()
+        .then((response) => {
+          console.log("username", response.username);
+          setUsername(response.username);
+          // setIsAdmin(response.isAdmin);
+        })
+        .catch((error) => {
+          console.error("error fetching current user data", error);
+        })
+      } catch (error) {
+        console.debug("Error fetching in MyNavbar", error);
+      };
+    }
+  }, []);
 
 
   return (
@@ -97,7 +99,6 @@ export default function MyNavbar() {
 
             {/* Site name */}
             <h1 className="ms-1">s.Flights</h1>
-            <p>{ username }</p>
           </Navbar.Brand>
           {/* End of icon+ name */}
           
