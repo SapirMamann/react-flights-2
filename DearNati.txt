@@ -87,3 +87,6 @@ get username in backend has a problem:
 
 
   do i have to use await async in api requests
+
+
+edit flight sends only the initial values and not the selected ones
