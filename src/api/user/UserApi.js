@@ -14,7 +14,7 @@ export default async function getCurrentUserData() {
 
 // Get user information by ID.
 export function getUserByID(userID) {
-  const response = http.get(`http://127.0.0.1:8000/api/users/${userID}`)
+  const response = http.get(`http://127.0.0.1:8000/api/users/${userID}/`)
   console.log("Api response for getUserByID", response)
   return response;
 };
