@@ -90,3 +90,7 @@ get username in backend has a problem:
 
 
 edit flight sends only the initial values and not the selected ones
+
+
+add country needs to change and add state of admin if not admin display :
+not have permission

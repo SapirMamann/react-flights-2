@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik, Form, setFieldError } from "formik";
 import { ToastContainer, toast } from 'react-toastify';
 import { object, ref, string, date, shape } from "yup";
@@ -42,6 +42,10 @@ export default function AddCountry() {
         };
       });
   };
+
+  useEffect(() => {
+    // check if admin state
+  }, [])
 
   
   return (

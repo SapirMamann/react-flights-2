@@ -13,10 +13,10 @@ import { isAuthenticated } from '../../api/http';
 
 export default function MyNavbar() {
   const [darkMode, setDarkMode] = useState(true);
-  const username = useStoreState((state) => state.user.username);
-  const setUsername = useStoreActions((actions) => actions.user.setUsername);
-  const isAdmin = useStoreState((state) => state.user.isAdmin);
-  const setIsAdmin = useStoreActions(actions => actions.user.setIsAdmin);
+  // const username = useStoreState((state) => state.user.username);
+  // const setUsername = useStoreActions((actions) => actions.user.setUsername);
+  // const isAdmin = useStoreState((state) => state.user.isAdmin);
+  // const setIsAdmin = useStoreActions(actions => actions.user.setIsAdmin);
   const isLoggedIn = isAuthenticated()
 
   const toggleDarkMode = (event) => {
@@ -28,9 +28,9 @@ export default function MyNavbar() {
     localStorage.setItem('darkMode', darkMode);
   };
 
-  useEffect(() => {
+  // useEffect(() => {
 
-  }, [username])
+  // }, [username])
 
   
   // !!! It doesnt effevtively work: !!! i separate it to another useeffect
@@ -42,7 +42,7 @@ export default function MyNavbar() {
     } else {
       handleDarkModeDoesNotExist();
     }
-    console.log("navbar- log the username", {username})
+    // console.log("navbar- log the username", {username})
   }, []);
   
   useEffect(() => {
@@ -114,7 +114,9 @@ export default function MyNavbar() {
           {/* End of login and Profile section */}
           
           {/* Sidebar container */}
-          <Sidebar username={username}/>
+
+          {/* //>>>>>>>>>>>>>>>>>>>> changed */}
+          <Sidebar username={'username'}/>
         </Container>
       </Navbar>
     </>

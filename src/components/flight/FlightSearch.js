@@ -69,6 +69,7 @@ export default function FlightSearch() {
     });
   }, []);
 
+
   const searchFlightValidation = object().shape({
     origin_country: string()
                     .required("Origin country is required"),
