@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createStore } from "easy-peasy";
+import { createStore, persist, useStoreRehydrated } from "easy-peasy";
 
 import { userModel } from "./user";
 
@@ -8,11 +8,7 @@ const models = {
   user: userModel,
 };
 
-export const store = createStore(models);
-
-
-
-
+export const store = createStore(persist(models));
 
 
 

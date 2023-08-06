@@ -1,23 +1,38 @@
 import React from "react";
+import axios from 'axios';
 
 import http from "../http";
 
-
-// Needs to be modified
-// Getting user information.
 export default async function getCurrentUserDetails() {
-  const response = await http.get(
-    "http://127.0.0.1:8000/api/users/get_current_user_details/"
-  );
-  // console.log("response", response.data)
-  return response.data;
+  try {
+    const token = localStorage.getItem("access");
+    const response = await axios.get(
+      "http://127.0.0.1:8000/api/users/get_current_user_details/",
+      {
+        headers: {
+          Authorization: `Bearer ${token}` // Include the token in the header
+        }
+      }
+    );
+
+    console.log("Api response for getCurrentUserDetails", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching getCurrentUserDetails:", error);
+    throw error; // Rethrow the error to handle it in the calling code
+  }
 }
 
 
 
 // Get user information by ID.
 export function getUserByID(userID) {
-  const response = http.get(`http://127.0.0.1:8000/api/users/${userID}/`);
-  console.log("Api response for getUserByID", response);
-  return response;
+  try {
+    const response = http.get(`http://127.0.0.1:8000/api/users/${userID}/`);
+    console.log("Api response for getUserByID", response);
+    return response;
+  } catch (error) {
+    console.error("Error getUserByID:", error);
+    throw error;
+  }
 }

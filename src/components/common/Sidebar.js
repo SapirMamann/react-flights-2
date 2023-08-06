@@ -1,10 +1,19 @@
-import React from 'react'
-import { Nav, Navbar, Button, Form, NavDropdown, Offcanvas } from 'react-bootstrap';
+import React from "react";
+import {
+  Nav,
+  Navbar,
+  Button,
+  Form,
+  NavDropdown,
+  Offcanvas,
+} from "react-bootstrap";
+import { useStoreState } from "easy-peasy";
 
 
 export default function Sidebar(props) {
-  const username = props.username
-
+  const user = useStoreState((state) => state.user.user);
+  //change this const to be used by state
+  // console.log(user[0].username)
   return (
     <div>
       {/* Toggle menu: */}
@@ -14,15 +23,18 @@ export default function Sidebar(props) {
         aria-labelledby={`offcanvasNavbarLabel-expand`}
         placement="end"
         defaultShow={false} // Set defaultShow to false
-      > 
+      >
         {/* Header of the toggle menu: */}
-        {username &&
+        {user.length > 0 && (
           <Offcanvas.Header closeButton>
             <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>
-              Hello, {username}
+              Hello
+            
+            {/* .>>>>>>>>>>>>>>>>if there s no state it returns an error */}
+              , {user[0].username}
             </Offcanvas.Title>
           </Offcanvas.Header>
-        }
+        )}
 
         {/* Body of the toggle menu: */}
         <Offcanvas.Body>
@@ -32,13 +44,8 @@ export default function Sidebar(props) {
             {/* Second link */}
             <Nav.Link href="#action2">Link</Nav.Link>
             {/* Third section (dropdown) */}
-            <NavDropdown
-              title="Dropdown"
-              id={`offcanvasNavbarDropdown-expand`}
-            >
-              <NavDropdown.Item href="#action3">
-                Action
-              </NavDropdown.Item>
+            <NavDropdown title="Dropdown" id={`offcanvasNavbarDropdown-expand`}>
+              <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action4">
                 Another action
               </NavDropdown.Item>
@@ -56,20 +63,19 @@ export default function Sidebar(props) {
               placeholder="Search"
               className="me-2"
               aria-label="Search"
-              />
+            />
             <Button variant="outline-success">Search</Button>
           </Form>
           {/* End search section */}
-
         </Offcanvas.Body>
 
         <>
-          <Button href='/about' variant="info">
+          <Button href="/about" variant="info">
             About
           </Button>
         </>
-        <br/>
-      </Navbar.Offcanvas>  
+        <br />
+      </Navbar.Offcanvas>
     </div>
-  )
+  );
 }

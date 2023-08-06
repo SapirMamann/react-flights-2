@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import { StoreProvider, useStoreActions, useStoreState } from "easy-peasy";
+import { StoreProvider, useStoreActions, useStoreRehydrated } from "easy-peasy";
 
 import MyNavbar from "./components/common/Navbar";
 import HomePage from "./pages/HomePage";
@@ -40,6 +40,7 @@ export default function App() {
   // useEffect(() => {
   //   UserBu();
   // }, [])
+  // const isRehydrated = useStoreRehydrated();
   
   return (
     <StoreProvider store={store}>

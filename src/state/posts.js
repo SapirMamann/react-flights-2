@@ -5,11 +5,16 @@ import { useStoreActions, useStoreState } from "easy-peasy";
 const UserBu = () => {
   const fetchUser = useStoreActions((actions) => actions.user.fetchUser);
   // because in index.js=> user, in user.js => user
-  const user = useStoreState(state => state.user.user)
+  const user = useStoreState((state) => state.user.user)
+  const status = useStoreState((state) => state.user.status)
+
   console.log("userbu", user)
-  return <div>
-    <button onClick={fetchUser}>Fetch User</button>
-  </div>;
+  return (
+    <div>
+      <button onClick={fetchUser}>Fetch User</button>
+      <p>{status}</p>
+    </div>
+  );
 };
 
 export default UserBu;

@@ -13,12 +13,11 @@ import { isAuthenticated } from '../../api/http';
 
 export default function MyNavbar() {
   const [darkMode, setDarkMode] = useState(true);
-  // const username = useStoreState((state) => state.user.username);
+  const user = useStoreState((state) => state.user.user);
   // const setUsername = useStoreActions((actions) => actions.user.setUsername);
   // const isAdmin = useStoreState((state) => state.user.isAdmin);
   // const setIsAdmin = useStoreActions(actions => actions.user.setIsAdmin);
-  const isLoggedIn = isAuthenticated()
-
+  
   const toggleDarkMode = (event) => {
     event.preventDefault();
     setDarkMode(!darkMode);
@@ -27,10 +26,6 @@ export default function MyNavbar() {
   const handleDarkModeDoesNotExist = () => {
     localStorage.setItem('darkMode', darkMode);
   };
-
-  // useEffect(() => {
-
-  // }, [username])
 
   
   // !!! It doesnt effevtively work: !!! i separate it to another useeffect
@@ -105,7 +100,7 @@ export default function MyNavbar() {
           {/* Show login options button when user is unauthenticated,
               Otherwise, show profile icon */}
           <div className='ms-auto d-flex align-items-center'>
-            {isLoggedIn ? (
+            {user.length > 0 ? (
               <ProfileIcon/>
             ) : (
               <LoginOptions />
@@ -114,9 +109,7 @@ export default function MyNavbar() {
           {/* End of login and Profile section */}
           
           {/* Sidebar container */}
-
-          {/* //>>>>>>>>>>>>>>>>>>>> changed */}
-          <Sidebar username={'username'}/>
+          <Sidebar/>
         </Container>
       </Navbar>
     </>

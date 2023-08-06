@@ -8,9 +8,12 @@ import Button from 'react-bootstrap/Button';
 
 import { CheckGroup } from '../../api/auth/CheckGroup';
 import { addNewCountry } from '../../api/country/CountryApi'
+import { useStoreState } from 'easy-peasy';
 
 
 export default function AddCountry() {  
+  const isAdmin = useStoreState((state) => state.user.is_staff)
+
   const AddCountryValidation = object().shape({
     name: string()
                 .required("Name is required")
@@ -50,7 +53,6 @@ export default function AddCountry() {
   
   return (
     <div>
-      <h1>Add Country</h1>
       <CheckGroup groups={['Administrator']}>
         <ToastContainer/>
         <Formik
@@ -63,6 +65,7 @@ export default function AddCountry() {
           {() => {
             return (
               <Form>
+                <h1>Add Country</h1>
                 <div>
                   {/* Design input with bootstrap: */}
                   <div name="input">

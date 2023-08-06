@@ -14,7 +14,7 @@ const http = (
   axios.create({
     timeout: 200000,
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${localStorage.getItem('access')}`,     
     },
@@ -23,7 +23,7 @@ const http = (
   axios.create({
     timeout: 200000,
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
     },
   })
@@ -80,11 +80,13 @@ api.interceptors.response.use(
       // If refresh token exists, send a request to refresh the access token
       if (refresh) {
         try {
-          const response = await axios.post('/refresh-token/', {
+          console.log(refresh)
+          const response = await axios.post('http://localhost:8000/api/auth/refresh/', {
             refresh: refresh,
           });
 
           // Update the access token in localStorage
+          console.log("response data access",response.data.access)
           localStorage.setItem('access', response.data.access);
 
           // Retry the original request with the new access token
