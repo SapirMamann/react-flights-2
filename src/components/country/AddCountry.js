@@ -20,7 +20,8 @@ export default function AddCountry() {
   const AddCountryValidation = object().shape({
     name: string()
       .required("Name is required")
-      .min(2, "Must be at least 2 characters"),
+      .min(2, "Must be at least 2 characters")
+      .matches(/^[a-zA-Z]+$/, "Only alphabetical letters are allowed"),
   });
 
   const submitHandler = (values) => {

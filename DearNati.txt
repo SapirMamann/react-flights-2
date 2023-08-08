@@ -92,5 +92,23 @@ get username in backend has a problem:
 edit flight sends only the initial values and not the selected ones
 
 
-add country needs to change and add state of admin if not admin display :
-not have permission
+
+edit country when theres a server django error it doesnt catch it
+
+
+
+1.auth login
+2.logout
+--register
+
+--airline
+
+--flight
+
+3.country create
+4.get all
+--get by id
+5.update
+6.delete
+
+--tickets

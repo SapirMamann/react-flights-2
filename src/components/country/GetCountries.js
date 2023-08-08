@@ -10,30 +10,28 @@ import Button from "react-bootstrap/Button";
 import Overlay from "react-bootstrap/Overlay";
 import { useFloating } from "@floating-ui/react";
 
-import http from "../../api/http";
 import FlightSearch from "../flight/FlightSearch";
-import { CheckGroup } from "../../api/auth/CheckGroup";
 import EditCountry from "./EditCountry";
 import GetFlightsByCountryId from "../flight/GetFlightsByCountry";
 import { getAllCountries } from "../../api/country/CountryApi";
 import AddCountry from "./AddCountry";
+import DeleteCountry from "./DeleteCountry";
 
 export default function GetCountries() {
   const [countries, setCountries] = useState([]);
-  const [countryID, setCountryID] = useState("");
+  const [selectedCountryID, setSelectedCountryID] = useState(null);
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_staff;
 
-  const navigate = useNavigate();
-  const { refs, floatingStyles } = useFloating();
+  // const navigate = useNavigate();
+  // const { refs, floatingStyles } = useFloating();
 
   const target = useRef(null);
   const [showOverlay, setShowOverlay] = useState(false);
 
   const toggleOverlay = (id) => {
-    setShowOverlay(!showOverlay);
-    setCountryID(id);
-    console.log("here", id);
+    setSelectedCountryID(id);
+    setShowOverlay(true);
   };
 
   const getCountriesList = () => {
@@ -49,7 +47,6 @@ export default function GetCountries() {
 
   useEffect(() => {
     getCountriesList();
-    // console.log(user[0].is_staff)
   }, []);
 
   return (
@@ -65,27 +62,59 @@ export default function GetCountries() {
           {countries.map((country) => (
             <Col key={country.id} xs={12} sm={6} md={4}>
               <Card>
-                {/* <Card.Img variant="top" src="holder.js/100px160" /> */}
                 <Card.Body>
                   <Card.Title name="country name">
-                    {/* make first letter capitalized */}
                     {country.name.charAt(0).toUpperCase() +
                       country.name.slice(1)}
                   </Card.Title>
                   <Card.Text>
-                    {/* Button to see flights to this country */}
                     <Link to={{ pathname: `/flights/${country.name}` }}>
                       Flights
                     </Link>
-                    {/* Edit button will only be displayed when an admin is logged in */}
-                    {/* // Overlay. passing the country id to the handler of this click */}
+
                     {isAdmin && (
-                      <Button
-                        ref={target}
-                        onClick={() => toggleOverlay(country.id)}
-                      >
-                        <FontAwesomeIcon icon={faPen} />
-                      </Button>
+                      <>
+                        <Button
+                          ref={target}
+                          onClick={() => toggleOverlay(country.id)}
+                        >
+                          <FontAwesomeIcon icon={faPen} />
+                        </Button>
+
+                        <Overlay
+                          target={target.current}
+                          show={showOverlay && selectedCountryID === country.id} // Show overlay for the specific country
+                          placement="right"
+                        >
+                          {({
+                            arrowProps: _arrowProps,
+                            show: _show,
+                            popper: _popper,
+                            hasDoneInitialMeasure: _hasDoneInitialMeasure,
+                            ...props
+                          }) => (
+                            <div
+                              {...props}
+                              style={{
+                                backgroundColor: "rgba(245, 245, 245, 0.85)",
+                                padding: "2px 10px",
+                                color: "black",
+                                borderRadius: 3,
+                                ...props.style,
+                              }}
+                            >
+                              <DeleteCountry id={selectedCountryID} />
+                              <button
+                                onClick={() => toggleOverlay(null)}
+                                className="x_button"
+                              >
+                                <FontAwesomeIcon icon={faXmark} />
+                              </button>
+                              <EditCountry id={selectedCountryID} />
+                            </div>
+                          )}
+                        </Overlay>
+                      </>
                     )}
                   </Card.Text>
                 </Card.Body>
@@ -95,48 +124,6 @@ export default function GetCountries() {
         </Row>
       </CardGroup>
       <br />
-      {/* Overlay details */}
-      {/* {showOverlay && (
-            <div className="overlay">
-              <div className="overlay-content">
-                <EditCountry id={countryID} />
-                <button className="delete-button">Delete</button>
-                <br/>
-                <button onClick={toggleOverlay}  className='x_button'>
-                  <FontAwesomeIcon icon={faXmark} />
-                </button>
-              </div>
-            </div>
-          )} */}
-
-      <Overlay target={target.current} show={showOverlay} placement="right">
-        {({
-          placement: _placement,
-          arrowProps: _arrowProps,
-          show: _show,
-          popper: _popper,
-          hasDoneInitialMeasure: _hasDoneInitialMeasure,
-          ...props
-        }) => (
-          <div
-            {...props}
-            style={{
-              position: "absolute",
-              backgroundColor: "rgba(255, 100, 100, 0.85)",
-              padding: "2px 10px",
-              color: "white",
-              borderRadius: 3,
-              ...props.style,
-            }}
-          >
-            Delete
-            <EditCountry id={countryID} />
-            <button onClick={toggleOverlay} className="x_button">
-              <FontAwesomeIcon icon={faXmark} />
-            </button>
-          </div>
-        )}
-      </Overlay>
 
       {/* All flights */}
       {/* <GetFlights/> */}
