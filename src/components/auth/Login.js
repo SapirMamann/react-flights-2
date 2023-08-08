@@ -16,17 +16,12 @@ import { ApiLogin } from "../../api/auth/AuthApi";
 export default function Login() {
   const navigate = useNavigate();
   const isLoggedIn = isAuthenticated();
-
   const fetchUser = useStoreActions((actions) => actions.user.fetchUser);
 
   const loginValidation = object().shape({
     username: string().required("username is required"),
     password: string().required("password is required"),
   });
-
-  // const fetchingUser = () => {
-  //   fetchUser();
-  // };
 
   const submitHandler = (event) => {
     console.log("login submission", event);
@@ -38,28 +33,11 @@ export default function Login() {
         localStorage.setItem("access", response.data.access);
         localStorage.setItem("refresh", response.data.refresh);
         // After a successful login, redirect the user to the home page
-        navigate("/");
-        console.log(response.status)
-        // try {
-        //   fetchUser()
-        //   // useStoreActions((actions) => actions.user.fetchUser);
-        // } catch(e) {
-        //   console.error("fetch user error", e);
-        // }
-        // if (response.status === 200) {
-        //   console.log("ok", response.status);
-        //   // fetchUser()
-        // }
-        
-      })
-      .then(() => {
         fetchUser();
+        navigate("/");
       })
       .catch((error) => {
-        console.error(
-          "Login fetching error",
-          Object.entries(error.response)
-        );
+        console.error("Login fetching error", Object.entries(error.response));
         toast.error(`Login failed. ${error.response.data.detail}`, {
           position: "top-left",
           autoClose: 5000,
@@ -102,6 +80,7 @@ export default function Login() {
                     type="text"
                     placeholder="Username"
                     as={bsForm.Control}
+                    autoComplete="username" 
                   />
                   <ErrorMessage
                     name="username"
@@ -117,6 +96,7 @@ export default function Login() {
                     type="password"
                     placeholder="Password"
                     as={bsForm.Control}
+                    autoComplete="current-password" 
                   />
                   <ErrorMessage
                     name="password"

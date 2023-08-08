@@ -14,9 +14,6 @@ import { isAuthenticated } from '../../api/http';
 export default function MyNavbar() {
   const [darkMode, setDarkMode] = useState(true);
   const user = useStoreState((state) => state.user.user);
-  // const setUsername = useStoreActions((actions) => actions.user.setUsername);
-  // const isAdmin = useStoreState((state) => state.user.isAdmin);
-  // const setIsAdmin = useStoreActions(actions => actions.user.setIsAdmin);
   
   const toggleDarkMode = (event) => {
     event.preventDefault();

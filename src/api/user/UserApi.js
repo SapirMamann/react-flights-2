@@ -1,7 +1,8 @@
 import React from "react";
-import axios from 'axios';
+import axios from "axios";
 
 import http from "../http";
+
 
 export default async function getCurrentUserDetails() {
   try {
@@ -10,8 +11,8 @@ export default async function getCurrentUserDetails() {
       "http://127.0.0.1:8000/api/users/get_current_user_details/",
       {
         headers: {
-          Authorization: `Bearer ${token}` // Include the token in the header
-        }
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
