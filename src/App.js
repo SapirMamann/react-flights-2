@@ -23,25 +23,9 @@ import DecodeToken from "./components/auth/DecodeToken";
 import GetUserTickets from "./components/ticket/GetUserTickets";
 import EditFlight from "./components/flight/EditFlight";
 import Cats from "./state/posts";
+import { NavbarDark } from "./components/common/Trynavbar";
 
 export default function App() {
-  // // const [user, setUser] = useState('')
-  // const fetchUsername = useStoreActions(actions => actions.user.fetchUsername);
-
-  // useEffect(() => {
-  //   console.log("useEffect in trying");
-  //   try {
-  //       fetchUsername();
-  //   } catch (e) {
-  //       console.error('fetching username failed', e)
-  //   }  }, [fetchUsername]);
-
-
-  // useEffect(() => {
-  //   UserBu();
-  // }, [])
-  // const isRehydrated = useStoreRehydrated();
-  
   return (
     <StoreProvider store={store}>
       <BrowserRouter>
@@ -56,6 +40,7 @@ export default function App() {
           <Route path="/cust" element={<CreateCustomer />} />
           <Route path="/try" element={<Trying />} />
           <Route path="/button" element={<Cats />} />
+          {/* <Route path="/tail" element={<NavbarDark />} /> */}
 
           <Route path="/countries">
             <Route path="add" element={<AddCountry />} />

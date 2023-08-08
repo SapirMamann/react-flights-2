@@ -9,11 +9,9 @@ import {
 } from "react-bootstrap";
 import { useStoreState } from "easy-peasy";
 
-
 export default function Sidebar(props) {
   const user = useStoreState((state) => state.user.user);
-  //change this const to be used by state
-  // console.log(user[0].username)
+
   return (
     <div>
       {/* Toggle menu: */}
@@ -28,10 +26,7 @@ export default function Sidebar(props) {
         {user.length > 0 && (
           <Offcanvas.Header closeButton>
             <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>
-              Hello
-            
-            {/* .>>>>>>>>>>>>>>>>if there s no state it returns an error */}
-              , {user[0].username}
+              Hello, {user[0].username}
             </Offcanvas.Title>
           </Offcanvas.Header>
         )}
@@ -41,14 +36,14 @@ export default function Sidebar(props) {
           <Nav className="justify-content-end flex-grow-1 pe-3">
             {/* First link */}
             <Nav.Link href="#action1">Home</Nav.Link>
+
             {/* Second link */}
             <Nav.Link href="#action2">Link</Nav.Link>
+
             {/* Third section (dropdown) */}
-            <NavDropdown title="Dropdown" id={`offcanvasNavbarDropdown-expand`}>
-              <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">
-                Another action
-              </NavDropdown.Item>
+            <NavDropdown title="Flights" id={`offcanvasNavbarDropdown-expand`}>
+              <NavDropdown.Item href="/flights">All flights</NavDropdown.Item>
+              <NavDropdown.Item href="/flights/add">Add flight</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action5">
                 Something else here
