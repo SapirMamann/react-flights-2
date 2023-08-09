@@ -21,13 +21,12 @@ export default function FlightSearch() {
   const [desiredFlights, setDesiredFlights] = useState([]);
 
   const [selectedOriginCountry, setSelectedOriginCountry] = useState("");
-  const [selectedDestinationCountry, setSelectedDestinationCountry] =
-    useState("");
+  const [selectedDestinationCountry, setSelectedDestinationCountry] = useState("");
   const [selectedDateTime, setSelectedDateTime] = useState(null);
 
   const animatedComponents = makeAnimated();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const submitHandler = (event) => {
     console.log("values", event);

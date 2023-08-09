@@ -112,3 +112,8 @@ edit country when theres a server django error it doesnt catch it
 6.delete
 
 --tickets
+
+
+
+
+permission for create flight commented

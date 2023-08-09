@@ -28,6 +28,8 @@ export function getAllCountries() {
   }
 }
 
+
+
 // Getting country from api
 export const getCountryByID = async (id) => {
   // using http for permissions check
@@ -35,6 +37,8 @@ export const getCountryByID = async (id) => {
   console.log("api response for getCountryByID", response);
   return response;
 };
+
+
 
 // Update country by passing ID
 export const updateCountry = async (id, data) => {

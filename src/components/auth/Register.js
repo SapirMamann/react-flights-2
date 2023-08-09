@@ -1,14 +1,19 @@
-import React from "react";
-import { Formik, Form, setFieldError, isInteger } from "formik";
+import React, { useEffect, useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { number, object, ref, string } from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import Button from "react-bootstrap/Button";
+import { default as bsForm } from "react-bootstrap/Form";
+import FloatingLabel from "react-bootstrap/FloatingLabel";
+import "react-toastify/dist/ReactToastify.css";
 
-import Input from "../common/Input";
-import http from "../../api/http";
+import { apiRegister, getAllGroups } from "../../api/auth/AuthApi";
 
 export default function Register() {
   const navigate = useNavigate();
+  const [groups, setGroups] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState("");
 
   const RegisterValidation = object().shape({
     username: string()
@@ -28,37 +33,62 @@ export default function Register() {
       .min(8, "Must be at least 8 characters")
       .oneOf([ref("password")], "Passwords must match"),
 
-    user_role: number().required("Group is required"),
+    // groups: string()
+    //   .required("Group is required"),
   });
 
+  // const getGroups = async () => {
+  //   const response = await getAllGroups();
+  //   console.log(response.data);
+  // };
+
+  const getGroups = () => {
+    getAllGroups()
+      .then((response) => {
+        const groupNames = response.map((group) => group.name);
+        // console.log(groupNames);
+        setGroups(groupNames);
+      })
+      .catch((error) => console.debug("getGroups fetching error", error));
+  };
+
+  useEffect(() => {
+    // Fetch the groups from the API
+    getGroups();
+  }, []);
+
   const submitHandler = async (values) => {
+    //TODO: make the group required. cant do that because it has a problem with saving the value of the select and not sending the form for submission
     console.debug("values", values);
-    console.log(values["user_role"]);
-    const response = await http
-      .post("http://localhost:8000/api/auth/register/", values)
+    console.log(selectedGroup);
+    values.groups = selectedGroup;
+    console.debug("values", values);
+    apiRegister(values)
       .then((response) => {
         console.log("response", response);
-        // If it worked -> redirect to home page
-        navigate("/");
       })
+      // .catch((error) => {
+      //   console.log("error", error);
+      //   console.log("error", error.response.data);
+      // });
       .catch((error) => {
-        console.log(response.status);
-        console.log("Registration failed.", error.message);
         console.debug(error);
+        console.log("Registration failed.", error.message);
         console.debug("Register failed", error.response.data);
         // Set an error message for the form
-        // for (const [key, value] of Object.entries(error.response.data)) {
-        //   toast.error(`Register failed. ${key}: ${value[0]}`, {
-        toast.error(`Login failed. ${error.response.data.detail}`, {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        for (const [key, value] of Object.entries(error.response.data)) {
+          toast.error(`Register failed. ${key}: ${value[0]}`, {
+            // toast.error(`Login failed. ${error.response.data.detail}`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
       });
   };
 
@@ -67,42 +97,102 @@ export default function Register() {
       <ToastContainer />
       <Formik
         initialValues={{
-          username: "add",
-          email: "add@ddd.com",
-          password: "admin1234",
-          password2: "admin1234",
-          user_role: "2", //probleeeeeeeeeeeeeeeeeeeeeeem
+          username: "test",
+          email: "test@example.com",
+          password: "test1234",
+          password2: "test1234",
+          groups: "",
         }}
-        onSubmit={(e) => submitHandler(e)}
+        onSubmit={(values) => submitHandler(values)}
         validationSchema={RegisterValidation}
       >
         {() => {
           return (
             <Form>
-              <div>
-                <Input type="text" name="username" label="Username" />
-                <br />
-                <Input type="text" name="email" label="Email" />
-                <br />
-                <Input type="password" name="password" label="Password" />
-                <br />
-                <Input type="password" name="password2" label="Password" />
-                <br />
-                <label>Choose group</label>
-                <br />
-                <select name="user_role">
-                  <option value="1">Administrator</option>
-                  <option selected value="2">
-                    Customer
-                  </option>
-                  <option value="3">Airline company</option>
-                </select>
-                <button type="submit">Register</button>
+              <FloatingLabel controlId="username" label="Username">
+                <Field
+                  name="username"
+                  type="text"
+                  placeholder="Username"
+                  as={bsForm.Control}
+                  autoComplete="username"
+                />
+                <ErrorMessage
+                  name="username"
+                  component="div"
+                  className="error"
+                />
+              </FloatingLabel>
+
+              <FloatingLabel controlId="email" label="Email">
+                <Field
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  as={bsForm.Control}
+                />
+                <ErrorMessage name="email" component="div" className="error" />
+              </FloatingLabel>
+
+              <FloatingLabel controlId="password" label="Password">
+                <Field
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  as={bsForm.Control}
+                  autoComplete="current-password"
+                />
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  className="error"
+                />
+              </FloatingLabel>
+
+              <FloatingLabel controlId="password2" label="Password">
+                <Field
+                  name="password2"
+                  type="password"
+                  placeholder="Password"
+                  as={bsForm.Control}
+                  autoComplete="current-password"
+                />
+                <ErrorMessage
+                  name="password2"
+                  component="div"
+                  className="error"
+                />
+              </FloatingLabel>
+
+              <FloatingLabel controlId="groups" label="Group">
+                <Field
+                  name="groups"
+                  component={bsForm.Select}
+                  as="select"
+                  onChange={(e) => {
+                    // console.log("selecttttt", e.target.value)
+                    setSelectedGroup(e.target.value);
+                  }}
+                  // value={gr}
+                >
+                  <option>Select a group</option>
+                  {groups.map((group, index) => (
+                    <option key={index}>
+                      {/* {console.log(value)} */}
+                      {group}
+                    </option>
+                  ))}
+                </Field>
+                <ErrorMessage name="groups" component="div" className="error" />
+              </FloatingLabel>
+
+              <br />
+
+              <div className="d-grid gap-2">
+                <Button type="submit" variant="secondary" size="lg">
+                  Register
+                </Button>
               </div>
-              <p>
-                Already have an account?
-                <Link to="/login">Login</Link>
-              </p>
             </Form>
           );
         }}
