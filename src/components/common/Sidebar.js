@@ -60,7 +60,13 @@ export default function Sidebar(props) {
                     Something else here
                   </NavDropdown.Item>
                 </NavDropdown>
-                <NavDropdown title="Add" id={`offcanvasNavbarDropdown-expand`}>
+
+                <NavDropdown title="Airlines" id={`offcanvasNavbarDropdown-expand`}>
+                  <NavDropdown.Item href="/register_airline_company">Add airline company</NavDropdown.Item>
+                  <NavDropdown.Item href="/airlines">All airlines</NavDropdown.Item>
+                </NavDropdown>
+                
+                <NavDropdown title="Admin" id={`offcanvasNavbarDropdown-expand`}>
                   <NavDropdown.Item href="/register_airline_company">Add airline company</NavDropdown.Item>
                   <NavDropdown.Item href="/flights/add">Add admin</NavDropdown.Item>
                 </NavDropdown>

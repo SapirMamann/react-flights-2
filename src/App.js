@@ -25,6 +25,7 @@ import EditFlight from "./components/flight/EditFlight";
 import Cats from "./state/posts";
 import { NavbarDark } from "./components/common/Trynavbar";
 import RegisterAirlineCompany from "./components/auth/RegisterAirlineCompany";
+import GetAirlineCompanies from "./components/airline/GetAirlines";
 
 export default function App() {
   return (
@@ -54,6 +55,14 @@ export default function App() {
 
           <Route path="/flights">
             <Route index element={<GetFlightsPage />} />
+            {/* <Route path="add" element={<AddFlight />} />
+            <Route path=":country" element={<GetFlightsByCountryId />} />
+            <Route path=":flight_id/book" element={<BookFlight />} />
+            <Route path=":flight_id/edit" element={<EditFlight />} /> */}
+          </Route>
+
+          <Route path="/airlines">
+            <Route index element={<GetAirlineCompanies />} />
             <Route path="add" element={<AddFlight />} />
             <Route path=":country" element={<GetFlightsByCountryId />} />
             <Route path=":flight_id/book" element={<BookFlight />} />
