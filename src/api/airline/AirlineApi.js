@@ -2,7 +2,6 @@ import React from "react";
 
 import http from "../http";
 
-
 export function addNewAirlineCompany(data) {
   try {
     // using http for permissions check
@@ -15,7 +14,6 @@ export function addNewAirlineCompany(data) {
   }
 }
 
-
 export const getAllAirlines = async () => {
   try {
     // using http for permissions check
@@ -25,5 +23,43 @@ export const getAllAirlines = async () => {
     return response.data;
   } catch (error) {
     console.log("Error in getAllAirlines ", error);
+  }
+};
+
+export const updateAirlineCompany = async (id, data) => {
+  try {
+    console.log("update airline api", id, data);
+    // using http for permissions check
+    const response = await http.put(
+      `http://127.0.0.1:8000/api/airlines/${id}/`,data
+    );
+    console.log("api response for updateAirlineCompany", response);
+    return response;
+  } catch (error) {
+    console.log("error in updateAirlineCompany", error);
+    console.log("error in updateAirlineCompany", error.message);
+  }
+};
+
+
+export const deleteAirlineCompany = async (id) => {
+  try {
+    // using http for permissions check
+    const response = await http.delete(
+      `http://127.0.0.1:8000/api/airlines/${id}/`
+    );
+    console.log("api response for deleteAirlineCompany", response);
+
+    if (response.status === 204) {
+      // Deletion successful with a "No Content" status
+      return response;
+    } else {
+      // Unexpected response status
+      throw new Error(`Unexpected response status: ${response.status}`);
+    }
+  } catch (error) {
+    console.log("error in deleteAirlineCompany", error);
+    console.log("error in deleteAirlineCompany", error.message);
+    throw error; // Re-throw the error for the calling code to handle
   }
 };

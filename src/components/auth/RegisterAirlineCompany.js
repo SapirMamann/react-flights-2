@@ -80,11 +80,7 @@ export default function RegisterAirlineCompany() {
 
   const submitHandler = async (values) => {
     //TODO: make the group required. cant do that because it has a problem with saving the value of the select and not sending the form for submission
-    console.debug("values", values);
-    // console.log(selectedGroup);
-    // values.groups = "Airline company";
-    // console.log("fgrojup",values.groups);
-    // values.country = selectedCountry;
+    
     const userCreationValues = {
       username: values.username,
       email: values.email,
@@ -92,17 +88,6 @@ export default function RegisterAirlineCompany() {
       password2: values.password2,
       groups: "Airline company"
     };
-
-    // console.debug("values", values);
-    console.log("values user", userCreationValues);
-
-    // const airlinrCreationValues = {
-    //   user: 1,
-    //   name: values.name,
-    //   country: parseInt(selectedCountry) //supposed to be id 
-    // }
-    
-    // console.log("values airline", airlinrCreationValues);
 
     try {
       apiRegister(userCreationValues)
@@ -123,39 +108,29 @@ export default function RegisterAirlineCompany() {
               console.log("error in addNewAirlineCompany", error.message);
             }
           }
-        })
+        }).catch((error) => {
+              console.debug(error);
+              console.log("Registration failed.", error.message);
+              console.debug("RegisterAirlineCompany failed", error.response.data);
+              // Set an error message for the form
+              for (const [key, value] of Object.entries(error.response.data)) {
+                toast.error(`RegisterAirlineCompany failed. ${key}: ${value[0]}`, {
+                  // toast.error(`Login failed. ${error.response.data.detail}`, {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+              }
+            });
     } catch (error) {
-      console.debug(error);
+      console.debug("here",error);
       console.log("Registration failed.", error.message);
     }
-    // apiRegisterAirlineCompany(values)
-    //   .then((response) => {
-    //     console.log("response", response);
-    //     //TODO: log the user after successful registration:
-    //     if (response === 201) {
-    //       // ApiLogin()
-    //       toast.success("Registration successful. You can now login.")
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.debug(error);
-    //     console.log("Registration failed.", error.message);
-    //     console.debug("RegisterAirlineCompany failed", error.response.data);
-    //     // Set an error message for the form
-    //     for (const [key, value] of Object.entries(error.response.data)) {
-    //       toast.error(`RegisterAirlineCompany failed. ${key}: ${value[0]}`, {
-    //         // toast.error(`Login failed. ${error.response.data.detail}`, {
-    //         position: "top-center",
-    //         autoClose: 5000,
-    //         hideProgressBar: false,
-    //         closeOnClick: true,
-    //         pauseOnHover: true,
-    //         draggable: true,
-    //         progress: undefined,
-    //         theme: "light",
-    //       });
-    //     }
-      // });
   };
 
   return (

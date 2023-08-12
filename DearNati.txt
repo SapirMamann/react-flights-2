@@ -117,3 +117,6 @@ edit country when theres a server django error it doesnt catch it
 
 
 permission for create flight commented
+
+
+catch errors register new airline company.

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
+import ListGroup from "react-bootstrap/ListGroup";
+import Badge from "react-bootstrap/Badge";
+
 import { getAllFlights } from "../../api/flight/FlightApi";
+
 
 export default function GetFlightsPage() {
   const [flights, setFlights] = useState([]);
@@ -14,11 +18,46 @@ export default function GetFlightsPage() {
   }, []);
 
   return (
-    <div>
-      {flights.map((flight, ind) => (
-        <div id={ind}></div>
-      ))}
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      <h1>All Flight</h1>
+      <div style={{ width: "80%", maxWidth: "800px" }}>
+        <ListGroup>
+          <ListGroup.Item
+            className="d-flex justify-content-between align-items-start"
+            style={{ fontWeight: "bold" }}
+          >
+            <div className="ms-2 me-auto">flight airline company</div>
+            <div className="ms-4 me-auto">flight origin country</div>
+            <div className="ms-4 me-auto">flight destination country</div>
+            <div className="ms-4 me-auto">flight depatrure time</div>
+            <div className="ms-4 me-auto">flight arrival time</div>
+            <div className="ms-4 me-auto">flight tickets</div>
+            <div className="ms-4 me-auto">flight ID</div>
+          </ListGroup.Item>
+
+          {flights.map((flight, index) => (
+            <ListGroup.Item
+              key={index}
+              className="d-flex justify-content-between align-items-start"
+            >
+              <div className="ms-2 me-auto">{flight.airline_company}</div>
+              <div className="ms-4 me-auto">{flight.landing_time}</div>
+              <Badge bg="primary" pill>
+                {flight.id}
+              </Badge>
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+      </div>
     </div>
+
   );
 }
 

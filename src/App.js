@@ -22,10 +22,10 @@ import Trying from "./components/common/trying";
 import DecodeToken from "./components/auth/DecodeToken";
 import GetUserTickets from "./components/ticket/GetUserTickets";
 import EditFlight from "./components/flight/EditFlight";
-import Cats from "./state/posts";
 import { NavbarDark } from "./components/common/Trynavbar";
 import RegisterAirlineCompany from "./components/auth/RegisterAirlineCompany";
 import GetAirlineCompanies from "./components/airline/GetAirlines";
+import EditAirline from "./components/airline/EditAirline";
 
 export default function App() {
   return (
@@ -43,7 +43,6 @@ export default function App() {
           <Route path="/bla" element={<Bla />} />
           <Route path="/cust" element={<CreateCustomer />} />
           <Route path="/try" element={<Trying />} />
-          <Route path="/button" element={<Cats />} />
           {/* <Route path="/tail" element={<NavbarDark />} /> */}
 
           <Route path="/countries">
@@ -55,18 +54,17 @@ export default function App() {
 
           <Route path="/flights">
             <Route index element={<GetFlightsPage />} />
-            {/* <Route path="add" element={<AddFlight />} />
-            <Route path=":country" element={<GetFlightsByCountryId />} />
-            <Route path=":flight_id/book" element={<BookFlight />} />
-            <Route path=":flight_id/edit" element={<EditFlight />} /> */}
-          </Route>
-
-          <Route path="/airlines">
-            <Route index element={<GetAirlineCompanies />} />
             <Route path="add" element={<AddFlight />} />
             <Route path=":country" element={<GetFlightsByCountryId />} />
             <Route path=":flight_id/book" element={<BookFlight />} />
             <Route path=":flight_id/edit" element={<EditFlight />} />
+          </Route>
+
+          <Route path="/airlines">
+            <Route index element={<GetAirlineCompanies />} />
+            {/* <Route path=":country" element={<GetFlightsByCountryId />} />
+            <Route path=":flight_id/book" element={<BookFlight />} />*/}
+            <Route path="edit/:airline_id" element={<EditAirline />} /> 
           </Route>
 
           <Route path="/tickets" element={GetUserTickets} />
