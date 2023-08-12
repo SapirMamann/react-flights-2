@@ -19,7 +19,6 @@ export default function EditAirline(props) {
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_staff;
 
-  //The ID is passed from getCountries..
   const { airline_id } = useParams();
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -45,6 +44,7 @@ export default function EditAirline(props) {
       .required("Name is required")
       .min(3, "Must be at least 3 characters")
       .matches(/^[a-zA-Z]+$/, "Only alphabetical letters are allowed"),
+    // country: string().required("Country is required"),
   });
 
   const submitHandler = (values) => {

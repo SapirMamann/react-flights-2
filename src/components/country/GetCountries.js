@@ -1,14 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faXmark, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import Card from "react-bootstrap/Card";
 import CardGroup from "react-bootstrap/CardGroup";
 import { Row, Col } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Overlay from "react-bootstrap/Overlay";
-import { useFloating } from "@floating-ui/react";
+import ListGroup from "react-bootstrap/ListGroup";
+import Badge from "react-bootstrap/Badge";
+import { ToastContainer, toast } from "react-toastify";
+import Dropdown from "react-bootstrap/Dropdown";
 
 import EditCountry from "./EditCountry";
 import GetFlightsByCountryId from "../flight/GetFlightsByCountry";
@@ -43,16 +46,95 @@ export default function GetCountries() {
       );
   };
 
+  const handleEditClick = (id) => {
+    console.log("Edit clicked for ID:", id);
+    // Navigate to the edit page with the specific ID
+    // navigate(`edit/${id}`);
+  };
+
+  const handleDeleteClick = (id) => {
+    console.log("Button clicked for ID:", id);
+    try {
+      // deleteAirlineCompany(id).then((response) => {
+      //   console.log("api response for deleteAirlineCompany", response);
+      //   console.log("api response for deleteAirlineCompany", response.status);
+      //   if (response.status === 204) {
+      //     toast.success("Airline deleted successful.");
+      //   } else {
+      //     toast.error("Airline not deleted.");
+      //   }
+      // });
+    } catch (error) {
+      console.log("Button api error deleteAirlineCompany", error);
+    }
+  };
+
   useEffect(() => {
     getCountriesList();
   }, []);
 
   return (
     <>
-      <h1>Explore destinations</h1>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <h1>Countries</h1>
 
-      {/* If admin -> display button of add country */}
-      {isAdmin && <Link to="/countries/add">add country</Link>}
+        {/* If admin -> display button of add country */}
+        {isAdmin && <Link to="/countries/add">add country</Link>}
+
+        <div style={{ width: "80%", maxWidth: "800px" }}>
+          <ListGroup>
+            <ListGroup.Item
+              className="d-flex justify-content-between align-items-start"
+              style={{ fontWeight: "bold" }}
+            >
+              <div className="ms-2 me-auto">Airline Name</div>
+              <div className="ms-4 me-auto">Airline Country</div>
+              <div className="ms-4 me-auto">Airline ID</div>
+            </ListGroup.Item>
+
+            {countries.map((country, index) => (
+              <ListGroup.Item
+                key={index}
+                className="d-flex justify-content-between align-items-start"
+              >
+                <div className="ms-2 me-auto">
+                  {country.name.charAt(0).toUpperCase() + country.name.slice(1)}
+                </div>
+                <div className="ms-4 me-auto">
+                  <Link to={{ pathname: `/flights/${country.name}` }}>
+                    Flights
+                  </Link>
+                </div>
+                <Badge bg="primary" pill>
+                  {country.id}
+                </Badge>
+
+                <Dropdown>
+                  <Dropdown.Toggle variant="link" id={`dropdown-${index}`}>
+                    <FontAwesomeIcon icon={faEllipsisV} />
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={() => handleEditClick(country.id)}>
+                    Edit
+                  </Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleDeleteClick(country.id)}>
+                    Delete
+                  </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </div>
+      </div>
+      <h1>Explore destinations</h1>
 
       {/* Each box has a country name, an edit button, and a button */}
       <CardGroup>

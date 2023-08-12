@@ -26,6 +26,7 @@ import { NavbarDark } from "./components/common/Trynavbar";
 import RegisterAirlineCompany from "./components/auth/RegisterAirlineCompany";
 import GetAirlineCompanies from "./components/airline/GetAirlines";
 import EditAirline from "./components/airline/EditAirline";
+import CarouselComponent from "./components/common/Carousel";
 
 export default function App() {
   return (
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="/register_airline_company" element={<RegisterAirlineCompany />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/car" element={<CarouselComponent />} />
           
           <Route path="/de" element={<DecodeToken />} />
           <Route path="/bla" element={<Bla />} />
