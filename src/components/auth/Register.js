@@ -8,7 +8,8 @@ import { default as bsForm } from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import "react-toastify/dist/ReactToastify.css";
 
-import { apiRegister, getAllGroups } from "../../api/auth/AuthApi";
+import { ApiLogin, apiRegister, getAllGroups } from "../../api/auth/AuthApi";
+
 
 export default function Register() {
   const navigate = useNavigate();
@@ -37,11 +38,6 @@ export default function Register() {
     //   .required("Group is required"),
   });
 
-  // const getGroups = async () => {
-  //   const response = await getAllGroups();
-  //   console.log(response.data);
-  // };
-
   const getGroups = () => {
     getAllGroups()
       .then((response) => {
@@ -66,11 +62,12 @@ export default function Register() {
     apiRegister(values)
       .then((response) => {
         console.log("response", response);
+        //TODO: log the user after successful registration:
+        if (response === 201) {
+          // ApiLogin()
+          toast.success("Registration successful. You can now login.")
+        }
       })
-      // .catch((error) => {
-      //   console.log("error", error);
-      //   console.log("error", error.response.data);
-      // });
       .catch((error) => {
         console.debug(error);
         console.log("Registration failed.", error.message);
@@ -173,7 +170,6 @@ export default function Register() {
                     // console.log("selecttttt", e.target.value)
                     setSelectedGroup(e.target.value);
                   }}
-                  // value={gr}
                 >
                   <option>Select a group</option>
                   {groups.map((group, index) => (
@@ -185,7 +181,6 @@ export default function Register() {
                 </Field>
                 <ErrorMessage name="groups" component="div" className="error" />
               </FloatingLabel>
-
               <br />
 
               <div className="d-grid gap-2">

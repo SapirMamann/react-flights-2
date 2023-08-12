@@ -14,6 +14,7 @@ import makeAnimated from "react-select/animated";
 import { useStoreState } from "easy-peasy";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
 import { getAllCountries } from "../../api/country/CountryApi";
+// import { isAirlineCompany1 } from "../../state/user";
 
 export default function AddFlight() {
   // TODO:
@@ -23,6 +24,7 @@ export default function AddFlight() {
   
   const user = useStoreState((state) => state.user.user);
   const [isAdmin, setIsAdmin] = useState(false);
+  const isAirlineCompany = user?.length > 0 && user[0]?.groups[0] === 1;
   
   const [originCountries, setOriginCountries] = useState([]);
   const [departureTime, setDepartureTime] = useState(new Date());
@@ -113,7 +115,7 @@ export default function AddFlight() {
 
   return (
     <div>
-      {isAdmin ? (
+      {isAdmin || isAirlineCompany ? (
         <div>
           <ToastContainer />
           <Formik

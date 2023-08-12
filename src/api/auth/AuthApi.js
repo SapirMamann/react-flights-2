@@ -14,6 +14,7 @@ export async function apiRegister(values) {
     console.log("api response for apiRegister", values);
     return response;
   } catch (error) {
+    console.log("error in apiRegister", error);
     console.log("error in apiRegister", error.message);
     console.log("error in apiRegister", error.response.data);
     throw error; // Re-throw the error to propagate it

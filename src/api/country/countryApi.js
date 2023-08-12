@@ -16,6 +16,8 @@ export function addNewCountry(data) {
   }
 }
 
+
+
 // Getting all countries from api
 export function getAllCountries() {
   try {

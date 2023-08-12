@@ -38,3 +38,7 @@ export const userModel = {
     }
   }),
 };
+
+// export const isAirlineCompany = user?.length > 0 && user[0]?.groups[0] === 1;
+
+// export const isAdmin = user?.length > 0 && user[0]?.is_staff;

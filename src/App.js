@@ -24,6 +24,7 @@ import GetUserTickets from "./components/ticket/GetUserTickets";
 import EditFlight from "./components/flight/EditFlight";
 import Cats from "./state/posts";
 import { NavbarDark } from "./components/common/Trynavbar";
+import RegisterAirlineCompany from "./components/auth/RegisterAirlineCompany";
 
 export default function App() {
   return (
@@ -33,8 +34,10 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/register_airline_company" element={<RegisterAirlineCompany />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
+          
           <Route path="/de" element={<DecodeToken />} />
           <Route path="/bla" element={<Bla />} />
           <Route path="/cust" element={<CreateCustomer />} />
