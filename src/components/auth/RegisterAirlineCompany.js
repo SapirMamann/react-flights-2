@@ -98,7 +98,7 @@ export default function RegisterAirlineCompany() {
             // const user = 
             const airlinrCreationValues = {
               user: response.data.id,
-              name: values.name,
+              name: values.name.toLowerCase(),
               country: parseInt(selectedCountry) 
             }
             try {

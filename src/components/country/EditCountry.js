@@ -19,6 +19,7 @@ export default function EditCountry(props) {
   const isAdmin = user?.length > 0 && user[0]?.is_staff;
 
   //The ID is passed from getCountries..
+  // SHOUKD BE USEPARAMS
   const { id } = props;
 
   const EditCountryValidation = object().shape({

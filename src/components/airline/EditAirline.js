@@ -13,17 +13,16 @@ import Button from "react-bootstrap/Button";
 import Input from "../common/Input";
 import { updateCountry } from "../../api/country/CountryApi";
 import { getAllCountries } from "../../api/country/CountryApi";
-
+import { updateAirlineCompany } from "../../api/airline/AirlineApi";
 
 export default function EditAirline(props) {
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_staff;
 
   //The ID is passed from getCountries..
-  const { id } = props;
+  const { airline_id } = useParams();
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
-
 
   const getCountries = () => {
     getAllCountries()
@@ -38,6 +37,7 @@ export default function EditAirline(props) {
   useEffect(() => {
     // Fetch countries from the API
     getCountries();
+    console.log("airlineID", airline_id);
   }, []);
 
   const EditAirlineValidation = object().shape({
@@ -50,8 +50,42 @@ export default function EditAirline(props) {
   const submitHandler = (values) => {
     // turn name input to lower cased
     values.name = values.name.toLowerCase();
+    values.country = selectedCountry;
+    console.log("values", values);
 
-    // Send a POST request to the API endpoint with the form data
+    // Send a put request to the API endpoint with the form data
+    try {
+      updateAirlineCompany(airline_id, values)
+        .then((response) => {
+          console.log(response);
+          // console.log(response.data);
+          if (response.status === 200) {
+            toast.success("Airline edited successfully!");
+            return response;
+          }
+        })
+        .catch((error) => {
+          console.debug(error);
+          console.debug("updateAirlineCompany failed", error.response.data);
+          // Set an error message for the form
+          for (const [key, value] of Object.entries(error.response.data)) {
+            toast.error(`updateAirlineCompany failed. ${key}: ${value[0]}`, {
+              // toast.error(`Login failed. ${error.response.data.detail}`, {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
+        });
+    } catch (error) {
+      console.log("editing error:", error.message);
+    }
+
     // updateCountry(id, values)
     //   .then((response) => {
     //     console.log(response.data);
@@ -137,7 +171,7 @@ export default function EditAirline(props) {
                     <div name="submit button" className="d-grid gap-2">
                       <Button type="submit" variant="outline-dark">
                         Save
-                      </Button>{" "}
+                      </Button>
                     </div>
                   </div>
                 </Form>
