@@ -52,166 +52,110 @@ export default function GetCountries() {
     // navigate(`edit/${id}`);
   };
 
-  const handleDeleteClick = (id) => {
-    console.log("Button clicked for ID:", id);
-    try {
-      // deleteAirlineCompany(id).then((response) => {
-      //   console.log("api response for deleteAirlineCompany", response);
-      //   console.log("api response for deleteAirlineCompany", response.status);
-      //   if (response.status === 204) {
-      //     toast.success("Airline deleted successful.");
-      //   } else {
-      //     toast.error("Airline not deleted.");
-      //   }
-      // });
-    } catch (error) {
-      console.log("Button api error deleteAirlineCompany", error);
-    }
-  };
-
   useEffect(() => {
     getCountriesList();
   }, []);
 
   return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-        }}
-      >
-        <h1>Countries</h1>
+    <div>
+      {isAdmin ? (
+        <>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <h1>Countries</h1>
 
-        {/* If admin -> display button of add country */}
-        {isAdmin && <Link to="/countries/add">add country</Link>}
+            {/* If admin -> display button of add country */}
+            {isAdmin && <Link to="/countries/add">add country</Link>}
 
-        <div style={{ width: "80%", maxWidth: "800px" }}>
-          <ListGroup>
-            <ListGroup.Item
-              className="d-flex justify-content-between align-items-start"
-              style={{ fontWeight: "bold" }}
-            >
-              <div className="ms-2 me-auto">Airline Name</div>
-              <div className="ms-4 me-auto">Airline Country</div>
-              <div className="ms-4 me-auto">Airline ID</div>
-            </ListGroup.Item>
+            <div style={{ width: "80%", maxWidth: "800px" }}>
+              <ListGroup>
+                <ListGroup.Item
+                  className="d-flex justify-content-between align-items-start"
+                  style={{ fontWeight: "bold" }}
+                >
+                  <div className="ms-2 me-auto">Airline Name</div>
+                  <div className="ms-4 me-auto">Airline Country</div>
+                  <div className="ms-4 me-auto">Airline ID</div>
+                </ListGroup.Item>
 
-            {countries.map((country, index) => (
-              <ListGroup.Item
-                key={index}
-                className="d-flex justify-content-between align-items-start"
-              >
-                <div className="ms-2 me-auto">
-                  {country.name.charAt(0).toUpperCase() + country.name.slice(1)}
-                </div>
-                <div className="ms-4 me-auto">
-                  <Link to={{ pathname: `/flights/${country.name}` }}>
-                    Flights
-                  </Link>
-                </div>
-                <Badge bg="primary" pill>
-                  {country.id}
-                </Badge>
+                {countries.map((country, index) => (
+                  <ListGroup.Item
+                    key={index}
+                    className="d-flex justify-content-between align-items-start"
+                  >
+                    <div className="ms-2 me-auto">
+                      {country.name.charAt(0).toUpperCase() +
+                        country.name.slice(1)}
+                    </div>
+                    <div className="ms-4 me-auto">
+                      <Link to={{ pathname: `/flights/${country.name}` }}>
+                        Flights
+                      </Link>
+                    </div>
+                    <Badge bg="primary" pill>
+                      {country.id}
+                    </Badge>
+                    <div className="ms-4 me-auto">
+                      <Button
+                        ref={target}
+                        onClick={() => toggleOverlay(country.id)}
+                      >
+                        <FontAwesomeIcon icon={faPen} />
+                      </Button>
 
-                <Dropdown>
-                  <Dropdown.Toggle variant="link" id={`dropdown-${index}`}>
-                    <FontAwesomeIcon icon={faEllipsisV} />
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => handleEditClick(country.id)}>
-                    Edit
-                  </Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleDeleteClick(country.id)}>
-                    Delete
-                  </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-        </div>
-      </div>
-      <h1>Explore destinations</h1>
-
-      {/* Each box has a country name, an edit button, and a button */}
-      <CardGroup>
-        <Row>
-          {countries.map((country) => (
-            <Col key={country.id} xs={12} sm={6} md={4}>
-              <Card>
-                <Card.Body>
-                  <Card.Title name="country name">
-                    {country.name.charAt(0).toUpperCase() +
-                      country.name.slice(1)}
-                  </Card.Title>
-                  <Card.Text>
-                    <Link to={{ pathname: `/flights/${country.name}` }}>
-                      Flights
-                    </Link>
-
-                    {isAdmin && (
-                      <>
-                        <Button
-                          ref={target}
-                          onClick={() => toggleOverlay(country.id)}
-                        >
-                          <FontAwesomeIcon icon={faPen} />
-                        </Button>
-
-                        <Overlay
-                          target={target.current}
-                          show={showOverlay && selectedCountryID === country.id} // Show overlay for the specific country
-                          placement="right"
-                        >
-                          {({
-                            arrowProps: _arrowProps,
-                            show: _show,
-                            popper: _popper,
-                            hasDoneInitialMeasure: _hasDoneInitialMeasure,
-                            ...props
-                          }) => (
-                            <div
-                              {...props}
-                              style={{
-                                backgroundColor: "rgba(245, 245, 245, 0.85)",
-                                padding: "2px 10px",
-                                color: "black",
-                                borderRadius: 3,
-                                ...props.style,
-                              }}
+                      <Overlay
+                        target={target.current}
+                        show={showOverlay && selectedCountryID === country.id} // Show overlay for the specific country
+                        placement="right"
+                      >
+                        {({
+                          arrowProps: _arrowProps,
+                          show: _show,
+                          popper: _popper,
+                          hasDoneInitialMeasure: _hasDoneInitialMeasure,
+                          ...props
+                        }) => (
+                          <div
+                            {...props}
+                            style={{
+                              backgroundColor: "rgba(245, 245, 245, 0.85)",
+                              padding: "2px 10px",
+                              color: "black",
+                              borderRadius: 3,
+                              ...props.style,
+                            }}
+                          >
+                            <DeleteCountry id={selectedCountryID} />
+                            <button
+                              onClick={() => toggleOverlay(null)}
+                              className="x_button"
                             >
-                              <DeleteCountry id={selectedCountryID} />
-                              <button
-                                onClick={() => toggleOverlay(null)}
-                                className="x_button"
-                              >
-                                <FontAwesomeIcon icon={faXmark} />
-                              </button>
-                              <EditCountry id={selectedCountryID} />
-                            </div>
-                          )}
-                        </Overlay>
-                      </>
-                    )}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </CardGroup>
-      <br />
+                              <FontAwesomeIcon icon={faXmark} />
+                            </button>
+                            <EditCountry id={selectedCountryID} />
+                          </div>
+                        )}
+                      </Overlay>
+                    </div>
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            </div>
+          </div>
 
-      {/* All flights */}
-      {/* <GetFlights/> */}
+          {/* All flights */}
+          {/* <GetFlights/> */}
 
-      {/* display list of countries and edit buttons */}
-      {/* <CheckGroup groups={['Administrator']}> */}
-      {/* link to add country */}
-      {/* <Link className='center_link'
+          {/* display list of countries and edit buttons */}
+          {/* <CheckGroup groups={['Administrator']}> */}
+          {/* link to add country */}
+          {/* <Link className='center_link'
               to={{
                   pathname: '/add_country'
               }}
@@ -219,13 +163,13 @@ export default function GetCountries() {
           Add country
           </Link> */}
 
-      {/* list of countries with a button to edit/ delete each country */}
-      {/* <div className='list-container'>
+          {/* list of countries with a button to edit/ delete each country */}
+          {/* <div className='list-container'>
               <h1 className='title'>Countries</h1> */}
-      {/* <div className='search-bar'>
+          {/* <div className='search-bar'>
                   <input type='text' placeholder='Search...' value={searchQuery} onChange={handleSearch} />
               </div> */}
-      {/* <ul className='list'>
+          {/* <ul className='list'>
                   {countries.map(country => 
                   (<li key={country.id}>
                       <span className='bold'>{country.id}</span>
@@ -243,7 +187,14 @@ export default function GetCountries() {
                   )}
               </ul>
           </div> */}
-      {/* </CheckGroup>; */}
-    </>
+          {/* </CheckGroup>; */}
+        </>
+      ) : (
+        <div>
+          {PermissionDenied()}
+          <Link to="/login">Login</Link>
+        </div>
+      )}
+    </div>
   );
 }

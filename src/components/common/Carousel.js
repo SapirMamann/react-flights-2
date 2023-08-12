@@ -52,7 +52,7 @@ export default function CarouselComponent() {
               <Carousel.Caption>
                 <h5>{country.name}</h5>
                 <p>
-                  Nulla vitae elit libero, a pharetra augue mollis interdum.
+                  Tap to view flights
                 </p>
               </Carousel.Caption>
             </button>

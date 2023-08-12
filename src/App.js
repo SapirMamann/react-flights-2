@@ -27,6 +27,7 @@ import RegisterAirlineCompany from "./components/auth/RegisterAirlineCompany";
 import GetAirlineCompanies from "./components/airline/GetAirlines";
 import EditAirline from "./components/airline/EditAirline";
 import CarouselComponent from "./components/common/Carousel";
+import GetCountries from "./components/country/GetCountries";
 
 export default function App() {
   return (
@@ -45,6 +46,7 @@ export default function App() {
           <Route path="/bla" element={<Bla />} />
           <Route path="/cust" element={<CreateCustomer />} />
           <Route path="/try" element={<Trying />} />
+          <Route path="/countries" element={<GetCountries />} />
           {/* <Route path="/tail" element={<NavbarDark />} /> */}
 
           <Route path="/countries">
