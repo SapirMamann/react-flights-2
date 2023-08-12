@@ -48,7 +48,9 @@ export default function RegisterAirlineCompany() {
 
     name: string()
       .required("A name is required")
-      .min(3, "Must be at least 3 characters"),
+      .min(3, "Must be at least 3 characters")
+      .matches(/^[a-zA-Z]+$/, "Only alphabetical letters are allowed"),
+
 
   });
 

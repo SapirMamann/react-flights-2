@@ -6,10 +6,15 @@ import http from "../http";
 // is there a point to use async and wait here?
 
 export function addNewCustomer(data) {
-  // using http for permissions check
-  const response = http.post('http://127.0.0.1:8000/api/customers/', data);
-  console.log("api response for addNewCustomer", response, data);
-  return response;
+  try {
+    // using http for permissions check
+    console.log(data);
+    const response = http.post('http://127.0.0.1:8000/api/customers/', data);
+    console.log("api response for addNewCustomer", response, data);
+    return response;
+  } catch (error) {
+    console.log("Error in addNewCustomer", error.message);
+  }
 };
 
 

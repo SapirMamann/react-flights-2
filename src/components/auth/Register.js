@@ -9,7 +9,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import "react-toastify/dist/ReactToastify.css";
 
 import { ApiLogin, apiRegister, getAllGroups } from "../../api/auth/AuthApi";
-
+import { addNewCustomer } from "../../api/customer/CustomerApi";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -36,6 +36,31 @@ export default function Register() {
 
     // groups: string()
     //   .required("Group is required"),
+    first_name: string()
+      .required("First name is required")
+      .min(2, "Must be at least 2 characters")
+      .matches(/^[a-zA-Z]+$/, "Only alphabetical letters are allowed"),
+
+    last_name: string()
+      .required("Last name is required")
+      .min(2, "Must be at least 2 characters")
+      .matches(/^[a-zA-Z]+$/, "Only alphabetical letters are allowed"),
+
+    address: string()
+      .required("Address is required")
+      .min(2, "Must be at least 2 characters"),
+
+    phone: string()
+      .required("Phone is required")
+      .min(10, "Phone must be exactly 10 digits")
+      .max(10, "Phone must be exactly 10 digits")
+      .matches(/^[0-9]+$/, "Only numbers are allowed"),
+
+    credit_card: string()
+      .required("Credit card is required")
+      .min(16, "Credit card must be exactly 16 digits")
+      .max(16, "Credit card must be exactly 16 digits")
+      .matches(/^[0-9]+$/, "Only numbers are allowed"),
   });
 
   const getGroups = () => {
@@ -56,49 +81,110 @@ export default function Register() {
   const submitHandler = async (values) => {
     //TODO: make the group required. cant do that because it has a problem with saving the value of the select and not sending the form for submission
     console.debug("values", values);
-    console.log(selectedGroup);
-    values.groups = selectedGroup;
-    console.debug("values", values);
-    apiRegister(values)
-      .then((response) => {
-        console.log("response", response);
-        //TODO: log the user after successful registration:
-        if (response === 201) {
-          // ApiLogin()
-          toast.success("Registration successful. You can now login.")
-        }
-      })
-      .catch((error) => {
-        console.debug(error);
-        console.log("Registration failed.", error.message);
-        console.debug("Register failed", error.response.data);
-        // Set an error message for the form
-        for (const [key, value] of Object.entries(error.response.data)) {
-          toast.error(`Register failed. ${key}: ${value[0]}`, {
-            // toast.error(`Login failed. ${error.response.data.detail}`, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
-      });
+
+    const userCreationValues = {
+      username: values.username.toLowerCase(),
+      email: values.email,
+      password: values.password,
+      password2: values.password2,
+      groups: "Customer",
+    };
+    console.log("userCreationValues", userCreationValues);
+
+    // console.log("customerValues", customerCreationValues);
+
+    try {
+      apiRegister(userCreationValues)
+        .then((response) => {
+          console.log("response", response);
+          //TODO: log the user after successful registration:
+          if (response.status === 201) {
+            // const user =
+            const customerCreationValues = {
+              user: response.data.id,
+              first_name: values.first_name.toLowerCase(),
+              last_name: values.last_name.toLowerCase(),
+              address: values.address.toLowerCase(),
+              phone: values.phone,
+              credit_card: values.credit_card,
+            };
+            try {
+              addNewCustomer(customerCreationValues);
+              toast.success("Registration successful. You can now login.");
+            } catch (error) {
+              console.log("error in addNewCustomer", error.message);
+            }
+          }
+        })
+        .catch((error) => {
+          console.debug(error);
+          console.log("Registration failed.", error.message);
+          console.debug("RegisterCustomer failed", error.response.data);
+          // Set an error message for the form
+          for (const [key, value] of Object.entries(error.response.data)) {
+            toast.error(`RegisterCustomer failed. ${key}: ${value[0]}`, {
+              // toast.error(`Login failed. ${error.response.data.detail}`, {
+              position: "top-left",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
+        });
+    } catch (error) {
+      console.debug("here", error);
+      console.log("Registration failed.", error.message);
+    }
   };
+
+  // apiRegister(values)
+  //   .then((response) => {
+  //     console.log("response", response);
+  //     //TODO: log the user after successful registration:
+  //     if (response === 201) {
+  //       // ApiLogin()
+  //       toast.success("Registration successful. You can now login.");
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.debug(error);
+  //     console.log("Registration failed.", error.message);
+  //     console.debug("Register failed", error.response.data);
+  //     // Set an error message for the form
+  //     for (const [key, value] of Object.entries(error.response.data)) {
+  //       toast.error(`Register failed. ${key}: ${value[0]}`, {
+  //         // toast.error(`Login failed. ${error.response.data.detail}`, {
+  //         position: "top-center",
+  //         autoClose: 5000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //     }
+  //   });
 
   return (
     <>
       <ToastContainer />
       <Formik
         initialValues={{
-          username: "test",
-          email: "test@example.com",
-          password: "test1234",
-          password2: "test1234",
-          groups: "",
+          username: "sapir",
+          email: "sapir@outlook.com",
+          password: "sapir1999",
+          password2: "sapir1999",
+          // groups: "",
+          first_name: "",
+          last_name: "",
+          address: "",
+          phone: "",
+          credit_card: "",
         }}
         onSubmit={(values) => submitHandler(values)}
         validationSchema={RegisterValidation}
@@ -161,27 +247,93 @@ export default function Register() {
                 />
               </FloatingLabel>
 
-              <FloatingLabel controlId="groups" label="Group">
+              {/* <FloatingLabel controlId="groups" label="Group">
                 <Field
                   name="groups"
                   component={bsForm.Select}
                   as="select"
                   onChange={(e) => {
-                    // console.log("selecttttt", e.target.value)
+                    console.log("selecttttt", e.target.value)
                     setSelectedGroup(e.target.value);
                   }}
                 >
                   <option>Select a group</option>
                   {groups.map((group, index) => (
                     <option key={index}>
-                      {/* {console.log(value)} */}
+                      {console.log(value)}
                       {group}
                     </option>
                   ))}
                 </Field>
                 <ErrorMessage name="groups" component="div" className="error" />
-              </FloatingLabel>
+              </FloatingLabel> */}
               <br />
+
+              <FloatingLabel controlId="first_name" label="First name">
+                <Field
+                  name="first_name"
+                  type="text"
+                  placeholder="First name"
+                  as={bsForm.Control}
+                />
+                <ErrorMessage
+                  name="first_name"
+                  component="div"
+                  className="error"
+                />
+              </FloatingLabel>
+
+              <FloatingLabel controlId="last_name" label="Last name">
+                <Field
+                  name="last_name"
+                  type="text"
+                  placeholder="Last name"
+                  as={bsForm.Control}
+                />
+                <ErrorMessage
+                  name="last_name"
+                  component="div"
+                  className="error"
+                />
+              </FloatingLabel>
+
+              <FloatingLabel controlId="address" label="Address">
+                <Field
+                  name="address"
+                  type="text"
+                  placeholder="Address"
+                  as={bsForm.Control}
+                />
+                <ErrorMessage
+                  name="address"
+                  component="div"
+                  className="error"
+                />
+              </FloatingLabel>
+
+              <FloatingLabel controlId="phone" label="phone">
+                <Field
+                  name="phone"
+                  type="text"
+                  placeholder="phone"
+                  as={bsForm.Control}
+                />
+                <ErrorMessage name="phone" component="div" className="error" />
+              </FloatingLabel>
+
+              <FloatingLabel controlId="credit_card" label="Credit Card Number">
+                <Field
+                  name="credit_card"
+                  type="text"
+                  placeholder="Credit Card Number"
+                  as={bsForm.Control}
+                />
+                <ErrorMessage
+                  name="credit_card"
+                  component="div"
+                  className="error"
+                />
+              </FloatingLabel>
 
               <div className="d-grid gap-2">
                 <Button type="submit" variant="secondary" size="lg">
