@@ -1,16 +1,26 @@
 import React, { useEffect, useState } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import Badge from "react-bootstrap/Badge";
+import Table from "react-bootstrap/Table";
 
 import { getAllFlights } from "../../api/flight/FlightApi";
-
 
 export default function GetFlightsPage() {
   const [flights, setFlights] = useState([]);
 
   const getFlights = () => {
-    getAllFlights()
-      .then((response)=> console.log(response))
+    try {
+      getAllFlights()
+        .then((response) => {
+          console.log(response);
+          setFlights(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -24,40 +34,43 @@ export default function GetFlightsPage() {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
+        
       }}
     >
-      <h1>All Flight</h1>
+      <h1>All Flights</h1>
       <div style={{ width: "80%", maxWidth: "800px" }}>
-        <ListGroup>
-          <ListGroup.Item
-            className="d-flex justify-content-between align-items-start"
-            style={{ fontWeight: "bold" }}
-          >
-            <div className="ms-2 me-auto">flight airline company</div>
-            <div className="ms-4 me-auto">flight origin country</div>
-            <div className="ms-4 me-auto">flight destination country</div>
-            <div className="ms-4 me-auto">flight depatrure time</div>
-            <div className="ms-4 me-auto">flight arrival time</div>
-            <div className="ms-4 me-auto">flight tickets</div>
-            <div className="ms-4 me-auto">flight ID</div>
-          </ListGroup.Item>
-
-          {flights.map((flight, index) => (
-            <ListGroup.Item
-              key={index}
-              className="d-flex justify-content-between align-items-start"
-            >
-              <div className="ms-2 me-auto">{flight.airline_company}</div>
-              <div className="ms-4 me-auto">{flight.landing_time}</div>
-              <Badge bg="primary" pill>
-                {flight.id}
-              </Badge>
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
+        <Table bordered>
+          <thead>
+            <tr>
+              <th>Airline company</th>
+              <th>Origin country</th>
+              <th>Destination country</th>
+              <th>Depatrure time</th>
+              <th>Landing time</th>
+              <th>Remaining tickets</th>
+              <th>Flight ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            {flights.map((flight, index) => (
+              <tr key={index}>
+                <td>{flight.airline_company}</td>
+                <td>{flight.origin_country}</td>
+                <td>{flight.destination_country}</td>
+                <td>{flight.departure_time}</td>
+                <td>{flight.landing_time}</td>
+                <td>{flight.remaining_tickets}</td>
+                <td>
+                  <Badge bg="primary" pill>
+                    {flight.id} 
+                  </Badge>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </div>
     </div>
-
   );
 }
 

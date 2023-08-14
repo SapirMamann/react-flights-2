@@ -44,6 +44,7 @@ export default function FlightDetail(props) {
             <p id="remaining_tickets">{flight.remaining_tickets}</p>
             {flight.origin_country} {flight.destination_country} with {flight.airline_company}
           </Card.Text>
+          {/* {flight.id} */}
           <Link to={`/flights/${flight.id}/book`} variant="btn btn-secondary">Select</Link>
         </Card.Body>
       </Card>

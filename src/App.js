@@ -40,16 +40,16 @@ export default function App() {
           <Route path="/register_airline_company" element={<RegisterAirlineCompany />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/car" element={<CarouselComponent />} />
+          {/* <Route path="/car" element={<CarouselComponent />} /> */}
           
           <Route path="/de" element={<DecodeToken />} />
-          <Route path="/bla" element={<Bla />} />
-          <Route path="/cust" element={<CreateCustomer />} />
+          {/* <Route path="/bla" element={<Bla />} /> */}
+          {/* <Route path="/cust" element={<CreateCustomer />} /> */}
           <Route path="/try" element={<Trying />} />
-          <Route path="/countries" element={<GetCountries />} />
           {/* <Route path="/tail" element={<NavbarDark />} /> */}
 
           <Route path="/countries">
+            <Route index element={<GetCountries />} />
             <Route path="add" element={<AddCountry />} />
             {/* <Route index element={<GetFlightsByCountryId/>}/>   
             <Route path=":id" element={<EditCountry/>}/>
@@ -71,7 +71,7 @@ export default function App() {
             <Route path="edit/:airline_id" element={<EditAirline />} /> 
           </Route>
 
-          <Route path="/tickets" element={GetUserTickets} />
+          <Route path="/my_tickets/:user_id" element={<GetUserTickets/>} />
 
           <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<NotFound />} />

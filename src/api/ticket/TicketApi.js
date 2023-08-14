@@ -4,12 +4,28 @@ import http from '../http';
 
 
 export function addNewTicket(data) {
-  // using http for permissions check
-  const response = http.post('http://127.0.0.1:8000/api/tickets/', data);
-  console.log("api response for addNewTicket", response, data);
-  return response;
+  try {
+    // using http for permissions check
+    const response = http.post('http://127.0.0.1:8000/api/tickets/', data);
+    console.log("api response for addNewTicket", response, data);
+    return response;
+  } catch (error) {
+    console.log("Error in addNewTicket ", error);
+  }
 };
 
+
+export const getTicketsByUser = async (user_id) => {
+  try {
+    // using http for permissions check
+    const response = await http.get(`http://127.0.0.1:8000/api/my_tickets/${user_id}/`);
+    console.log("Api response for getAllAirlines", response);
+    console.log("Api response for getAllAirlines data", response.data);
+    return response;
+  } catch (error) {
+    console.log("Error in getAllAirlines ", error);
+  }
+};
 
 
 // Getting all tickets from api

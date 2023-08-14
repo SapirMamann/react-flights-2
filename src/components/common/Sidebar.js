@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Nav,
   Navbar,
@@ -8,13 +8,12 @@ import {
   Offcanvas,
 } from "react-bootstrap";
 import { useStoreState } from "easy-peasy";
-import { useEffect } from "react";
 
 export default function Sidebar(props) {
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_staff;
   const isAirlineCompany = user?.length > 0 && user[0]?.groups[0] === 1;
-  
+
   useEffect(() => {
     console.log("user in sidebar", user);
     console.log("isAdmin in sidebar", isAdmin);
@@ -51,29 +50,57 @@ export default function Sidebar(props) {
 
             {/* Third section (dropdown) flights for admin and airline company */}
             {(isAdmin || isAirlineCompany) && (
-              <>  
-                <NavDropdown title="Flights" id={`offcanvasNavbarDropdown-expand`}>
-                  <NavDropdown.Item href="/flights">All flights</NavDropdown.Item>
-                  <NavDropdown.Item href="/flights/add">Add flight</NavDropdown.Item>
+              <>
+                <NavDropdown
+                  title="Flights"
+                  id={`offcanvasNavbarDropdown-expand`}
+                >
+                  <NavDropdown.Item href="/flights">
+                    All flights
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/flights/add">
+                    Add flight
+                  </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="#action5">
                     Something else here
                   </NavDropdown.Item>
                 </NavDropdown>
 
-                <NavDropdown title="Airlines" id={`offcanvasNavbarDropdown-expand`}>
-                  <NavDropdown.Item href="/register_airline_company">Add airline company</NavDropdown.Item>
-                  <NavDropdown.Item href="/airlines">All airlines</NavDropdown.Item>
+                <NavDropdown
+                  title="Airlines"
+                  id={`offcanvasNavbarDropdown-expand`}
+                >
+                  <NavDropdown.Item href="/register_airline_company">
+                    Add airline company
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/airlines">
+                    All airlines
+                  </NavDropdown.Item>
                 </NavDropdown>
 
-                <NavDropdown title="Countries" id={`offcanvasNavbarDropdown-expand`}>
-                  <NavDropdown.Item href="/countries">Countries</NavDropdown.Item>
-                  <NavDropdown.Item href="/countries/add">Add country</NavDropdown.Item>
+                <NavDropdown
+                  title="Countries"
+                  id={`offcanvasNavbarDropdown-expand`}
+                >
+                  <NavDropdown.Item href="/countries">
+                    Countries
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/countries/add">
+                    Add country
+                  </NavDropdown.Item>
                 </NavDropdown>
-                
-                <NavDropdown title="Admin" id={`offcanvasNavbarDropdown-expand`}>
-                  <NavDropdown.Item href="/register_airline_company">Add airline company</NavDropdown.Item>
-                  <NavDropdown.Item href="/flights/add">Add admin</NavDropdown.Item>
+
+                <NavDropdown
+                  title="Admin"
+                  id={`offcanvasNavbarDropdown-expand`}
+                >
+                  <NavDropdown.Item href="/register_airline_company">
+                    Add airline company
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/flights/add">
+                    Add admin
+                  </NavDropdown.Item>
                 </NavDropdown>
               </>
             )}

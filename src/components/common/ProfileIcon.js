@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIdCardClip } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.css';
-// import Button from 'react-bootstrap/Button';
+import { useStoreState } from "easy-peasy";
 
 import Logout from "../auth/Logout";
-import { useEffect } from "react";
 
 
 const ProfileIcon = () => {
+  const user = useStoreState((state) => state.user.user);
+  const userID = user?.length > 0 && user[0]?.id
+
   const [menuOpen, setMenuOpen] = useState(false);
   
   const toggleMenu = () => {
@@ -20,7 +22,8 @@ const ProfileIcon = () => {
   };
 
   useEffect(() => {
-
+    // console.log("user id", user[0].id)
+    console.log("user id", userID)
   }, []);
   
 
@@ -41,7 +44,8 @@ const ProfileIcon = () => {
         className={`dropdown-menu ${menuOpen ? 'show' : ''}`}
         aria-labelledby="profileIconDropdown"
       >
-        <li><a className="dropdown-item" href="/bla">Bla</a></li>
+        <li><a className="dropdown-item" href="/profile">Profile</a></li>
+        <li><a className="dropdown-item" href={`/my_tickets/${userID}`}>My tickets</a></li>
         <li><Logout/></li>
         {/* add: logged in -> he can see log out */}
       </ul>
