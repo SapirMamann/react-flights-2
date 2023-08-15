@@ -5,7 +5,10 @@ import http from "../../api/http";
 import FlightDetail from "./FlightDetail";
 import { getFlightsByCountry } from "../../api/flight/FlightApi";
 
+
 export default function GetFlightsByCountryId(props) {
+  //TODO: display only available flights/ flights that are in the future and have eniugh remaining tickets
+
   // Get the country name from url:
   const { country } = useParams();
   const [flights, setFlights] = useState([]);

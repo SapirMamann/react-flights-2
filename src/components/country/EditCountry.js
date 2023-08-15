@@ -12,7 +12,7 @@ import Button from "react-bootstrap/Button";
 
 import Input from "../common/Input";
 import { updateCountry } from "../../api/country/CountryApi";
-
+import { PermissionDenied } from "../../api/auth/CheckGroup";
 
 export default function EditCountry(props) {
   const user = useStoreState((state) => state.user.user);
@@ -60,7 +60,7 @@ export default function EditCountry(props) {
 
   return (
     <>
-      {isAdmin && (
+      {isAdmin ? (
         <div>
           <ToastContainer />
           <Formik
@@ -92,13 +92,19 @@ export default function EditCountry(props) {
                     {/* <button type="submit">Save</button> */}
 
                     <div name="submit button" className="d-grid gap-2">
-                      <Button type="submit" variant="outline-dark">Save</Button>{" "}
+                      <Button type="submit" variant="outline-dark">
+                        Save
+                      </Button>{" "}
                     </div>
                   </div>
                 </Form>
               );
             }}
           </Formik>
+        </div>
+      ) : (
+        <div>
+          <PermissionDenied />
         </div>
       )}
     </>

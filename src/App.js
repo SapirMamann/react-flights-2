@@ -17,7 +17,7 @@ import AddFlight from "./components/flight/AddFlight";
 import AddCountry from "./components/country/AddCountry";
 import BookFlight from "./components/flight/BookFlight";
 import Bla from "./components/common/bla";
-import CreateCustomer from "./components/customer/CreateCustomer";
+import CreateCustomer from "./components/customer/canbedeletedCreateCustomer";
 import Trying from "./components/common/trying";
 import DecodeToken from "./components/auth/DecodeToken";
 import GetUserTickets from "./components/ticket/GetUserTickets";
@@ -71,7 +71,7 @@ export default function App() {
             <Route path="edit/:airline_id" element={<EditAirline />} /> 
           </Route>
 
-          <Route path="/my_tickets/:user_id" element={<GetUserTickets/>} />
+          <Route path="/my_tickets" element={<GetUserTickets/>} />
 
           <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<NotFound />} />

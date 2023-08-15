@@ -30,8 +30,6 @@ export function getAllCountries() {
   }
 }
 
-
-
 // Getting country from api
 export const getCountryByID = async (id) => {
   // using http for permissions check
@@ -57,6 +55,8 @@ export const updateCountry = async (id, data) => {
     console.log("error in updateCountry", error.message);
   }
 };
+
+
 
 export const deleteCountry = async (id) => {
   try {

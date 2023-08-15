@@ -1,34 +1,55 @@
 import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ListGroup from "react-bootstrap/ListGroup";
 import Badge from "react-bootstrap/Badge";
-import { ToastContainer, toast } from "react-toastify";
+import Table from "react-bootstrap/Table";
+import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
-import Dropdown from "react-bootstrap/Dropdown";
 
-import {
-  getAllAirlines,
-  deleteAirlineCompany,
-  updateAirlineCompany,
-} from "../../api/airline/AirlineApi";
+import { getAllAirlines } from "../../api/airline/AirlineApi";
+import { DeleteAirlineByID } from "./DeleteAirlineByID";
 
 export default function GetAirlineCompanies() {
+  //TODO: isadmin permission required
+  // country name and not as id
+
   const navigate = useNavigate();
   const [airlineCompanies, setAirlineCompanies] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
+  // const getAirlinesCompanies = () => {
+  //   getAllAirlines()
+  //     .then((response) => {
+  //       console.log("air", response);
+  //       setAirlineCompanies(response);
+  //     })
+  //     .catch((error) => console.debug("airline fetching error", error));
+  // };
   const getAirlinesCompanies = () => {
-    getAllAirlines()
-      .then((response) => {
-        console.log("air", response);
-        setAirlineCompanies(response);
-      })
-      .catch((error) => console.debug("airline fetching error", error));
+    try {
+      getAllAirlines()
+        .then((response) => {
+          // console.log(searchQuery)
+          // console.log(response)
+          const filteredAirlines = response.filter(
+            (airline) =>
+              airline.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              (airline.country &&
+                airline.country
+                  .toString()
+                  .toLowerCase()
+                  .includes(searchQuery.toLowerCase())) ||
+              airline.id.toString().includes(searchQuery)
+          );
+          setAirlineCompanies(filteredAirlines);
+        })
+        .catch((error) => console.debug("airline fetching error", error));
+    } catch (error) {
+      console.debug("airline fetching error", error);
+    }
   };
-
-  useEffect(() => {
-    getAirlinesCompanies();
-  }, []);
 
   const handleEditClick = (id) => {
     console.log("Edit clicked for ID:", id);
@@ -36,40 +57,14 @@ export default function GetAirlineCompanies() {
     navigate(`edit/${id}`);
   };
 
-  // const handleEditClick = (id, data) => {
-  //   console.log("Button clicked for ID:", id);
-  //   try {
-  //     updateAirlineCompany(id, data)
-  //       .then((response) => {
-  //         console.log("api response for deleteAirlineCompany", response);
-  //         console.log("api response for deleteAirlineCompany", response.status);
-  //         if (response.status === 204) {
-  //           toast.success("Airline deleted successful.")
-  //         } else {
-  //           toast.error("Airline not deleted.")
-  //         }
-  //       })
-  //   } catch (error) {
-  //     console.log("Button api error deleteAirlineCompany", error);
-  //   }
-  // };
-
   const handleDeleteClick = (id) => {
-    console.log("Button clicked for ID:", id);
-    try {
-      deleteAirlineCompany(id).then((response) => {
-        console.log("api response for deleteAirlineCompany", response);
-        console.log("api response for deleteAirlineCompany", response.status);
-        if (response.status === 204) {
-          toast.success("Airline deleted successful.");
-        } else {
-          toast.error("Airline not deleted.");
-        }
-      });
-    } catch (error) {
-      console.log("Button api error deleteAirlineCompany", error);
-    }
+    console.log("here", id);
+    DeleteAirlineByID(id);
   };
+
+  useEffect(() => {
+    getAirlinesCompanies();
+  }, [searchQuery]);
 
   return (
     <div
@@ -81,45 +76,56 @@ export default function GetAirlineCompanies() {
       }}
     >
       <h1>Airline Companies</h1>
+      <input
+        type="text"
+        placeholder="Search"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <br />
       <div style={{ width: "80%", maxWidth: "800px" }}>
-        <ListGroup>
-          <ListGroup.Item
-            className="d-flex justify-content-between align-items-start"
-            style={{ fontWeight: "bold" }}
-          >
-            <div className="ms-2 me-auto">Airline Name</div>
-            <div className="ms-4 me-auto">Airline Country</div>
-            <div className="ms-4 me-auto">Airline ID</div>
-          </ListGroup.Item>
-
-          {airlineCompanies.map((airline, index) => (
-            <ListGroup.Item
-              key={index}
-              className="d-flex justify-content-between align-items-start"
-            >
-              <div className="ms-2 me-auto">{airline.name}</div>
-              <div className="ms-4 me-auto">{airline.country}</div>
-              <Badge bg="primary" pill>
-                {airline.id}
-              </Badge>
-
-              <Dropdown>
-                <Dropdown.Toggle variant="link" id={`dropdown-${index}`}>
-                  <FontAwesomeIcon icon={faEllipsisV} />
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => handleEditClick(airline.id)}>
-                    Edit
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleDeleteClick(airline.id)}>
-                    Delete
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Airline Name</th>
+              <th>Airline Country</th>
+              <th>Airline ID</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {airlineCompanies.map((airline, index) => (
+              <tr key={index}>
+                <td>{airline.name}</td>
+                <td>{airline.country}</td>
+                <td>
+                  <Badge bg="primary" pill>
+                    {airline.id}
+                  </Badge>
+                </td>
+                <td>
+                  <Dropdown>
+                    <Dropdown.Toggle variant="link" id={`dropdown-${index}`}>
+                      <FontAwesomeIcon icon={faEllipsisV} />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item
+                        onClick={() => handleEditClick(airline.id)}
+                      >
+                        Edit
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={() => handleDeleteClick(airline.id)}
+                      >
+                        Delete
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </div>
     </div>
   );

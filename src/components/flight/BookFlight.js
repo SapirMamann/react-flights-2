@@ -5,18 +5,20 @@ import Card from "react-bootstrap/Card";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import CreateCustomer from "../customer/CreateCustomer";
+import CreateCustomer from "../customer/canbedeletedCreateCustomer";
 import { getFlightByID } from "../../api/flight/FlightApi";
 import { addNewTicket } from "../../api/ticket/TicketApi";
 import { useStoreState } from "easy-peasy";
 
 export default function BookFlight() {
+  const user = useStoreState((state) => state.user.user);
+  const userID = user?.length > 0 && user[0]?.id;
+
   const navigate = useNavigate();
   const { flight_id } = useParams();
-  const user = useStoreState((state) => state.user.user);
 
   const [selectedFlight, setSelectedFlight] = useState([]);
-  const data = { flight_no: flight_id, user: user[0].id };
+  const data = { flight_no: flight_id, user: userID };
 
   const getFlightDetails = () => {
     getFlightByID(flight_id)
@@ -29,51 +31,51 @@ export default function BookFlight() {
       );
   };
 
+  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>30.07
+  const bookingSubmissionHandler = () => {
+    console.log(user);
+    // console.log("user not in, ", user === "")
+    // If user is not logged in then navigate to login
+    if (user.length > 0) {
+      console.log(data);
+      // send api request to add ticket
+      if (selectedFlight.remaining_tickets === 0) {
+        toast.error("No tickets available for this flight.");
+        return;
+      } else {
+        // If there are tickets available, then book
+        try {
+          addNewTicket(data)
+            .then((response) => {
+              console.log("booked", response);
+              toast.success(
+                "Thank you for booking. Redirecting to your tickets page..."
+              );
+              setTimeout(() => {
+                navigate("/my_tickets");
+              }, 2000);
+            })
+            .catch((error) => {
+              console.error("Booking failed", error);
+              toast.error(error.response.data.error);
+            });
+        } catch (error) {
+          console.error("Booking failed", error);
+        }
+      }
+    } else {
+      toast.error("Redirecting to login page...");
+      console.log("user is not logged in");
+      // Delay navigation by 2 seconds
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    }
+  };
+
   useEffect(() => {
     getFlightDetails();
   }, []);
-
-  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>30.07
-  const bookingSubmissionHandler = () => {
-    // console.log(user)
-    // console.log("user not in, ", user === "")
-    // If user is not logged in then navigate to login
-    if (user === "") {
-      toast.error("Please log in first");
-      console.log("user is not logged in");
-      return navigate("/login");
-    } else {
-      console.log(data);
-      // send api request to add ticket
-      try {
-        addNewTicket(data)
-          .then((response) => {
-            console.log("booked", response);
-            toast.success("Booked successfully");
-            navigate("/my_tickets");
-          }).catch((error) => {
-            console.error("Booking failed", error);
-            toast.error(error.response.data.error);
-          });
-      } catch (error) {
-        console.error("Booking failed", error);
-      }
-    }
-
-    // add if user is not logged in then sent him to login page
-    // console.log("user ", username);
-    // if (user === "") {
-    //   toast.error("Please log in first");
-    //   console.log("user is not logged in");
-    //   // return navigate('/login');
-    // }
-    // try {
-    //   addNewTicket(data);
-    //   console.log('booked');
-    // }catch (e){
-    //   console.error('Booking failed', e);
-    // };
-  };
 
   return (
     <div>

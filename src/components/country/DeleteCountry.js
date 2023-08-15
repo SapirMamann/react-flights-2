@@ -4,11 +4,16 @@ import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
+import { useStoreState } from "easy-peasy";
 
 import { deleteCountry } from "../../api/country/CountryApi";
+import { PermissionDenied } from "../../api/auth/CheckGroup";
 
 
 export default function DeleteCountry(props) {
+  const user = useStoreState((state) => state.user.user);
+  const isAdmin = user?.length > 0 && user[0]?.is_staff;
+
   //The ID is passed from getCountries..
   const { id } = props;
 
@@ -49,13 +54,17 @@ export default function DeleteCountry(props) {
 
   return (
     <>
-      <Button
-        onClick={(e) => {
-          deleteCountryHandler(e);
-        }}
-      >
-        <FontAwesomeIcon icon={faTrash} />
-      </Button>
+      {isAdmin ? (
+        <Button
+          onClick={(e) => {
+            deleteCountryHandler(e);
+          }}
+        >
+          <FontAwesomeIcon icon={faTrash} />
+        </Button>
+      ) : (
+        <PermissionDenied />
+      )}
     </>
   );
 }

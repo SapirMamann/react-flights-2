@@ -2,11 +2,18 @@ import React, { useEffect, useState } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import Badge from "react-bootstrap/Badge";
 import Table from "react-bootstrap/Table";
+import Dropdown from "react-bootstrap/Dropdown";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 
 import { getAllFlights } from "../../api/flight/FlightApi";
 
 export default function GetFlightsPage() {
+  //TODO: delete and edit with fontawsome action
+  // search component
+
   const [flights, setFlights] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const getFlights = () => {
     try {
@@ -22,6 +29,17 @@ export default function GetFlightsPage() {
       console.log(error);
     }
   };
+  
+  const handleEditClick = (id) => {
+    console.log("Edit clicked for ID:", id);
+    // Navigate to the edit page with the specific ID
+    navigate(`edit/${id}`);
+  };
+
+  const handleDeleteClick = (id) => {
+    console.log("here", id);
+    DeleteAirlineByID(id);
+  };
 
   useEffect(() => {
     getFlights();
@@ -34,12 +52,18 @@ export default function GetFlightsPage() {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        
       }}
     >
       <h1>All Flights</h1>
+      <input
+        type="text"
+        placeholder="Search"
+        // value={searchQuery}
+        // onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <br/>
       <div style={{ width: "80%", maxWidth: "800px" }}>
-        <Table bordered>
+        <Table striped bordered hover>
           <thead>
             <tr>
               <th>Airline company</th>
@@ -49,6 +73,7 @@ export default function GetFlightsPage() {
               <th>Landing time</th>
               <th>Remaining tickets</th>
               <th>Flight ID</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -62,8 +87,27 @@ export default function GetFlightsPage() {
                 <td>{flight.remaining_tickets}</td>
                 <td>
                   <Badge bg="primary" pill>
-                    {flight.id} 
+                    {flight.id}
                   </Badge>
+                </td>
+                <td>
+                  <Dropdown>
+                    <Dropdown.Toggle variant="link" id={`dropdown-${index}`}>
+                      <FontAwesomeIcon icon={faEllipsisV} />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item
+                        onClick={() => handleEditClick(flight.id)}
+                      >
+                        Edit
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={() => handleDeleteClick(flight.id)}
+                      >
+                        Delete
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </td>
               </tr>
             ))}

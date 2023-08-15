@@ -45,7 +45,7 @@ const ProfileIcon = () => {
         aria-labelledby="profileIconDropdown"
       >
         <li><a className="dropdown-item" href="/profile">Profile</a></li>
-        <li><a className="dropdown-item" href={`/my_tickets/${userID}`}>My tickets</a></li>
+        <li><a className="dropdown-item" href={`/my_tickets`}>My tickets</a></li>
         <li><Logout/></li>
         {/* add: logged in -> he can see log out */}
       </ul>
