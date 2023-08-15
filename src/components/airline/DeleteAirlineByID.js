@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { deleteAirlineCompany } from "../../api/airline/AirlineApi";
 
 
-export const DeleteAirlineByID = (airlineID) => {
+export const deleteAirlineByID = (airlineID) => {
   try {
     console.log("Button clicked for ID:", airlineID);
     deleteAirlineCompany(id).then((response) => {
@@ -17,6 +17,6 @@ export const DeleteAirlineByID = (airlineID) => {
       }
     });
   } catch (error) {
-    console.log("Button api error deleteAirlineCompany", error);
+    console.log("Api error in deleteAirlineByID", error);
   }
 };

@@ -12,11 +12,13 @@ import { useStoreActions } from "easy-peasy";
 import { isAuthenticated } from "../../api/http.js";
 import { ApiLogin } from "../../api/auth/AuthApi";
 
-
 export default function Login() {
   const navigate = useNavigate();
   const isLoggedIn = isAuthenticated();
   const fetchUser = useStoreActions((actions) => actions.user.fetchUser);
+  const setIsAuthenticated = useStoreActions(
+    (actions) => actions.user.setIsAuthenticated
+  );
 
   const loginValidation = object().shape({
     username: string().required("username is required"),
@@ -25,30 +27,36 @@ export default function Login() {
 
   const submitHandler = (event) => {
     console.log("login submission", event);
-    // Send a POST request to the API endpoint with the form data (event)
-    ApiLogin(event)
-      .then((response) => {
-        console.log("Response of login fetching", response);
-        // Save the refresh & access token to local storage
-        localStorage.setItem("access", response.data.access);
-        localStorage.setItem("refresh", response.data.refresh);
-        // After a successful login, redirect the user to the home page
-        fetchUser();
-        navigate("/");
-      })
-      .catch((error) => {
-        console.error("Login fetching error", Object.entries(error.response));
-        toast.error(`Login failed. ${error.response.data.detail}`, {
-          position: "top-left",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
+    try {
+      // Send a POST request to the API endpoint with the form data (event)
+      ApiLogin(event)
+        .then((response) => {
+          console.log("Response of login fetching", response);
+          // Save the refresh & access token to local storage
+          localStorage.setItem("access", response.data.access);
+          localStorage.setItem("refresh", response.data.refresh);
+          // Set store actions 
+          fetchUser();
+          setIsAuthenticated(true);
+          // After a successful login, redirect the user to the home page
+          navigate("/");
+        })
+        .catch((error) => {
+          console.error("Login fetching error", Object.entries(error.response));
+          toast.error(`Login failed. ${error.response.data.detail}`, {
+            position: "top-left",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         });
-      });
+    } catch (error) {
+      console.log("Login fetching error", error);
+    }
   };
 
   // Logged in user can't access login page
@@ -80,7 +88,7 @@ export default function Login() {
                     type="text"
                     placeholder="Username"
                     as={bsForm.Control}
-                    autoComplete="username" 
+                    autoComplete="username"
                   />
                   <ErrorMessage
                     name="username"
@@ -96,7 +104,7 @@ export default function Login() {
                     type="password"
                     placeholder="Password"
                     as={bsForm.Control}
-                    autoComplete="current-password" 
+                    autoComplete="current-password"
                   />
                   <ErrorMessage
                     name="password"

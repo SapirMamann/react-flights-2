@@ -63,13 +63,25 @@ export default function MyNavbar() {
 
 
   return (
-    <>
+    <div style={{ textAlign: 'center' }}>
       <Navbar
         bg={darkMode ? 'dark' : 'light'}
         variant={darkMode ? 'dark' : 'light'}
         expand=''
         className="mb-3"
       >
+      {/* <br /> */}
+      {/* <Navbar
+        bg={darkMode ? 'dark' : 'light'}
+        variant={darkMode ? 'dark' : 'light'}
+        expand=''
+        className="mb-3"
+        style={{
+          maxWidth: '900px',
+          margin: '0 auto',
+          borderRadius: '60px', // Increase border-radius for more rounding
+        }}
+      > */}
         <Container fluid>
           {/* Icon + name: */}
           <Navbar.Brand href="/" className="d-flex align-items-center">
@@ -109,6 +121,6 @@ export default function MyNavbar() {
           <Sidebar/>
         </Container>
       </Navbar>
-    </>
+    </div>
   );
 };

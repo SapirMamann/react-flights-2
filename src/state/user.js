@@ -8,6 +8,8 @@ export const userModel = {
   user: [],
   error: null,
   status: null, // Display loading, success, error..
+  isAuthenticated: false,
+
   setUser: action((state, payload) => {
     state.user.push(payload);
   }),
@@ -36,6 +38,9 @@ export const userModel = {
       actions.setStatus("failed");
       actions.setError(e.message);
     }
+  }),
+  setIsAuthenticated: action((state, payload) => {
+    state.isAuthenticated = payload;
   }),
 };
 

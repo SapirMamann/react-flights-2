@@ -13,6 +13,8 @@ export default function Logout() {
   const clearUserState = useStoreActions(
     (actions) => actions.user.clearUserState
   );
+  const setIsAuthenticated = useStoreActions((actions) => actions.user.setIsAuthenticated);
+
   const data = {
     refresh: localStorage.getItem("refresh"),
   };
@@ -24,16 +26,17 @@ export default function Logout() {
         .then((response) => {
           console.log(response.data);
           console.log("logged out");
+          setIsAuthenticated(false);
+          // Remove tokens from local storage
+          localStorage.removeItem("access");
+          localStorage.removeItem("refresh");
+          clearUserState();
           navigate("/");
         })
         .catch((error) => {
           console.error(error);
         });
 
-      // Remove tokens from local storage
-      localStorage.removeItem("access");
-      localStorage.removeItem("refresh");
-      clearUserState();
     } catch {
       console.error("Logout error");
     }

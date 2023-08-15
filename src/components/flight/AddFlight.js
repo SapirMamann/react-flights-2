@@ -18,6 +18,7 @@ import { getAllCountries } from "../../api/country/CountryApi";
 
 export default function AddFlight() {
   // TODO:
+  // add api request of add flight
   // send value of coountries and not the name of them
   // add permission to airline company 
   //handle submitttion

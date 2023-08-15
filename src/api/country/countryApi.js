@@ -2,6 +2,7 @@ import React from "react";
 
 import http from "../http";
 
+
 // is there a point to use async and wait here?
 
 export function addNewCountry(data) {
@@ -14,7 +15,7 @@ export function addNewCountry(data) {
   } catch (error) {
     console.log("error in addNewCountry", error.message);
   }
-}
+};
 
 
 
@@ -28,7 +29,9 @@ export function getAllCountries() {
   } catch (error) {
     console.log("error in getAllCountries", error.message);
   }
-}
+};
+
+
 
 // Getting country from api
 export const getCountryByID = async (id) => {

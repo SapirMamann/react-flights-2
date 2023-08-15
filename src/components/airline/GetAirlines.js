@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 
 import { getAllAirlines } from "../../api/airline/AirlineApi";
-import { DeleteAirlineByID } from "./DeleteAirlineByID";
+import { deleteAirlineByID } from "./DeleteAirlineByID";
 
 export default function GetAirlineCompanies() {
   //TODO: isadmin permission required
@@ -59,7 +59,7 @@ export default function GetAirlineCompanies() {
 
   const handleDeleteClick = (id) => {
     console.log("here", id);
-    DeleteAirlineByID(id);
+    deleteAirlineByID(id);
   };
 
   useEffect(() => {

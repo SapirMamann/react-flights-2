@@ -3,14 +3,23 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Badge from "react-bootstrap/Badge";
 import Table from "react-bootstrap/Table";
 import Dropdown from "react-bootstrap/Dropdown";
+import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useStoreState } from "easy-peasy";
 
 import { getAllFlights } from "../../api/flight/FlightApi";
+import { deleteFlightByID } from "./DeleteFlightByID";
+import { PermissionDenied } from "../../api/auth/CheckGroup";
 
 export default function GetFlightsPage() {
   //TODO: delete and edit with fontawsome action
   // search component
+  // airline can only edit their own flights
+
+  const user = useStoreState((state) => state.user.user);
+  const isAdmin = user?.length > 0 && user[0]?.is_staff;
+  const isAirlineCompany = user?.length > 0 && user[0]?.groups[0] === 1;
 
   const [flights, setFlights] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,7 +38,7 @@ export default function GetFlightsPage() {
       console.log(error);
     }
   };
-  
+
   const handleEditClick = (id) => {
     console.log("Edit clicked for ID:", id);
     // Navigate to the edit page with the specific ID
@@ -37,83 +46,109 @@ export default function GetFlightsPage() {
   };
 
   const handleDeleteClick = (id) => {
-    console.log("here", id);
-    DeleteAirlineByID(id);
+    // console.log("here", id);
+    deleteFlightByID(id);
   };
 
   useEffect(() => {
     getFlights();
+    console.log("flights", flights);
   }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      <h1>All Flights</h1>
-      <input
-        type="text"
-        placeholder="Search"
-        // value={searchQuery}
-        // onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <br/>
-      <div style={{ width: "80%", maxWidth: "800px" }}>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Airline company</th>
-              <th>Origin country</th>
-              <th>Destination country</th>
-              <th>Depatrure time</th>
-              <th>Landing time</th>
-              <th>Remaining tickets</th>
-              <th>Flight ID</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {flights.map((flight, index) => (
-              <tr key={index}>
-                <td>{flight.airline_company}</td>
-                <td>{flight.origin_country}</td>
-                <td>{flight.destination_country}</td>
-                <td>{flight.departure_time}</td>
-                <td>{flight.landing_time}</td>
-                <td>{flight.remaining_tickets}</td>
-                <td>
-                  <Badge bg="primary" pill>
-                    {flight.id}
-                  </Badge>
-                </td>
-                <td>
-                  <Dropdown>
-                    <Dropdown.Toggle variant="link" id={`dropdown-${index}`}>
-                      <FontAwesomeIcon icon={faEllipsisV} />
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item
-                        onClick={() => handleEditClick(flight.id)}
-                      >
-                        Edit
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => handleDeleteClick(flight.id)}
-                      >
-                        Delete
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
+    <div>
+      {isAdmin ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          <h1>All Flights</h1>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <input
+              type="text"
+              placeholder="Search"
+              // value={searchQuery}
+              // onChange={(e) => setSearchQuery(e.target.value)}
+              style={{ marginRight: "10px" }} 
+            />
+            <br />
+            <a
+              href={`/flights/`}
+              style={{ marginLeft: "auto", textAlign: "center" }}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </a>
+          </div>
+          <br />
+          <div style={{ width: "80%", maxWidth: "800px" }}>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Airline company</th>
+                  <th>Origin country</th>
+                  <th>Destination country</th>
+                  <th>Depatrure time</th>
+                  <th>Landing time</th>
+                  <th>Remaining tickets</th>
+                  <th>Flight ID</th>
+                  <th></th>
+                </tr>
+              </thead>
+              {flights && flights.length > 0 ? (
+                <tbody>
+                  {flights.map((flight, index) => (
+                    <tr key={index}>
+                      <td>{flight.airline_company}</td>
+                      <td>{flight.origin_country}</td>
+                      <td>{flight.destination_country}</td>
+                      <td>{flight.departure_time}</td>
+                      <td>{flight.landing_time}</td>
+                      <td>{flight.remaining_tickets}</td>
+                      <td>
+                        <Badge bg="primary" pill>
+                          {flight.id}
+                        </Badge>
+                      </td>
+                      <td>
+                        <Dropdown>
+                          <Dropdown.Toggle
+                            variant="link"
+                            id={`dropdown-${index}`}
+                          >
+                            <FontAwesomeIcon icon={faEllipsisV} />
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            <Dropdown.Item
+                              onClick={() => handleEditClick(flight.id)}
+                            >
+                              Edit
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() => handleDeleteClick(flight.id)}
+                            >
+                              Delete
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              ) : (
+                <tr>
+                  <td colSpan="8">No flights available.</td>
+                </tr>
+              )}
+            </Table>
+          </div>
+        </div>
+      ) : (
+        <PermissionDenied />
+      )}
     </div>
   );
 }

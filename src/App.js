@@ -28,6 +28,7 @@ import GetAirlineCompanies from "./components/airline/GetAirlines";
 import EditAirline from "./components/airline/EditAirline";
 import CarouselComponent from "./components/common/Carousel";
 import GetCountries from "./components/country/GetCountries";
+import EditCustomer from "./components/customer/EditCustomer";
 
 export default function App() {
   return (
@@ -41,6 +42,8 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           {/* <Route path="/car" element={<CarouselComponent />} /> */}
+          
+          <Route path="/edit_customer" element={<EditCustomer />} />
           
           <Route path="/de" element={<DecodeToken />} />
           {/* <Route path="/bla" element={<Bla />} /> */}
