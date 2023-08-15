@@ -14,7 +14,9 @@ import { addNewCustomer } from "../../api/customer/CustomerApi";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
 
 export default function EditCustomer() {
-  const user = useStoreState((state) => state.user.user);
+  // const user = useStoreState((state) => state.user.user);
+  const isAuthenticated = useStoreState((state) => state.user.isAuthenticated);
+
   const navigate = useNavigate();
   const [groups, setGroups] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState("");
@@ -176,7 +178,7 @@ export default function EditCustomer() {
   return (
     <>
       <ToastContainer />
-      {user ? (
+      {isAuthenticated ? (
         <Formik
           initialValues={{
             username: "sapir",

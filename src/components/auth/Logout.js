@@ -7,13 +7,14 @@ import Button from "react-bootstrap/Button";
 import { useStoreState } from "easy-peasy";
 import { ApiLogout } from "../../api/auth/AuthApi";
 
-
 export default function Logout() {
   const navigate = useNavigate();
   const clearUserState = useStoreActions(
     (actions) => actions.user.clearUserState
   );
-  const setIsAuthenticated = useStoreActions((actions) => actions.user.setIsAuthenticated);
+  const setIsAuthenticated = useStoreActions(
+    (actions) => actions.user.setIsAuthenticated
+  );
 
   const data = {
     refresh: localStorage.getItem("refresh"),
@@ -27,16 +28,16 @@ export default function Logout() {
           console.log(response.data);
           console.log("logged out");
           setIsAuthenticated(false);
-          // Remove tokens from local storage
-          localStorage.removeItem("access");
-          localStorage.removeItem("refresh");
-          clearUserState();
           navigate("/");
         })
         .catch((error) => {
           console.error(error);
         });
 
+      // Remove tokens from local storage
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      clearUserState();
     } catch {
       console.error("Logout error");
     }
