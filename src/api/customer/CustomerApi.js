@@ -3,8 +3,6 @@ import React from "react";
 import http from "../http";
 
 
-// is there a point to use async and wait here?
-
 export function addNewCustomer(data) {
   try {
     // using http for permissions check
@@ -29,13 +27,30 @@ export function addNewCustomer(data) {
 
 
 
-// // Getting country from api
-// export const getCountryByID = async (id) => {
-//   // using http for permissions check
-//   const response = await http.get(`http://127.0.0.1:8000/api/countries/${id}`);
-//   console.log("api response for getCountryByID", response);
-//   return response;
-// };
+// Getting customer by its user id from api
+export const getCustomerByUserID = async (UserID) => {
+  try {
+    // using http for permissions check
+    const response = await http.get(`http://127.0.0.1:8000/api/customers/${UserID}`);
+    console.log("api response for getCustomerByID", response, UserID);
+    return response;
+  } catch (error) {
+    console.log("Error in getCustomerByID", error.message);
+  }
+};
+
+
+
+export const getCustomerByID = async (customerID) => {
+  try {
+    // using http for permissions check
+    const response = await http.get(`http://127.0.0.1:8000/api/customers/${customerID}`);
+    console.log("api response for getCustomerByID", response, customerID);
+    return response;
+  } catch (error) {
+    console.log("Error in getCustomerByID", error.message);
+  }
+};
 
 
 

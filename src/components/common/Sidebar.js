@@ -98,7 +98,7 @@ export default function Sidebar(props) {
                   <NavDropdown.Item href="/register_airline_company">
                     Add airline company
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="/flights/add">
+                  <NavDropdown.Item href="/admins/add">
                     Add admin
                   </NavDropdown.Item>
                 </NavDropdown>

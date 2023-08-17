@@ -29,6 +29,8 @@ import EditAirline from "./components/airline/EditAirline";
 import CarouselComponent from "./components/common/Carousel";
 import GetCountries from "./components/country/GetCountries";
 import EditCustomer from "./components/customer/EditCustomer";
+import ProfilePage from "./pages/ProfilePage";
+import AddAdmin from "./components/auth/AddAdmin";
 
 export default function App() {
   return (
@@ -39,8 +41,10 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/register_airline_company" element={<RegisterAirlineCompany />} />
+          <Route path="/admins/add" element={<AddAdmin />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          {/* <Route path="/logout" element={<Logout />} /> */}
           {/* <Route path="/car" element={<CarouselComponent />} /> */}
           
           <Route path="/edit_customer" element={<EditCustomer />} />

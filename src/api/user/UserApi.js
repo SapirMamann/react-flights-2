@@ -15,14 +15,13 @@ export default async function getCurrentUserDetails() {
         },
       }
     );
-
     console.log("Api response for getCurrentUserDetails", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching getCurrentUserDetails:", error);
     throw error; // Rethrow the error to handle it in the calling code
   }
-}
+};
 
 
 
@@ -36,4 +35,4 @@ export function getUserByID(userID) {
     console.error("Error getUserByID:", error);
     throw error;
   }
-}
+};

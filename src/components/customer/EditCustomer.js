@@ -1,25 +1,51 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { number, object, ref, string } from "yup";
-import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { object, ref, string } from "yup";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import Button from "react-bootstrap/Button";
 import { default as bsForm } from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import "react-toastify/dist/ReactToastify.css";
 import { useStoreState } from "easy-peasy";
 
-import { ApiLogin, apiRegister, getAllGroups } from "../../api/auth/AuthApi";
-import { addNewCustomer } from "../../api/customer/CustomerApi";
+import { getCustomerByUserID } from "../../api/customer/CustomerApi";
+import { getAllGroups } from "../../api/auth/AuthApi";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
+import { getUserByID } from "../../api/user/UserApi";
 
 export default function EditCustomer() {
-  // const user = useStoreState((state) => state.user.user);
+  const user = useStoreState((state) => state.user.user);
+  const userID = user?.length > 0 && user[0]?.id;
   const isAuthenticated = useStoreState((state) => state.user.isAuthenticated);
 
   const navigate = useNavigate();
   const [groups, setGroups] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState("");
+
+  const [customerInitialValues, setCustomerInitialValues] = useState({
+    id: "",
+    user: "",
+    first_name: "",
+    last_name: "",
+    address: "",
+    phone: "",
+    credit_card: "",
+  });
+
+  const getGroups = () => {
+    try {
+      getAllGroups()
+        .then((response) => {
+          const groupNames = response.map((group) => group.name);
+          // console.log(groupNames);
+          setGroups(groupNames);
+        })
+        .catch((error) => console.debug("getGroups fetching error", error));
+    } catch (error) {
+      console.debug("getGroups error", error);
+    }
+  };
 
   const EditCustomerValidation = object().shape({
     username: string()
@@ -68,20 +94,33 @@ export default function EditCustomer() {
       .matches(/^[0-9]+$/, "Only numbers are allowed"),
   });
 
-  const getGroups = () => {
-    getAllGroups()
-      .then((response) => {
-        const groupNames = response.map((group) => group.name);
-        // console.log(groupNames);
-        setGroups(groupNames);
-      })
-      .catch((error) => console.debug("getGroups fetching error", error));
-  };
+  // useEffect(() => {
+  //   // Get the customer by its user ID (and not by customer ID)
+  //   getUserByID(userID)
+  //     .then((response) => {
+  //       console.log("response", response);
+  //     })
+  //     .catch((error) => {
+  //       console.log("error in getUserByID", error);
+  //     });
+  // }, []);
 
-  useEffect(() => {
-    // Fetch the groups from the API
-    getGroups();
-  }, []);
+  const getCustomerData = () => {
+    try {
+      // Get the customer by its user ID (and not by customer ID)
+      getCustomerByUserID(userID)
+        .then((response) => {
+          console.log("response for getCustomerByUserID", response);
+          setCustomerInitialValues(response.data);
+          console.log("customerInitialValues", customerInitialValues);
+        })
+        .catch((error) => {
+          console.log("error in getCustomerByUserID", error);
+        });
+    } catch (error) {
+      console.debug("getCustomerData error", error);
+    }
+  };
 
   const submitHandler = async (values) => {
     //TODO: make the group required. cant do that because it has a problem with saving the value of the select and not sending the form for submission
@@ -94,7 +133,7 @@ export default function EditCustomer() {
       password2: values.password2,
       groups: "Customer",
     };
-    console.log("userCreationValues", userCreationValues);
+    // console.log("userCreationValues", userCreationValues);
 
     // console.log("customerValues", customerCreationValues);
 
@@ -146,118 +185,116 @@ export default function EditCustomer() {
     // }
   };
 
-  // apiRegister(values)
-  //   .then((response) => {
-  //     console.log("response", response);
-  //     //TODO: log the user after successful registration:
-  //     if (response === 201) {
-  //       // ApiLogin()
-  //       toast.success("Registration successful. You can now login.");
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.debug(error);
-  //     console.log("Registration failed.", error.message);
-  //     console.debug("Register failed", error.response.data);
-  //     // Set an error message for the form
-  //     for (const [key, value] of Object.entries(error.response.data)) {
-  //       toast.error(`Register failed. ${key}: ${value[0]}`, {
-  //         // toast.error(`Login failed. ${error.response.data.detail}`, {
-  //         position: "top-center",
-  //         autoClose: 5000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //     }
-  //   });
+  useEffect(() => {
+    // Fetch the groups from the API
+    getGroups();
+    getCustomerData();
+  }, []);
+
+  // useEffect(() => {
+  //   console.log("customerInitialValues", customerInitialValues);
+  // }, [])
 
   return (
-    <>
-      <ToastContainer />
-      {isAuthenticated ? (
-        <Formik
-          initialValues={{
-            username: "sapir",
-            email: "sapir@outlook.com",
-            password: "sapir1999",
-            password2: "sapir1999",
-            // groups: "",
-            first_name: "",
-            last_name: "",
-            address: "",
-            phone: "",
-            credit_card: "",
-          }}
-          onSubmit={(values) => submitHandler(values)}
-          validationSchema={EditCustomerValidation}
-        >
-          {() => {
-            return (
-              <Form>
-                <FloatingLabel controlId="username" label="Username">
-                  <Field
-                    name="username"
-                    type="text"
-                    placeholder="Username"
-                    as={bsForm.Control}
-                    autoComplete="username"
-                  />
-                  <ErrorMessage
-                    name="username"
-                    component="div"
-                    className="error"
-                  />
-                </FloatingLabel>
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <div style={{ maxWidth: "500px", width: "100%", padding: "20px" }}>
+        <ToastContainer />
+        <p>hi</p>
+        {/* {customerInitialValues.map((field) => (
+          <p>{field.first_name}</p>
+        ))} */}
+        {Object.keys(customerInitialValues).map((fieldName) => (
+          <p>{fieldName.value}</p>
+        // <FloatingLabel key={fieldName} controlId={fieldName} label={fieldName.replace(/_/g, " ")}>
+        //   <Field
+        //     name={fieldName}
+        //     type="text"
+        //     as={bsForm.Control}
+        //   />
+        //   <ErrorMessage name={fieldName} component="div" className="error" />
+        // </FloatingLabel>
+      ))}
+      
+        {isAuthenticated ? (
+          <Formik
+            initialValues={{
+              username: user[0]?.username || "", // Using stored state to pre-populate the form
+              email: user[0]?.email || "",
+              password: "",
+              password2: "",
+              // groups: "",
+              first_name: customerInitialValues?.first_name || "",
+              last_name: "",
+              address: "",
+              phone: "",
+              credit_card: "",
+            }}
+            onSubmit={(values) => submitHandler(values)}
+            validationSchema={EditCustomerValidation}
+          >
+            {() => {
+              return (
+                <Form>
+                  <FloatingLabel controlId="username" label="Username">
+                    <Field
+                      name="username"
+                      type="text"
+                      placeholder="Username"
+                      as={bsForm.Control}
+                      autoComplete="username"
+                    />
+                    <ErrorMessage
+                      name="username"
+                      component="div"
+                      className="error"
+                    />
+                  </FloatingLabel>
 
-                <FloatingLabel controlId="email" label="Email">
-                  <Field
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                    as={bsForm.Control}
-                  />
-                  <ErrorMessage
-                    name="email"
-                    component="div"
-                    className="error"
-                  />
-                </FloatingLabel>
+                  <FloatingLabel controlId="email" label="Email">
+                    <Field
+                      name="email"
+                      type="email"
+                      placeholder="Email"
+                      as={bsForm.Control}
+                    />
+                    <ErrorMessage
+                      name="email"
+                      component="div"
+                      className="error"
+                    />
+                  </FloatingLabel>
 
-                <FloatingLabel controlId="password" label="Password">
-                  <Field
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    as={bsForm.Control}
-                    autoComplete="current-password"
-                  />
-                  <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="error"
-                  />
-                </FloatingLabel>
+                  <FloatingLabel controlId="password" label="Password">
+                    <Field
+                      name="password"
+                      type="password"
+                      placeholder="Password"
+                      as={bsForm.Control}
+                      autoComplete="current-password"
+                    />
+                    <ErrorMessage
+                      name="password"
+                      component="div"
+                      className="error"
+                    />
+                  </FloatingLabel>
 
-                <FloatingLabel controlId="password2" label="Password">
-                  <Field
-                    name="password2"
-                    type="password"
-                    placeholder="Password"
-                    as={bsForm.Control}
-                    autoComplete="current-password"
-                  />
-                  <ErrorMessage
-                    name="password2"
-                    component="div"
-                    className="error"
-                  />
-                </FloatingLabel>
+                  <FloatingLabel controlId="password2" label="Password">
+                    <Field
+                      name="password2"
+                      type="password"
+                      placeholder="Password"
+                      as={bsForm.Control}
+                      autoComplete="current-password"
+                    />
+                    <ErrorMessage
+                      name="password2"
+                      component="div"
+                      className="error"
+                    />
+                  </FloatingLabel>
 
-                {/* <FloatingLabel controlId="groups" label="Group">
+                  {/* <FloatingLabel controlId="groups" label="Group">
                 <Field
                   name="groups"
                   component={bsForm.Select}
@@ -277,93 +314,94 @@ export default function EditCustomer() {
                 </Field>
                 <ErrorMessage name="groups" component="div" className="error" />
               </FloatingLabel> */}
-                <br />
+                  <br />
 
-                <FloatingLabel controlId="first_name" label="First name">
-                  <Field
-                    name="first_name"
-                    type="text"
-                    placeholder="First name"
-                    as={bsForm.Control}
-                  />
-                  <ErrorMessage
-                    name="first_name"
-                    component="div"
-                    className="error"
-                  />
-                </FloatingLabel>
+                  <FloatingLabel controlId="first_name" label="First name">
+                    <Field
+                      name="first_name"
+                      type="text"
+                      placeholder="First name"
+                      as={bsForm.Control}
+                    />
+                    <ErrorMessage
+                      name="first_name"
+                      component="div"
+                      className="error"
+                    />
+                  </FloatingLabel>
 
-                <FloatingLabel controlId="last_name" label="Last name">
-                  <Field
-                    name="last_name"
-                    type="text"
-                    placeholder="Last name"
-                    as={bsForm.Control}
-                  />
-                  <ErrorMessage
-                    name="last_name"
-                    component="div"
-                    className="error"
-                  />
-                </FloatingLabel>
+                  <FloatingLabel controlId="last_name" label="Last name">
+                    <Field
+                      name="last_name"
+                      type="text"
+                      placeholder="Last name"
+                      as={bsForm.Control}
+                    />
+                    <ErrorMessage
+                      name="last_name"
+                      component="div"
+                      className="error"
+                    />
+                  </FloatingLabel>
 
-                <FloatingLabel controlId="address" label="Address">
-                  <Field
-                    name="address"
-                    type="text"
-                    placeholder="Address"
-                    as={bsForm.Control}
-                  />
-                  <ErrorMessage
-                    name="address"
-                    component="div"
-                    className="error"
-                  />
-                </FloatingLabel>
+                  <FloatingLabel controlId="address" label="Address">
+                    <Field
+                      name="address"
+                      type="text"
+                      placeholder="Address"
+                      as={bsForm.Control}
+                    />
+                    <ErrorMessage
+                      name="address"
+                      component="div"
+                      className="error"
+                    />
+                  </FloatingLabel>
 
-                <FloatingLabel controlId="phone" label="phone">
-                  <Field
-                    name="phone"
-                    type="text"
-                    placeholder="phone"
-                    as={bsForm.Control}
-                  />
-                  <ErrorMessage
-                    name="phone"
-                    component="div"
-                    className="error"
-                  />
-                </FloatingLabel>
+                  <FloatingLabel controlId="phone" label="phone">
+                    <Field
+                      name="phone"
+                      type="text"
+                      placeholder="phone"
+                      as={bsForm.Control}
+                    />
+                    <ErrorMessage
+                      name="phone"
+                      component="div"
+                      className="error"
+                    />
+                  </FloatingLabel>
 
-                <FloatingLabel
-                  controlId="credit_card"
-                  label="Credit Card Number"
-                >
-                  <Field
-                    name="credit_card"
-                    type="text"
-                    placeholder="Credit Card Number"
-                    as={bsForm.Control}
-                  />
-                  <ErrorMessage
-                    name="credit_card"
-                    component="div"
-                    className="error"
-                  />
-                </FloatingLabel>
+                  <FloatingLabel
+                    controlId="credit_card"
+                    label="Credit Card Number"
+                  >
+                    <Field
+                      name="credit_card"
+                      type="text"
+                      placeholder="Credit Card Number"
+                      as={bsForm.Control}
+                    />
+                    <ErrorMessage
+                      name="credit_card"
+                      component="div"
+                      className="error"
+                    />
+                  </FloatingLabel>
 
-                <div className="d-grid gap-2">
-                  <Button type="submit" variant="secondary" size="lg">
-                    Save
-                  </Button>
-                </div>
-              </Form>
-            );
-          }}
-        </Formik>
-      ) : (
-        <PermissionDenied />
-      )}
-    </>
+                  <div className="d-grid gap-2">
+                    <Button type="submit" variant="secondary" size="lg">
+                      Save
+                    </Button>
+                  </div>
+                </Form>
+              );
+            }}
+          </Formik>
+        ) : (
+          <PermissionDenied />
+        )}
+      </div>
+    </div>
   );
 }

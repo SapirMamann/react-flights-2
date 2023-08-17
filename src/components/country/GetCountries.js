@@ -17,6 +17,7 @@ import EditCountry from "./EditCountry";
 import GetFlightsByCountryId from "../flight/GetFlightsByCountry";
 import { getAllCountries } from "../../api/country/CountryApi";
 import DeleteCountry from "./DeleteCountry";
+import { PermissionDenied } from "../../api/auth/CheckGroup";
 
 export default function GetCountries() {
   const [countries, setCountries] = useState([]);
@@ -191,7 +192,7 @@ export default function GetCountries() {
         </>
       ) : (
         <div>
-          {PermissionDenied()}
+          <PermissionDenied/>
           <Link to="/login">Login</Link>
         </div>
       )}

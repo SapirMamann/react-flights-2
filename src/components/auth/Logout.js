@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 // import http from "../../api/http";
 import { useStoreState } from "easy-peasy";
 import { ApiLogout } from "../../api/auth/AuthApi";
+import { PermissionDenied } from "../../api/auth/CheckGroup";
 
 export default function Logout() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ export default function Logout() {
   const setIsAuthenticated = useStoreActions(
     (actions) => actions.user.setIsAuthenticated
   );
+  const isAuthenticated = useStoreState((state) => state.user.isAuthenticated);
 
   const data = {
     refresh: localStorage.getItem("refresh"),
@@ -50,8 +52,14 @@ export default function Logout() {
   // }
 
   return (
-    <Button onClick={() => submitHandler()} variant="light">
-      Logout
-    </Button>
+    <>
+      {isAuthenticated ? (
+        <Button onClick={() => submitHandler()} variant="light">
+          Logout
+        </Button>
+      ) : (
+        <PermissionDenied />
+      )}
+    </>
   );
 }

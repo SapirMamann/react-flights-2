@@ -45,7 +45,7 @@ export default function AddFlight() {
         console.log("FlightSearch useeffect getAllCountries", response);
         setOriginCountries(response.data);
         console.log("originCountries", response.data);
-        setDestinationCountries(response.data);
+        // setDestinationCountries(response.data);
       })
       .catch((error) => {
         console.log("FlightSearch useeffect getAllCountries error", error);

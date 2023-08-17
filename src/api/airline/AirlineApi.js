@@ -1,5 +1,3 @@
-import React from "react";
-
 import http from "../http";
 
 export function addNewAirlineCompany(data) {
@@ -12,7 +10,7 @@ export function addNewAirlineCompany(data) {
   } catch (error) {
     console.log("Error in addNewAirlineCompany", error.message);
   }
-}
+};
 
 export const getAllAirlines = async () => {
   try {
