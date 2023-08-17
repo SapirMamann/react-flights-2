@@ -71,11 +71,11 @@ export default function Sidebar(props) {
                   title="Airlines"
                   id={`offcanvasNavbarDropdown-expand`}
                 >
-                  <NavDropdown.Item href="/register_airline_company">
-                    Add airline company
-                  </NavDropdown.Item>
                   <NavDropdown.Item href="/airlines">
                     All airlines
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/register_airline_company">
+                    Add airline company
                   </NavDropdown.Item>
                 </NavDropdown>
 

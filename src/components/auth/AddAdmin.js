@@ -72,6 +72,9 @@ export default function AddAdmin() {
             try {
               addNewAdmin(adminCreationValues);
               toast.success("Registration successful. You can now login.");
+              setTimeout(() => {
+                navigate("/login");
+              }, 2000);
             } catch (error) {
               console.log("error in addNewAdmin", error.message);
             }

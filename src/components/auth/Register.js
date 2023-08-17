@@ -108,12 +108,33 @@ export default function Register() {
               phone: values.phone,
               credit_card: values.credit_card,
             };
-            try {
-              addNewCustomer(customerCreationValues);
-              toast.success("Registration successful. You can now login.");
-            } catch (error) {
-              console.log("error in addNewCustomer", error.message);
-            }
+
+            addNewCustomer(customerCreationValues)
+              .then((response) => {
+                console.log("response of creating customer", response);
+                if (response.status === 201) {
+                  // localStorage.setItem("customer_id", response.data.id)
+                  toast.success("Registration successful. You can now login.");
+                }
+              })
+              .catch((error) => {
+                console.log("error creating customer", error);
+                for (const [key, value] of Object.entries(
+                  error.response.data
+                )) {
+                  toast.error(`RegisterCustomer failed. ${key}: ${value[0]}`, {
+                    // toast.error(`Login failed. ${error.response.data.detail}`, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                  });
+                }
+              });
           }
         })
         .catch((error) => {
@@ -140,35 +161,6 @@ export default function Register() {
       console.log("Registration failed.", error.message);
     }
   };
-
-  // apiRegister(values)
-  //   .then((response) => {
-  //     console.log("response", response);
-  //     //TODO: log the user after successful registration:
-  //     if (response === 201) {
-  //       // ApiLogin()
-  //       toast.success("Registration successful. You can now login.");
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.debug(error);
-  //     console.log("Registration failed.", error.message);
-  //     console.debug("Register failed", error.response.data);
-  //     // Set an error message for the form
-  //     for (const [key, value] of Object.entries(error.response.data)) {
-  //       toast.error(`Register failed. ${key}: ${value[0]}`, {
-  //         // toast.error(`Login failed. ${error.response.data.detail}`, {
-  //         position: "top-center",
-  //         autoClose: 5000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //     }
-  //   });
 
   return (
     <>

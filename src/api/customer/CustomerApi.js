@@ -17,25 +17,15 @@ export function addNewCustomer(data) {
 
 
 
-// // Getting all countries from api
-// export function getAllCountries() {
-//   // using http for permissions check
-//   const response = http.get('http://127.0.0.1:8000/api/countries/');
-//   console.log("api response for getAllCountries", response);
-//   return response;
-// };
-
-
-
 // Getting customer by its user id from api
-export const getCustomerByUserID = async (UserID) => {
+export const getCustomerByUserID = async () => {
   try {
     // using http for permissions check
-    const response = await http.get(`http://127.0.0.1:8000/api/customers/${UserID}`);
-    console.log("api response for getCustomerByID", response, UserID);
+    const response = await http.get(`http://127.0.0.1:8000/api/customers/get_customer_by_user_id/`);
+    console.log("api response for getCustomerByUserID", response);
     return response;
   } catch (error) {
-    console.log("Error in getCustomerByID", error.message);
+    console.log("Error in getCustomerByUserID", error);
   }
 };
 
@@ -44,7 +34,7 @@ export const getCustomerByUserID = async (UserID) => {
 export const getCustomerByID = async (customerID) => {
   try {
     // using http for permissions check
-    const response = await http.get(`http://127.0.0.1:8000/api/customers/${customerID}`);
+    const response = await http.get(`http://127.0.0.1:8000/api/customers/${customerID}/`);
     console.log("api response for getCustomerByID", response, customerID);
     return response;
   } catch (error) {
@@ -54,20 +44,17 @@ export const getCustomerByID = async (customerID) => {
 
 
 
-// // Update country by passing ID
-// export const updateCountry = async (id) => {
-//   // using http for permissions check
-//   const response = await http.put(`http://127.0.0.1:8000/api/countries/${id}`);
-//   console.log("api response for updateCountry", response);
-//   return response;
-// };
+export const editCustomerByID = (customerID, customerEditValues) => {
+  try {
+    // using http for permissions check
+    const response = http.put(
+      `http://127.0.0.1:8000/api/customers/${customerID}/`, customerEditValues
+    );
+    console.log("Api response for editCustomerByID", customerID , customerEditValues );
+    console.log("Api response for editCustomerByID", response, customerID);
+    return response;
+  } catch (error) {
+    console.log("error for Api response for editCustomerByID ", error);
+  }
+};
 
-
-
-// // Delete country by passing ID
-// export const deleteCountry = async (id) => {
-//   // using http for permissions check
-//   const response = await http.delete(`http://127.0.0.1:8000/api/countries/${id}`);
-//   console.log("api response for deleteCountry", response);
-//   return response;
-// };

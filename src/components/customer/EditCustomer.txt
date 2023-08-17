@@ -22,20 +22,36 @@ export default function EditCustomer() {
   const user = useStoreState((state) => state.user.user);
   const userID = user?.length > 0 && user[0]?.id;
   const isAuthenticated = useStoreState((state) => state.user.isAuthenticated);
-  const [customerID, setCustomerID] = useState("")
-  // const customerID = localStorage.getItem("customer_id");
 
-  useEffect(() => {
-    getCustomerByUserID()
-      .then((response) => {
-        console.log("Customerbyuserid info", response)
-        setCustomerID(response.data.id)
-      })
-      .catch((error) => {
-        console.log("Customer didnt info by user id", error)
-      })
-  }, [])
-  
+  const customerID = localStorage.getItem("customer_id");
+  const [groups, setGroups] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState("");
+
+  const navigate = useNavigate();
+
+  const getGroups = () => {
+    try {
+      getAllGroups()
+        .then((response) => {
+          const groupNames = response.map((group) => group.name);
+          // console.log(groupNames);
+          setGroups(groupNames);
+        })
+        .catch((error) => console.debug("getGroups fetching error", error));
+    } catch (error) {
+      console.debug("getGroups error", error);
+    }
+  };
+  const [customerInitialValues, setCustomerInitialValues] = useState({
+    id: "",
+    user: "",
+    first_name: "",
+    last_name: "",
+    address: "",
+    phone: "",
+    credit_card: "",
+  });
+
   const EditCustomerValidation = object().shape({
     username: string()
       .required("A username is required")
@@ -80,7 +96,48 @@ export default function EditCustomer() {
       .max(16, "Credit card must be exactly 16 digits")
       .matches(/^[0-9]+$/, "Only numbers are allowed"),
   });
-  
+
+  useEffect(() => {
+    // Get the customer by its user ID (and not by customer ID)
+    getCustomerByUserID()
+      .then((response) => {
+        console.log("response", response);
+      })
+      .catch((error) => {
+        console.log("error in getUserByID", error);
+      });
+  }, []);
+
+  // useEffect(() => {
+    // Set customer id at local storage
+    // send request to get customer id
+  //   getCustomerByUserID()
+  //     .then((response) => {
+  //       console.log("response for getting customer by user id", response);
+  //       // localStorage.setItem("customer_id", response.data.id);
+  //     })
+  //     .catch((error) => {
+  //       console.log("error in getting customer by user id", error);
+  //     });
+  // }, []);
+
+  // const getCustomerData = () => {
+  //   try {
+  //     // Get the customer by its user ID (and not by customer ID)
+  //     getCustomerByUserID()
+  //       .then((response) => {
+  //         console.log("response for getCustomerByUserID", response);
+  //         setCustomerInitialValues(response.data);
+  //         console.log("customerInitialValues", customerInitialValues);
+  //       })
+  //       .catch((error) => {
+  //         console.log("error in getCustomerByUserID", error);
+  //       });
+  //   } catch (error) {
+  //     console.debug("getCustomerData error", error);
+  //   }
+  // };
+
   const submitHandler = async (values) => {
     //TODO: make the group required. cant do that because it has a problem with saving the value of the select and not sending the form for submission
     // console.debug("values", values);
@@ -110,7 +167,6 @@ export default function EditCustomer() {
             credit_card: values.credit_card,
           };
           // Send api request to update the customer info
-          console.log("updateCustomerInfo", customerEditValues)
 
           editCustomerByID(customerID, customerEditValues)
             .then((response) => {
@@ -144,6 +200,11 @@ export default function EditCustomer() {
       });
   };
 
+  useEffect(() => {
+    getGroups();
+    // For pre population of the form:
+    // getCustomerData();
+  }, []);
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
@@ -351,5 +412,5 @@ export default function EditCustomer() {
         )}
       </div>
     </div>
-  )
+  );
 }

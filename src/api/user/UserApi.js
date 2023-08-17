@@ -36,3 +36,18 @@ export function getUserByID(userID) {
     throw error;
   }
 };
+
+
+// For editing users based on their ID.
+export const editUserByID = (userID, data) => {
+  try {
+    // using http for permissions check
+    const response = http.put(
+      `http://127.0.0.1:8000/api/users/${userID}/`, data
+    );
+    console.log("Api response and data for editUserByID", response, data, userID);
+    return response;
+  } catch (error) {
+    console.log("Api response for editUserByID error", error);
+  }
+};

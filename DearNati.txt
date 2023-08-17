@@ -120,3 +120,6 @@ permission for create flight commented
 
 
 catch errors register new airline company.
+
+
+when register as customer: user succesfully gets 201 but then error in create customer. then dont create user!
