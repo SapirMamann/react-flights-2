@@ -47,17 +47,9 @@ export const deleteAirlineCompany = async (id) => {
       `http://127.0.0.1:8000/api/airlines/${id}/`
     );
     console.log("api response for deleteAirlineCompany", response);
-
-    if (response.status === 204) {
-      // Deletion successful with a "No Content" status
-      return response;
-    } else {
-      // Unexpected response status
-      throw new Error(`Unexpected response status: ${response.status}`);
-    }
+    return response;
   } catch (error) {
     console.log("error in deleteAirlineCompany", error);
-    console.log("error in deleteAirlineCompany", error.message);
     throw error; // Re-throw the error for the calling code to handle
   }
 };

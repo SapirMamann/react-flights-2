@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faXmark, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
-import { useStoreActions, useStoreState } from "easy-peasy";
+import Dropdown from "react-bootstrap/Dropdown";
 import Card from "react-bootstrap/Card";
 import CardGroup from "react-bootstrap/CardGroup";
 import { Row, Col } from "react-bootstrap";
@@ -11,7 +9,14 @@ import Overlay from "react-bootstrap/Overlay";
 import ListGroup from "react-bootstrap/ListGroup";
 import Badge from "react-bootstrap/Badge";
 import { ToastContainer, toast } from "react-toastify";
-import Dropdown from "react-bootstrap/Dropdown";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPen,
+  faXmark,
+  faEllipsisV,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import { useStoreActions, useStoreState } from "easy-peasy";
 
 import EditCountry from "./EditCountry";
 import GetFlightsByCountryId from "../flight/GetFlightsByCountry";
@@ -70,9 +75,26 @@ export default function GetCountries() {
             }}
           >
             <h1>Countries</h1>
-
-            {/* If admin -> display button of add country */}
-            {isAdmin && <Link to="/countries/add">add country</Link>}
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <input
+                type="text"
+                placeholder="Search"
+                // value={searchQuery}
+                // onChange={(e) => setSearchQuery(e.target.value)}
+                style={{ marginRight: "10px" }}
+              />
+              <br />
+              {/* If admin -> display button of add country */}
+              {isAdmin && (
+                <a
+                  href={`/countries/add`}
+                  style={{ marginLeft: "auto", textAlign: "center" }}
+                >
+                  <FontAwesomeIcon icon={faPlus} />
+                </a>
+              )}
+            </div>
+            <br />
 
             <div style={{ width: "80%", maxWidth: "800px" }}>
               <ListGroup>
@@ -192,7 +214,7 @@ export default function GetCountries() {
         </>
       ) : (
         <div>
-          <PermissionDenied/>
+          <PermissionDenied />
           <Link to="/login">Login</Link>
         </div>
       )}

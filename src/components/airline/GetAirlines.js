@@ -6,7 +6,7 @@ import Badge from "react-bootstrap/Badge";
 import Table from "react-bootstrap/Table";
 import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { getAllAirlines } from "../../api/airline/AirlineApi";
 import { deleteAirlineByID } from "./DeleteAirlineByID";
@@ -58,7 +58,6 @@ export default function GetAirlineCompanies() {
   };
 
   const handleDeleteClick = (id) => {
-    console.log("here", id);
     deleteAirlineByID(id);
   };
 
@@ -76,12 +75,22 @@ export default function GetAirlineCompanies() {
       }}
     >
       <h1>Airline Companies</h1>
-      <input
-        type="text"
-        placeholder="Search"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <input
+          type="text"
+          placeholder="Search"
+          // value={searchQuery}
+          // onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ marginRight: "10px" }}
+        />
+        <br />
+        <a
+          href={`/register_airline_company`}
+          style={{ marginLeft: "auto", textAlign: "center" }}
+        >
+          <FontAwesomeIcon icon={faPlus} />
+        </a>
+      </div>
       <br />
       <div style={{ width: "80%", maxWidth: "800px" }}>
         <Table striped bordered hover>
