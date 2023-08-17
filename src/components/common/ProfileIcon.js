@@ -10,7 +10,8 @@ import Logout from "../auth/Logout";
 const ProfileIcon = () => {
   const user = useStoreState((state) => state.user.user);
   const userID = user?.length > 0 && user[0]?.id
-
+  const isAdmin = user?.length > 0 && user[0]?.is_superuser;
+  
   const [menuOpen, setMenuOpen] = useState(false);
   
   const toggleMenu = () => {
@@ -21,10 +22,10 @@ const ProfileIcon = () => {
     setMenuOpen(false);
   };
 
-  useEffect(() => {
-    // console.log("user id", user[0].id)
-    console.log("user id", userID)
-  }, []);
+  // useEffect(() => {
+  //   // console.log("user id", user[0].id)
+  //   console.log("user id", isAdmin)
+  // }, []);
   
 
   return (
@@ -44,7 +45,14 @@ const ProfileIcon = () => {
         className={`dropdown-menu ${menuOpen ? 'show' : ''}`}
         aria-labelledby="profileIconDropdown"
       >
-        <li><a className="dropdown-item" href="/profile">Your profile</a></li>
+        {isAdmin ? (
+          // Admin profile page -- not modified yet
+          <li><a className="dropdown-item" href="/profile">Your profile</a></li>
+        ) : (
+          // Customer profile page
+          <li><a className="dropdown-item" href="/profile">Your profile</a></li>
+        )}
+
         <li><a className="dropdown-item" href={`/my_tickets`}>My tickets</a></li>
         <li><Logout/></li>
         {/* add: logged in -> he can see log out */}

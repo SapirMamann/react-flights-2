@@ -14,7 +14,7 @@ import { addNewAdmin } from "../../api/admin/AdminApi";
 export default function AddAdmin() {
   const navigate = useNavigate();
 
-  const RegisterValidation = object().shape({
+  const AddAdminValidation = object().shape({
     username: string()
       .required("A username is required")
       .min(3, "Must be at least 3 characters"),
@@ -119,7 +119,7 @@ export default function AddAdmin() {
           last_name: "",
         }}
         onSubmit={(values) => submitHandler(values)}
-        validationSchema={RegisterValidation}
+        validationSchema={AddAdminValidation}
       >
         {() => {
           return (

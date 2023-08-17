@@ -82,7 +82,6 @@ export default function EditCustomer() {
   });
   
   const submitHandler = async (values) => {
-    //TODO: make the group required. cant do that because it has a problem with saving the value of the select and not sending the form for submission
     // console.debug("values", values);
     // console.debug("values user id", userID);
 
@@ -91,7 +90,6 @@ export default function EditCustomer() {
       email: values.email,
       password: values.password,
       password2: values.password2,
-      // groups: "Customer",
     };
 
     console.log("userEditValues", userEditValues);

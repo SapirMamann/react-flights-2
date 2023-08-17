@@ -31,6 +31,7 @@ import GetCountries from "./components/country/GetCountries";
 import EditCustomer from "./components/customer/EditCustomer";
 import ProfilePage from "./pages/ProfilePage";
 import AddAdmin from "./components/auth/AddAdmin";
+import EditAdmin from "./components/admin/EditAdmin";
 
 export default function App() {
   return (
@@ -47,7 +48,9 @@ export default function App() {
           {/* <Route path="/logout" element={<Logout />} /> */}
           {/* <Route path="/car" element={<CarouselComponent />} /> */}
           
-          <Route path="/edit_customer" element={<EditCustomer />} />
+          <Route path="/admins/edit" element={<EditAdmin />} />
+
+          <Route path="/customers/edit" element={<EditCustomer />} />
           
           <Route path="/de" element={<DecodeToken />} />
           {/* <Route path="/bla" element={<Bla />} /> */}
