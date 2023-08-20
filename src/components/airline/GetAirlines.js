@@ -11,6 +11,7 @@ import { faEllipsisV, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { getAllAirlines } from "../../api/airline/AirlineApi";
 import { deleteAirlineByID } from "./DeleteAirlineByID";
 
+
 export default function GetAirlineCompanies() {
   //TODO: isadmin permission required
   // country name and not as id
@@ -66,76 +67,89 @@ export default function GetAirlineCompanies() {
   }, [searchQuery]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      <h1>Airline Companies</h1>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <input
-          type="text"
-          placeholder="Search"
-          // value={searchQuery}
-          // onChange={(e) => setSearchQuery(e.target.value)}
-          style={{ marginRight: "10px" }}
-        />
-        <br />
-        <a
-          href={`/register_airline_company`}
-          style={{ marginLeft: "auto", textAlign: "center" }}
+    <div>
+      <ToastContainer />
+      {isAdmin ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
         >
-          <FontAwesomeIcon icon={faPlus} />
-        </a>
-      </div>
-      <br />
-      <div style={{ width: "80%", maxWidth: "800px" }}>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Airline Name</th>
-              <th>Airline Country</th>
-              <th>Airline ID</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {airlineCompanies.map((airline, index) => (
-              <tr key={index}>
-                <td>{airline.name}</td>
-                <td>{airline.country}</td>
-                <td>
-                  <Badge bg="primary" pill>
-                    {airline.id}
-                  </Badge>
-                </td>
-                <td>
-                  <Dropdown>
-                    <Dropdown.Toggle variant="link" id={`dropdown-${index}`}>
-                      <FontAwesomeIcon icon={faEllipsisV} />
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item
-                        onClick={() => handleEditClick(airline.id)}
-                      >
-                        Edit
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => handleDeleteClick(airline.id)}
-                      >
-                        Delete
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
+          <h1>Airline Companies</h1>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <input
+              type="text"
+              placeholder="Search"
+              // value={searchQuery}
+              // onChange={(e) => setSearchQuery(e.target.value)}
+              style={{ marginRight: "10px" }}
+            />
+            <br />
+            <a
+              href={`/register_airline_company`}
+              style={{ marginLeft: "auto", textAlign: "center" }}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </a>
+          </div>
+          <br />
+          <div style={{ width: "80%", maxWidth: "800px" }}>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Airline Name</th>
+                  <th>Airline Country</th>
+                  <th>Airline ID</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {airlineCompanies.map((airline, index) => (
+                  <tr key={index}>
+                    <td>{airline.name}</td>
+                    <td>{airline.country}</td>
+                    <td>
+                      <Badge bg="primary" pill>
+                        {airline.id}
+                      </Badge>
+                    </td>
+                    <td>
+                      <Dropdown>
+                        <Dropdown.Toggle
+                          variant="link"
+                          id={`dropdown-${index}`}
+                        >
+                          <FontAwesomeIcon icon={faEllipsisV} />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          <Dropdown.Item
+                            onClick={() => handleEditClick(airline.id)}
+                          >
+                            Edit
+                          </Dropdown.Item>
+                          <Dropdown.Item
+                            onClick={() => handleDeleteClick(airline.id)}
+                          >
+                            Delete
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <PermissionDenied />
+          <Link to="/login">Login</Link>
+        </div>
+      )}
     </div>
   );
 }

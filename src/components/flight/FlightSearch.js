@@ -28,6 +28,19 @@ export default function FlightSearch() {
 
   // const navigate = useNavigate();
 
+  const animatedComponentsStyles = {
+    control: (provided) => ({
+      ...provided,
+      border: "1px solid gray",
+      borderRadius: "4px",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? "lightblue" : "white",
+      color: state.isFocused ? "white" : "black",
+    }),
+  };
+
   const submitHandler = (event) => {
     console.log("values", event);
     // console.log("Origin Country:", values.origin_country);
@@ -98,23 +111,10 @@ export default function FlightSearch() {
   const handleDateTimeChange = (date) => {
     setSelectedDateTime(date);
   };
-
-  // Style for countries selector
-  const animatedComponentsStyles = {
-    control: (provided) => ({
-      ...provided,
-      border: "1px solid gray",
-      borderRadius: "4px",
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isFocused ? "lightblue" : "white",
-      color: state.isFocused ? "white" : "black",
-    }),
-  };
+  
 
   return (
-    <div>
+    <div style={{ maxWidth: "900px", margin: "0 auto", padding: "20px", border: "1px solid #ccc", borderRadius: "10px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}>
       <ToastContainer />
       <Formik
         initialValues={{
@@ -128,54 +128,51 @@ export default function FlightSearch() {
         {() => {
           return (
             <Form>
-              <div>
-                {/* Drop down of origin countries: */}
-                <label for="origin_country">From:</label>
-                
-                <Select
-                  name="origin_country"
-                  id="origin_country"
-                  options={options}
-                  value={selectedOriginCountry}
-                  onChange={handleOriginCountryChange}
-                  //adding a style to the selector:
-                  components={animatedComponents}
-                  styles={animatedComponentsStyles}
-                  placeholder="Select origin country"
-                />
-                
-
-                <label for="destination_country">To:</label>
-                <Select
-                  name="destination_country"
-                  id="destination_country"
-                  options={options}
-                  value={selectedDestinationCountry}
-                  onChange={handleDestinationCountryChange}
-                  //adding a style to the selector:
-                  components={animatedComponents}
-                  styles={animatedComponentsStyles}
-                  placeholder="Select destination country"
-                />
-
-                {/* <input type="text" name="destination_country" label="Destination country"/> */}
-                <label for="departure_time">Departure time:</label>
-                <DatePicker
-                  name="departure_time"
-                  id="departure_time"
-                  selected={departureTime}
-                  onChange={(date) => {
-                    handleDateTimeChange(date);
-                  }}
-                  dateFormat="yyyy-MM-dd'T'HH:mm:ss'Z'"
-                  showTimeInput
-                  timeInputLabel="Time:"
-                  withPortal
-                />
-                {/* <button type="submit">
-                  <FontAwesomeIcon icon={faSearch} />
-                </button> */}
-                <button type="submit">Search</button>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ marginBottom: "10px" }}>
+                  <label htmlFor="origin_country">From:</label>
+                  <Select
+                    name="origin_country"
+                    id="origin_country"
+                    options={options}
+                    value={selectedOriginCountry}
+                    onChange={handleOriginCountryChange}
+                    components={animatedComponents}
+                    styles={animatedComponentsStyles}
+                    placeholder="Select origin country"
+                  />
+                </div>
+                <div style={{ marginBottom: "10px" }}>
+                  <label htmlFor="destination_country">To:</label>
+                  <Select
+                    name="destination_country"
+                    id="destination_country"
+                    options={options}
+                    value={selectedDestinationCountry}
+                    onChange={handleDestinationCountryChange}
+                    components={animatedComponents}
+                    styles={animatedComponentsStyles}
+                    placeholder="Select destination country"
+                  />
+                </div>
+                <div style={{ marginBottom: "10px" }}>
+                  <label htmlFor="departure_time">Departure time:</label>
+                  <DatePicker
+                    name="departure_time"
+                    id="departure_time"
+                    selected={departureTime}
+                    onChange={(date) => {
+                      handleDateTimeChange(date);
+                    }}
+                    dateFormat="yyyy-MM-dd'T'HH:mm:ss'Z'"
+                    showTimeInput
+                    timeInputLabel="Time:"
+                    withPortal
+                  />
+                </div>
+                <div>
+                  <button style={{ backgroundColor: "#007bff", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "5px", cursor: "pointer" }} type="submit">Search</button>
+                </div>
               </div>
             </Form>
           );

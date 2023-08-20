@@ -50,6 +50,6 @@ export const deleteAirlineCompany = async (id) => {
     return response;
   } catch (error) {
     console.log("error in deleteAirlineCompany", error);
-    throw error; // Re-throw the error for the calling code to handle
+    throw error; 
   }
 };

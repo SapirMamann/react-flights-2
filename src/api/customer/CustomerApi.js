@@ -11,7 +11,20 @@ export function addNewCustomer(data) {
     console.log("api response for addNewCustomer", response, data);
     return response;
   } catch (error) {
-    console.log("Error in addNewCustomer", error.message);
+    console.log("Error in addNewCustomer fetching", error.message);
+  }
+};
+
+
+
+export const getAllCustomers = async () => {
+  try {
+    // using http for permissions check
+    const response = await http.get(`http://127.0.0.1:8000/api/customers/`);
+    console.log("api response for getAllCustomers", response);
+    return response;
+  } catch (error) {
+    console.log("Error in getAllCustomers fetching", error);
   }
 };
 
@@ -25,7 +38,7 @@ export const getCustomerByUserID = async () => {
     console.log("api response for getCustomerByUserID", response);
     return response;
   } catch (error) {
-    console.log("Error in getCustomerByUserID", error);
+    console.log("Error in getCustomerByUserID fetching", error);
   }
 };
 
@@ -38,7 +51,7 @@ export const getCustomerByID = async (customerID) => {
     console.log("api response for getCustomerByID", response, customerID);
     return response;
   } catch (error) {
-    console.log("Error in getCustomerByID", error.message);
+    console.log("Error in getCustomerByID fetching", error.message);
   }
 };
 
@@ -54,7 +67,22 @@ export const editCustomerByID = (customerID, customerEditValues) => {
     console.log("Api response for editCustomerByID", response, customerID);
     return response;
   } catch (error) {
-    console.log("error for Api response for editCustomerByID ", error);
+    console.log("error for Api fetching of editCustomerByID ", error);
   }
 };
 
+
+export const deleteCustomer = async (customerID) => {
+  console.log("Api response for deleteCustomerByID", customerID)
+  try {
+    // using http for permissions check
+    const response = await http.delete(
+      `http://127.0.0.1:8000/api/customers/${customerID}/`
+    );
+    console.log("api response for deleteCustomer", response);
+    return response;
+  } catch (error) {
+    console.log("error in deleteCustomer", error.message);
+    throw error; 
+  }
+};

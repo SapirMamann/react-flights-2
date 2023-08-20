@@ -5,7 +5,6 @@ import Card from "react-bootstrap/Card";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import CreateCustomer from "../customer/canbedeletedCreateCustomer";
 import { getFlightByID } from "../../api/flight/FlightApi";
 import { addNewTicket } from "../../api/ticket/TicketApi";
 import { useStoreState } from "easy-peasy";

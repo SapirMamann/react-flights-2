@@ -25,31 +25,32 @@ import DeleteCountry from "./DeleteCountry";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
 
 export default function GetCountries() {
+  const user = useStoreState((state) => state.user.user);
+  const isAdmin = user?.length > 0 && user[0]?.is_superuser;
+
   const [countries, setCountries] = useState([]);
   const [selectedCountryID, setSelectedCountryID] = useState(null);
-  const user = useStoreState((state) => state.user.user);
-  const isAdmin = user?.length > 0 && user[0]?.is_staff;
 
   // const navigate = useNavigate();
   // const { refs, floatingStyles } = useFloating();
 
   const target = useRef(null);
   const [showOverlay, setShowOverlay] = useState(false);
+  
+    const getCountriesList = () => {
+      getAllCountries()
+        .then((response) => {
+          setCountries(response.data);
+          // console.log("getCountriesList", response.data);
+        })
+        .catch((error) =>
+          console.debug("getCountriesList fetching error", error)
+        );
+    };
 
   const toggleOverlay = (id) => {
     setSelectedCountryID(id);
     setShowOverlay(true);
-  };
-
-  const getCountriesList = () => {
-    getAllCountries()
-      .then((response) => {
-        setCountries(response.data);
-        // console.log("getCountriesList", response.data);
-      })
-      .catch((error) =>
-        console.debug("getCountriesList fetching error", error)
-      );
   };
 
   const handleEditClick = (id) => {
@@ -171,46 +172,6 @@ export default function GetCountries() {
               </ListGroup>
             </div>
           </div>
-
-          {/* All flights */}
-          {/* <GetFlights/> */}
-
-          {/* display list of countries and edit buttons */}
-          {/* <CheckGroup groups={['Administrator']}> */}
-          {/* link to add country */}
-          {/* <Link className='center_link'
-              to={{
-                  pathname: '/add_country'
-              }}
-          >
-          Add country
-          </Link> */}
-
-          {/* list of countries with a button to edit/ delete each country */}
-          {/* <div className='list-container'>
-              <h1 className='title'>Countries</h1> */}
-          {/* <div className='search-bar'>
-                  <input type='text' placeholder='Search...' value={searchQuery} onChange={handleSearch} />
-              </div> */}
-          {/* <ul className='list'>
-                  {countries.map(country => 
-                  (<li key={country.id}>
-                      <span className='bold'>{country.id}</span>
-                      <span className='bold'>{country.name}</span>
-                      <Link className='center_link'
-                      to={{
-                          pathname: `/countries/${country.id}`,
-                          // state: {user}
-                      }}
-                      key={country.id}
-                      >
-                      Edit/ Delete
-                      </Link>
-                  </li>)
-                  )}
-              </ul>
-          </div> */}
-          {/* </CheckGroup>; */}
         </>
       ) : (
         <div>

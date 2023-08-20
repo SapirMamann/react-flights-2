@@ -17,7 +17,6 @@ import AddFlight from "./components/flight/AddFlight";
 import AddCountry from "./components/country/AddCountry";
 import BookFlight from "./components/flight/BookFlight";
 import Bla from "./components/common/bla";
-import CreateCustomer from "./components/customer/canbedeletedCreateCustomer";
 import Trying from "./components/common/trying";
 import DecodeToken from "./components/auth/DecodeToken";
 import GetUserTickets from "./components/ticket/GetUserTickets";
@@ -32,6 +31,7 @@ import EditCustomer from "./components/customer/EditCustomer";
 import ProfilePage from "./pages/ProfilePage";
 import AddAdmin from "./components/auth/AddAdmin";
 import EditAdmin from "./components/admin/EditAdmin";
+import GetCustomers from "./components/customer/GetCustomers";
 
 export default function App() {
   return (
@@ -50,17 +50,24 @@ export default function App() {
           
           <Route path="/admins/edit" element={<EditAdmin />} />
 
-          <Route path="/customers/edit" element={<EditCustomer />} />
           
           <Route path="/de" element={<DecodeToken />} />
-          {/* <Route path="/bla" element={<Bla />} /> */}
-          {/* <Route path="/cust" element={<CreateCustomer />} /> */}
           <Route path="/try" element={<Trying />} />
-          {/* <Route path="/tail" element={<NavbarDark />} /> */}
 
           <Route path="/countries">
             <Route index element={<GetCountries />} />
             <Route path="add" element={<AddCountry />} />
+            {/* <Route index element={<GetFlightsByCountryId/>}/>   
+            <Route path=":id" element={<EditCountry/>}/>
+          <Route path="edit" element={<EditCountry/>}/> */}
+          </Route>
+
+          
+          <Route path="/customers/edit" element={<EditCustomer />} />
+          
+          <Route path="/customers">
+            <Route index element={<GetCustomers />} />
+            {/* <Route path="add" element={<AddCountry />} /> */}
             {/* <Route index element={<GetFlightsByCountryId/>}/>   
             <Route path=":id" element={<EditCountry/>}/>
             <Route path="edit" element={<EditCountry/>}/> */}

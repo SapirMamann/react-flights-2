@@ -80,6 +80,18 @@ export default function Sidebar(props) {
                 </NavDropdown>
 
                 <NavDropdown
+                  title="Customers"
+                  id={`offcanvasNavbarDropdown-expand`}
+                >
+                  <NavDropdown.Item href="/customers">
+                    All customers
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/customers/add">
+                    Add customer? havnt done this yet, maybe just add the link to register
+                  </NavDropdown.Item>
+                </NavDropdown>
+
+                <NavDropdown
                   title="Countries"
                   id={`offcanvasNavbarDropdown-expand`}
                 >
