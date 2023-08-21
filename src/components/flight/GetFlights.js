@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import ListGroup from "react-bootstrap/ListGroup";
 import Badge from "react-bootstrap/Badge";
 import Table from "react-bootstrap/Table";
 import Dropdown from "react-bootstrap/Dropdown";
-import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useStoreState } from "easy-peasy";
@@ -72,7 +70,7 @@ export default function GetFlightsPage() {
             />
             <br />
             <a
-              href={`/flights/`}
+              href={`/flights/add`}
               style={{ marginLeft: "auto", textAlign: "center" }}
             >
               <FontAwesomeIcon icon={faPlus} />

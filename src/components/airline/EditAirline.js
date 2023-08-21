@@ -16,6 +16,8 @@ import { getAllCountries } from "../../api/country/CountryApi";
 import { updateAirlineCompany } from "../../api/airline/AirlineApi";
 
 export default function EditAirline(props) {
+  //TODO: add user information edit
+  
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_staff;
 
@@ -44,7 +46,9 @@ export default function EditAirline(props) {
       .required("Name is required")
       .min(3, "Must be at least 3 characters")
       .matches(/^[a-zA-Z]+$/, "Only alphabetical letters are allowed"),
-    // country: string().required("Country is required"),
+    // It has a problem if it is required and not empty it says its empty
+    // country: string()
+    //   .required("Country is required"),
   });
 
   const submitHandler = (values) => {

@@ -125,13 +125,14 @@ catch errors register new airline company.
 when register as customer: user succesfully gets 201 but then error in create customer. then dont create user!
 
 
-replace permission to prefix of flightapp
 
 
-add this [] independency in get objects
+add this [] independency in get objects rerenders in infinite loops
 
   useEffect(() => {
     getAdminsList();
   }, [admins]);
   and
-  catch erros with toast in get objects all
+
+
+update  state after editing admin/cust/airline company

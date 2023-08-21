@@ -20,25 +20,25 @@ export default function AddFlight() {
   // TODO:
   // add api request of add flight
   // send value of coountries and not the name of them
-  // add permission to airline company 
+  // add permission to airline company
   //handle submitttion
-  
+
   const user = useStoreState((state) => state.user.user);
   const [isAdmin, setIsAdmin] = useState(false);
   const isAirlineCompany = user?.length > 0 && user[0]?.groups[0] === 1;
-  
+
   const [originCountries, setOriginCountries] = useState([]);
   const [departureTime, setDepartureTime] = useState(new Date());
   const [landingTime, setLandingTime] = useState(new Date());
-  
+
   const animatedComponents = makeAnimated();
-  
-    // Making the origin countries an array (where each object has a value and label) so the Select can display countries:
-    const options = originCountries.map((country) => ({
-      value: country.id,
-      label: country.name,
-    }));
-  
+
+  // Making the origin countries an array (where each object has a value and label) so the Select can display countries:
+  const options = originCountries.map((country) => ({
+    value: country.id,
+    label: country.name,
+  }));
+
   useEffect(() => {
     getAllCountries()
       .then((response) => {
@@ -57,35 +57,30 @@ export default function AddFlight() {
       setIsAdmin(user[0].is_staff);
     }
   }, []);
-  
+
   const AddFlightValidation = object().shape({
-    origin_country:
-      string().required("Origin country is required"),
-    destination_country:
-      string().required("Destination country is required"),
-    departure_time:
-      string().required("Departure time is required"),
-    landing_time:
-      string().required("Landing time is required"),
-    remaining_tickets:
-      string().required("Remaining Tickets field is required"),
-    });
-    
-    const submitHandler = (values) => {
-      console.log("form values", values);
-      // Send a POST request to the API endpoint with the form data
+    origin_country: string().required("Origin country is required"),
+    destination_country: string().required("Destination country is required"),
+    departure_time: string().required("Departure time is required"),
+    landing_time: string().required("Landing time is required"),
+    remaining_tickets: string().required("Remaining Tickets field is required"),
+  });
+
+  const submitHandler = (values) => {
+    console.log("form values", values);
+    // Send a POST request to the API endpoint with the form data
     // addNewCountry(values)
     //   .then((response) => {
-      //     console.log("Add country fetching", response.data);
-      //     toast.success("Country added successfully!");
-      //   })
-      //   .catch((error) => {
-        //     console.log("creation error:", error.message);
-        //     // console.warn(Object.entries(error.response))
-        //     console.error(Object.entries(error.response.data));
-        //     for (const [key, value] of Object.entries(error.response.data)) {
-          //       toast.error(`Saving failed. ${value[0]}`, {
-            //         position: "top-left",
+    //     console.log("Add country fetching", response.data);
+    //     toast.success("Country added successfully!");
+    //   })
+    //   .catch((error) => {
+    //     console.log("creation error:", error.message);
+    //     // console.warn(Object.entries(error.response))
+    //     console.error(Object.entries(error.response.data));
+    //     for (const [key, value] of Object.entries(error.response.data)) {
+    //       toast.error(`Saving failed. ${value[0]}`, {
+    //         position: "top-left",
     //         autoClose: 5000,
     //         hideProgressBar: false,
     //         closeOnClick: true,
@@ -98,7 +93,6 @@ export default function AddFlight() {
     //   });
   };
 
-  
   // Style for countries selector
   const animatedComponentsStyles = {
     control: (provided) => ({
@@ -112,7 +106,6 @@ export default function AddFlight() {
       color: state.isFocused ? "black" : "black",
     }),
   };
-
 
   return (
     <div>
@@ -137,13 +130,17 @@ export default function AddFlight() {
                   <h1>Add Flight #</h1>
                   <div>
                     {/* should be id */}
-                    <FloatingLabel controlId="floatingInput" label="Airline company">
+                    <FloatingLabel
+                      controlId="floatingInput"
+                      label="Airline company"
+                    >
                       <Field
                         name="airline_company"
                         type="text"
                         placeholder="Airline company"
                         as={bsForm.Control}
-                        value={ 9 } readOnly
+                        value={9}
+                        readOnly
                       />
                       <ErrorMessage
                         name="airline_company"
@@ -167,7 +164,11 @@ export default function AddFlight() {
                             styles={animatedComponentsStyles}
                             placeholder="Select origin country"
                           />
-                          <ErrorMessage name="origin_country" component="div" className="error" />
+                          <ErrorMessage
+                            name="origin_country"
+                            component="div"
+                            className="error"
+                          />
                         </div>
                       )}
                     </Field>
@@ -175,20 +176,24 @@ export default function AddFlight() {
                     {/*Display countries with select: */}
                     {/* should be id */}
                     <label for="destination_country">To:</label>
-                      <Select 
-                        name="destination_country"
-                        id="destination_country"
-                        options={options}
-                        as={bsForm.Control}
-                        // value={selectedOriginCountry}
-                        // onChange={handleOriginCountryChange}
-                        //adding a style to the selector:
-                        components={animatedComponents}
-                        styles={animatedComponentsStyles}  
-                        placeholder="Select destination country"              
-                      />
-                    <ErrorMessage name="destination_country" component="div" className="error" />
-{/* 
+                    <Select
+                      name="destination_country"
+                      id="destination_country"
+                      options={options}
+                      as={bsForm.Control}
+                      // value={selectedOriginCountry}
+                      // onChange={handleOriginCountryChange}
+                      //adding a style to the selector:
+                      components={animatedComponents}
+                      styles={animatedComponentsStyles}
+                      placeholder="Select destination country"
+                    />
+                    <ErrorMessage
+                      name="destination_country"
+                      component="div"
+                      className="error"
+                    />
+                    {/* 
                     <FloatingLabel controlId="floatingInput" label="Origin country">
                       <Field
                         name="origin_country"
@@ -242,7 +247,10 @@ export default function AddFlight() {
                       placeholderText="Select"
                     />
 
-                    <FloatingLabel controlId="floatingInput" label="Remaining tickets">
+                    <FloatingLabel
+                      controlId="floatingInput"
+                      label="Remaining tickets"
+                    >
                       <Field
                         name="remaining_tickets"
                         type="text"

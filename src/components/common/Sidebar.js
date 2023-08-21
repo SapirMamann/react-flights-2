@@ -9,12 +9,14 @@ import {
 } from "react-bootstrap";
 import { useStoreState } from "easy-peasy";
 
-
 export default function Sidebar(props) {
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_staff;
   const isAirlineCompany = user?.length > 0 && user[0]?.groups[0] === 1;
 
+  // useEffect(() => {
+
+  // },[])
   return (
     <div>
       {/* Toggle menu: */}
@@ -44,54 +46,59 @@ export default function Sidebar(props) {
             <Nav.Link href="#action2">Link</Nav.Link>
 
             {/* Third section (dropdown) flights for admin and airline company */}
-            {(isAdmin || isAirlineCompany) && (
+            {isAirlineCompany && (
               <>
-                <NavDropdown
-                  title="Admin"
-                  id={`offcanvasNavbarDropdown-expand`}
-                >
-                  <NavDropdown.Item href="/admins">All admins</NavDropdown.Item>
-                  <NavDropdown.Item href="/admins/add">
-                    Add admin
-                  </NavDropdown.Item>
-                </NavDropdown>
+                {isAdmin && (
+                  <>
+                    <NavDropdown
+                      title="Admin"
+                      id={`offcanvasNavbarDropdown-expand`}
+                    >
+                      <NavDropdown.Item href="/admins">
+                        All admins
+                      </NavDropdown.Item>
+                      <NavDropdown.Item href="/admins/add">
+                        Add admin
+                      </NavDropdown.Item>
+                    </NavDropdown>
 
-                <NavDropdown
-                  title="Airlines"
-                  id={`offcanvasNavbarDropdown-expand`}
-                >
-                  <NavDropdown.Item href="/airlines">
-                    All airlines
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="/register_airline_company">
-                    Add airline company
-                  </NavDropdown.Item>
-                </NavDropdown>
+                    <NavDropdown
+                      title="Airlines"
+                      id={`offcanvasNavbarDropdown-expand`}
+                    >
+                      <NavDropdown.Item href="/airlines">
+                        All airlines
+                      </NavDropdown.Item>
+                      <NavDropdown.Item href="/register_airline_company">
+                        Add airline company
+                      </NavDropdown.Item>
+                    </NavDropdown>
 
-                <NavDropdown
-                  title="Countries"
-                  id={`offcanvasNavbarDropdown-expand`}
-                >
-                  <NavDropdown.Item href="/countries">
-                    Countries
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="/countries/add">
-                    Add country
-                  </NavDropdown.Item>
-                </NavDropdown>
+                    <NavDropdown
+                      title="Countries"
+                      id={`offcanvasNavbarDropdown-expand`}
+                    >
+                      <NavDropdown.Item href="/countries">
+                        Countries
+                      </NavDropdown.Item>
+                      <NavDropdown.Item href="/countries/add">
+                        Add country
+                      </NavDropdown.Item>
+                    </NavDropdown>
 
-                <NavDropdown
-                  title="Customers"
-                  id={`offcanvasNavbarDropdown-expand`}
-                >
-                  <NavDropdown.Item href="/customers">
-                    All customers
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="/register">
-                    Add customer
-                  </NavDropdown.Item>
-                </NavDropdown>
-
+                    <NavDropdown
+                      title="Customers"
+                      id={`offcanvasNavbarDropdown-expand`}
+                    >
+                      <NavDropdown.Item href="/customers">
+                        All customers
+                      </NavDropdown.Item>
+                      <NavDropdown.Item href="/register">
+                        Add customer
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                  </>
+                )}
                 <NavDropdown
                   title="Flights"
                   id={`offcanvasNavbarDropdown-expand`}

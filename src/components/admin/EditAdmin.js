@@ -13,6 +13,8 @@ import { editUserByID } from "../../api/user/UserApi";
 import { UpdateAdmin, getAdminByUserID } from "../../api/admin/AdminApi";
 
 export default function EditAdmin() {
+  // TODO: update user state after changing admin information
+
   const user = useStoreState((state) => state.user.user);
   const userID = user?.length > 0 && user[0]?.id;
   const [adminID, setAdminID] = useState("");
