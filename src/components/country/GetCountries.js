@@ -26,6 +26,8 @@ import DeleteCountry from "./DeleteCountry";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
 
 export default function GetCountries() {
+  // removed admins useeffects dependency because of infinite loop
+
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_superuser;
 
@@ -53,7 +55,7 @@ export default function GetCountries() {
 
   useEffect(() => {
     getCountriesList();
-  }, [countries]);
+  }, []);
 
   return (
     <div>

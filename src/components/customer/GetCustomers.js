@@ -12,13 +12,14 @@ import { PermissionDenied } from "../../api/auth/CheckGroup";
 import { getAllCustomers } from "../../api/customer/CustomerApi";
 import { deleteCustomerByID } from "./DeleteCustomer";
 
+
 export default function GetCustomers() {
+  // removed admins useeffects dependency because of infinite loop
+
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_superuser;
 
-  const navigate = useNavigate();
   const [customers, setCustomers] = useState([]);
-
   const target = useRef(null);
 
   const getCustomersList = () => {
@@ -27,10 +28,9 @@ export default function GetCustomers() {
         setCustomers(response.data);
       })
       .catch((error) => {
-        console.debug("getCustomersList fetching error", error)
-        toast.error("Fetching error", error.message)
-      }
-      );
+        console.debug("getCustomersList fetching error", error);
+        toast.error("Fetching error", error.message);
+      });
   };
 
   const handleDeleteClick = (id) => {
@@ -39,7 +39,7 @@ export default function GetCustomers() {
 
   useEffect(() => {
     getCustomersList();
-  }, [customers]);
+  }, []);
 
   return (
     <div>

@@ -27,11 +27,11 @@ export default function GetFlightsPage() {
   const getFlights = () => {
     getAllFlights()
       .then((response) => {
-        console.log(response);
         setFlights(response);
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Fetching error", error.message);
       });
   };
 
@@ -48,7 +48,6 @@ export default function GetFlightsPage() {
 
   useEffect(() => {
     getFlights();
-    console.log("flights", flights);
   }, []);
 
   return (

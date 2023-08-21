@@ -13,6 +13,8 @@ import { deleteAdminByID } from "./DeleteAdmin";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
 
 export default function GetAdmins() {
+  // removed admins useeffects dependency because of infinite loop
+  
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_superuser;
 
@@ -39,7 +41,7 @@ export default function GetAdmins() {
 
   useEffect(() => {
     getAdminsList();
-  }, [admins]);
+  }, []);
 
   return (
     <div>
