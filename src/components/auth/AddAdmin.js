@@ -84,20 +84,18 @@ export default function AddAdmin() {
           console.debug(error);
           console.log("Registration failed.", error.message);
           console.debug("addNewAdmin failed", error.response.data);
-          // Set an error message for the form
-          for (const [key, value] of Object.entries(error.response.data)) {
-            toast.error(`AddNewadmin failed. ${key}: ${value[0]}`, {
-              // toast.error(`Login failed. ${error.response.data.detail}`, {
-              position: "top-left",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-          }
+          // for (const [key, value] of Object.entries(error.response.data)) {
+          //   toast.error(`AddNewadmin failed. ${key}: ${value[0]}`, {
+          toast.error(`Login failed. ${error.response.data}`, {
+            position: "top-left",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         });
     } catch (error) {
       console.debug("here", error);

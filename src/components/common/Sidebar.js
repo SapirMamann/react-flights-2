@@ -9,16 +9,11 @@ import {
 } from "react-bootstrap";
 import { useStoreState } from "easy-peasy";
 
+
 export default function Sidebar(props) {
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_staff;
   const isAirlineCompany = user?.length > 0 && user[0]?.groups[0] === 1;
-
-  useEffect(() => {
-    console.log("user in sidebar", user);
-    console.log("isAdmin in sidebar", isAdmin);
-    console.log("isAirlineCompany in sidebar", isAirlineCompany);
-  }, []);
 
   return (
     <div>
@@ -52,18 +47,12 @@ export default function Sidebar(props) {
             {(isAdmin || isAirlineCompany) && (
               <>
                 <NavDropdown
-                  title="Flights"
+                  title="Admin"
                   id={`offcanvasNavbarDropdown-expand`}
                 >
-                  <NavDropdown.Item href="/flights">
-                    All flights
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="/flights/add">
-                    Add flight
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action5">
-                    Something else here
+                  <NavDropdown.Item href="/admins">All admins</NavDropdown.Item>
+                  <NavDropdown.Item href="/admins/add">
+                    Add admin
                   </NavDropdown.Item>
                 </NavDropdown>
 
@@ -80,18 +69,6 @@ export default function Sidebar(props) {
                 </NavDropdown>
 
                 <NavDropdown
-                  title="Customers"
-                  id={`offcanvasNavbarDropdown-expand`}
-                >
-                  <NavDropdown.Item href="/customers">
-                    All customers
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="/customers/add">
-                    Add customer? havnt done this yet, maybe just add the link to register
-                  </NavDropdown.Item>
-                </NavDropdown>
-
-                <NavDropdown
                   title="Countries"
                   id={`offcanvasNavbarDropdown-expand`}
                 >
@@ -104,14 +81,30 @@ export default function Sidebar(props) {
                 </NavDropdown>
 
                 <NavDropdown
-                  title="Admin"
+                  title="Customers"
                   id={`offcanvasNavbarDropdown-expand`}
                 >
-                  <NavDropdown.Item href="/register_airline_company">
-                    Add airline company
+                  <NavDropdown.Item href="/customers">
+                    All customers
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="/admins/add">
-                    Add admin
+                  <NavDropdown.Item href="/register">
+                    Add customer
+                  </NavDropdown.Item>
+                </NavDropdown>
+
+                <NavDropdown
+                  title="Flights"
+                  id={`offcanvasNavbarDropdown-expand`}
+                >
+                  <NavDropdown.Item href="/flights">
+                    All flights
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/flights/add">
+                    Add flight
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="#action5">
+                    Something else here
                   </NavDropdown.Item>
                 </NavDropdown>
               </>

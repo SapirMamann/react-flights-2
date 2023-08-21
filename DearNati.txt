@@ -126,3 +126,12 @@ when register as customer: user succesfully gets 201 but then error in create cu
 
 
 replace permission to prefix of flightapp
+
+
+add this [] independency in get objects
+
+  useEffect(() => {
+    getAdminsList();
+  }, [admins]);
+  and
+  catch erros with toast in get objects all

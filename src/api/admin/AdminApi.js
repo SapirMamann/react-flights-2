@@ -15,6 +15,20 @@ export function addNewAdmin(data) {
 
 
 
+export const getAllAdmins = async () => {
+  try {
+    // using http for permissions check
+    const response = await http.get(`http://127.0.0.1:8000/api/admins/`);
+    console.log("api response for getAllAdmins", response);
+    return response;
+  } catch (error) {
+    console.log("Error in getAllAdmins fetching", error);
+    throw error; 
+  }
+};
+
+
+
 // Getting admin by its user id
 export const getAdminByUserID = async () => {
   try {
@@ -41,5 +55,21 @@ export const UpdateAdmin = async (adminID, data) => {
     return response;
   } catch (error) {
     console.log("error in UpdateAdmin", error);
+  }
+};
+
+
+
+export const deleteAdmin = async (adminID) => {
+  try {
+    // using http for permissions check
+    const response = await http.delete(
+      `http://127.0.0.1:8000/api/admins/${adminID}/`
+    );
+    console.log("api response for deleteAdmin", response);
+    return response;
+  } catch (error) {
+    console.log("error in deleteAdmin", error.message);
+    throw error; 
   }
 };

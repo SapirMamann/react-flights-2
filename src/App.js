@@ -32,6 +32,7 @@ import ProfilePage from "./pages/ProfilePage";
 import AddAdmin from "./components/auth/AddAdmin";
 import EditAdmin from "./components/admin/EditAdmin";
 import GetCustomers from "./components/customer/GetCustomers";
+import GetAdmins from "./components/admin/GetAdmins";
 
 export default function App() {
   return (
@@ -42,17 +43,29 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/register_airline_company" element={<RegisterAirlineCompany />} />
-          <Route path="/admins/add" element={<AddAdmin />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<ProfilePage />} />
+          {/* <Route path="/admins/add" element={<AddAdmin />} /> */}
           {/* <Route path="/logout" element={<Logout />} /> */}
           {/* <Route path="/car" element={<CarouselComponent />} /> */}
-          
-          <Route path="/admins/edit" element={<EditAdmin />} />
 
-          
           <Route path="/de" element={<DecodeToken />} />
           <Route path="/try" element={<Trying />} />
+
+          <Route path="/admins">
+            <Route index element={<GetAdmins />} />
+            <Route path="add" element={<AddAdmin />} />
+            <Route path="edit" element={<EditAdmin />} />
+            {/* <Route index element={<GetFlightsByCountryId/>}/>   
+            <Route path=":id" element={<EditCountry/>}/>  */}
+          </Route>
+
+          <Route path="/airlines">
+            <Route index element={<GetAirlineCompanies />} />
+            {/* <Route path=":country" element={<GetFlightsByCountryId />} />
+            <Route path=":flight_id/book" element={<BookFlight />} />*/}
+            <Route path="edit/:airline_id" element={<EditAirline />} />
+          </Route>
 
           <Route path="/countries">
             <Route index element={<GetCountries />} />
@@ -62,15 +75,12 @@ export default function App() {
           <Route path="edit" element={<EditCountry/>}/> */}
           </Route>
 
-          
-          <Route path="/customers/edit" element={<EditCustomer />} />
-          
           <Route path="/customers">
             <Route index element={<GetCustomers />} />
+            <Route path="edit" element={<EditCustomer/>}/>
             {/* <Route path="add" element={<AddCountry />} /> */}
             {/* <Route index element={<GetFlightsByCountryId/>}/>   
-            <Route path=":id" element={<EditCountry/>}/>
-            <Route path="edit" element={<EditCountry/>}/> */}
+            <Route path=":id" element={<EditCountry/>}/> */}
           </Route>
 
           <Route path="/flights">
@@ -81,14 +91,10 @@ export default function App() {
             <Route path=":flight_id/edit" element={<EditFlight />} />
           </Route>
 
-          <Route path="/airlines">
-            <Route index element={<GetAirlineCompanies />} />
-            {/* <Route path=":country" element={<GetFlightsByCountryId />} />
-            <Route path=":flight_id/book" element={<BookFlight />} />*/}
-            <Route path="edit/:airline_id" element={<EditAirline />} /> 
-          </Route>
+          <Route path="/my_tickets" element={<GetUserTickets />} />
 
-          <Route path="/my_tickets" element={<GetUserTickets/>} />
+          {/* users */}
+
 
           <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<NotFound />} />

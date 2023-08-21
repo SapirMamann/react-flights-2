@@ -26,8 +26,10 @@ export default function GetCustomers() {
       .then((response) => {
         setCustomers(response.data);
       })
-      .catch((error) =>
+      .catch((error) => {
         console.debug("getCustomersList fetching error", error)
+        toast.error("Fetching error", error.message)
+      }
       );
   };
 
@@ -37,7 +39,7 @@ export default function GetCustomers() {
 
   useEffect(() => {
     getCustomersList();
-  }, []);
+  }, [customers]);
 
   return (
     <div>

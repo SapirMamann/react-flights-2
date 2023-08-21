@@ -1,70 +1,45 @@
-import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import ListGroup from "react-bootstrap/ListGroup";
-import Badge from "react-bootstrap/Badge";
-import Table from "react-bootstrap/Table";
+import React, { useEffect, useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
+import Badge from "react-bootstrap/Badge";
+import { ToastContainer, toast } from "react-toastify";
+import Table from "react-bootstrap/Table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useStoreState } from "easy-peasy";
 
-import { getAllAirlines } from "../../api/airline/AirlineApi";
-import { deleteAirlineByID } from "./DeleteAirlineByID";
+import { getAllAdmins } from "../../api/admin/AdminApi";
+import { deleteAdminByID } from "./DeleteAdmin";
+import { PermissionDenied } from "../../api/auth/CheckGroup";
 
-export default function GetAirlineCompanies() {
-  // country name and not as id
+export default function GetAdmins() {
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_superuser;
 
   const navigate = useNavigate();
-  const [airlineCompanies, setAirlineCompanies] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [admins, setAdmins] = useState([]);
 
-  // const getAirlinesCompanies = () => {
-  //   getAllAirlines()
-  //     .then((response) => {
-  //       console.log("air", response);
-  //       setAirlineCompanies(response);
-  //     })
-  //     .catch((error) => console.debug("airline fetching error", error));
-  // };
-  const getAirlinesCompanies = () => {
-    getAllAirlines()
+  const target = useRef(null);
+
+  const getAdminsList = () => {
+    getAllAdmins()
       .then((response) => {
-        // console.log(searchQuery)
-        // console.log(response)
-        const filteredAirlines = response.filter(
-          (airline) =>
-            airline.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            (airline.country &&
-              airline.country
-                .toString()
-                .toLowerCase()
-                .includes(searchQuery.toLowerCase())) ||
-            airline.id.toString().includes(searchQuery)
-        );
-        setAirlineCompanies(filteredAirlines);
+        setAdmins(response.data);
       })
       .catch((error) => {
-        console.debug("airline fetching error", error);
-        toast.error("Fetching error", error.message);
-      });
-  };
-
-  const handleEditClick = (id) => {
-    console.log("Edit clicked for ID:", id);
-    // Navigate to the edit page with the specific ID
-    navigate(`edit/${id}`);
+        console.debug("getAdminsList fetching error", error)
+        toast.error("Fetching error", error.message)
+      }
+      );
   };
 
   const handleDeleteClick = (id) => {
-    deleteAirlineByID(id);
+    deleteAdminByID(id);
   };
 
   useEffect(() => {
-    getAirlinesCompanies();
-  }, [searchQuery]);
+    getAdminsList();
+  }, [admins]);
 
   return (
     <div>
@@ -78,7 +53,7 @@ export default function GetAirlineCompanies() {
             flexDirection: "column",
           }}
         >
-          <h1>Airline Companies</h1>
+          <h1>Admins</h1>
           <div style={{ display: "flex", alignItems: "center" }}>
             <input
               type="text"
@@ -89,7 +64,7 @@ export default function GetAirlineCompanies() {
             />
             <br />
             <a
-              href={`/register_airline_company`}
+              href={`/admins/add`}
               style={{ marginLeft: "auto", textAlign: "center" }}
             >
               <FontAwesomeIcon icon={faPlus} />
@@ -100,20 +75,22 @@ export default function GetAirlineCompanies() {
             <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th>Airline Name</th>
-                  <th>Airline Country</th>
-                  <th>Airline ID</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>User ID</th>
+                  <th>Admin ID</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
-                {airlineCompanies.map((airline, index) => (
+                {admins.map((admin, index) => (
                   <tr key={index}>
-                    <td>{airline.name}</td>
-                    <td>{airline.country}</td>
+                    <td>{admin.first_name}</td>
+                    <td>{admin.last_name}</td>
+                    <td>{admin.user}</td>
                     <td>
                       <Badge bg="primary" pill>
-                        {airline.id}
+                        {admin.id}
                       </Badge>
                     </td>
                     <td>
@@ -126,12 +103,7 @@ export default function GetAirlineCompanies() {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                           <Dropdown.Item
-                            onClick={() => handleEditClick(airline.id)}
-                          >
-                            Edit
-                          </Dropdown.Item>
-                          <Dropdown.Item
-                            onClick={() => handleDeleteClick(airline.id)}
+                            onClick={() => handleDeleteClick(admin.id)}
                           >
                             Delete
                           </Dropdown.Item>

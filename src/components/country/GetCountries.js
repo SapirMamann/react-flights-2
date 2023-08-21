@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
+import Table from "react-bootstrap/Table";
 import Card from "react-bootstrap/Card";
 import CardGroup from "react-bootstrap/CardGroup";
 import { Row, Col } from "react-bootstrap";
@@ -16,7 +17,7 @@ import {
   faEllipsisV,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import { useStoreActions, useStoreState } from "easy-peasy";
+import { useStoreState } from "easy-peasy";
 
 import EditCountry from "./EditCountry";
 import GetFlightsByCountryId from "../flight/GetFlightsByCountry";
@@ -30,149 +31,149 @@ export default function GetCountries() {
 
   const [countries, setCountries] = useState([]);
   const [selectedCountryID, setSelectedCountryID] = useState(null);
-
-  // const navigate = useNavigate();
-  // const { refs, floatingStyles } = useFloating();
-
   const target = useRef(null);
   const [showOverlay, setShowOverlay] = useState(false);
-  
-    const getCountriesList = () => {
-      getAllCountries()
-        .then((response) => {
-          setCountries(response.data);
-          // console.log("getCountriesList", response.data);
-        })
-        .catch((error) =>
-          console.debug("getCountriesList fetching error", error)
-        );
-    };
+
+  const getCountriesList = () => {
+    getAllCountries()
+      .then((response) => {
+        setCountries(response.data);
+        // console.log("getCountriesList", response.data);
+      })
+      .catch((error) => {
+        console.debug("getCountriesList fetching error", error);
+        toast.error("Fetching error", error.message);
+      });
+  };
 
   const toggleOverlay = (id) => {
     setSelectedCountryID(id);
     setShowOverlay(true);
   };
 
-  const handleEditClick = (id) => {
-    console.log("Edit clicked for ID:", id);
-    // Navigate to the edit page with the specific ID
-    // navigate(`edit/${id}`);
-  };
-
   useEffect(() => {
     getCountriesList();
-  }, []);
+  }, [countries]);
 
   return (
     <div>
+      <ToastContainer />
       {isAdmin ? (
-        <>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-            }}
-          >
-            <h1>Countries</h1>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <input
-                type="text"
-                placeholder="Search"
-                // value={searchQuery}
-                // onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ marginRight: "10px" }}
-              />
-              <br />
-              {/* If admin -> display button of add country */}
-              {isAdmin && (
-                <a
-                  href={`/countries/add`}
-                  style={{ marginLeft: "auto", textAlign: "center" }}
-                >
-                  <FontAwesomeIcon icon={faPlus} />
-                </a>
-              )}
-            </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          <h1>Countries</h1>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <input
+              type="text"
+              placeholder="Search"
+              // value={searchQuery}
+              // onChange={(e) => setSearchQuery(e.target.value)}
+              style={{ marginRight: "10px" }}
+            />
             <br />
-
-            <div style={{ width: "80%", maxWidth: "800px" }}>
-              <ListGroup>
-                <ListGroup.Item
-                  className="d-flex justify-content-between align-items-start"
-                  style={{ fontWeight: "bold" }}
-                >
-                  <div className="ms-2 me-auto">Airline Name</div>
-                  <div className="ms-4 me-auto">Airline Country</div>
-                  <div className="ms-4 me-auto">Airline ID</div>
-                </ListGroup.Item>
-
+            <a
+              href={`/countries/add`}
+              style={{ marginLeft: "auto", textAlign: "center" }}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </a>
+          </div>
+          <br />
+          <div style={{ width: "80%", maxWidth: "800px" }}>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Country</th>
+                  <th>Country ID</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
                 {countries.map((country, index) => (
-                  <ListGroup.Item
-                    key={index}
-                    className="d-flex justify-content-between align-items-start"
-                  >
-                    <div className="ms-2 me-auto">
+                  <tr key={index}>
+                    <td>
                       {country.name.charAt(0).toUpperCase() +
                         country.name.slice(1)}
-                    </div>
-                    <div className="ms-4 me-auto">
-                      <Link to={{ pathname: `/flights/${country.name}` }}>
-                        Flights
-                      </Link>
-                    </div>
-                    <Badge bg="primary" pill>
-                      {country.id}
-                    </Badge>
-                    <div className="ms-4 me-auto">
-                      <Button
-                        ref={target}
-                        onClick={() => toggleOverlay(country.id)}
-                      >
-                        <FontAwesomeIcon icon={faPen} />
-                      </Button>
-
-                      <Overlay
-                        target={target.current}
-                        show={showOverlay && selectedCountryID === country.id} // Show overlay for the specific country
-                        placement="right"
-                      >
-                        {({
-                          arrowProps: _arrowProps,
-                          show: _show,
-                          popper: _popper,
-                          hasDoneInitialMeasure: _hasDoneInitialMeasure,
-                          ...props
-                        }) => (
-                          <div
-                            {...props}
-                            style={{
-                              backgroundColor: "rgba(245, 245, 245, 0.85)",
-                              padding: "2px 10px",
-                              color: "black",
-                              borderRadius: 3,
-                              ...props.style,
+                    </td>
+                    <td>
+                      <Badge bg="primary" pill>
+                        {country.id}
+                      </Badge>
+                    </td>
+                    <td>
+                      <Dropdown>
+                        <Dropdown.Toggle
+                          variant="link"
+                          id={`dropdown-${index}`}
+                        >
+                          <FontAwesomeIcon icon={faEllipsisV} />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          <Dropdown.Item
+                            ref={target}
+                            onClick={() => {
+                              toggleOverlay(country.id);
                             }}
                           >
-                            <DeleteCountry id={selectedCountryID} />
-                            <button
-                              onClick={() => toggleOverlay(null)}
-                              className="x_button"
-                            >
-                              <FontAwesomeIcon icon={faXmark} />
-                            </button>
-                            <EditCountry id={selectedCountryID} />
-                          </div>
-                        )}
-                      </Overlay>
-                    </div>
-                  </ListGroup.Item>
+                            Edit/ Delete
+                          </Dropdown.Item>
+                          {/* Show overlay for the specific country */}
+                          <Overlay
+                            show={
+                              showOverlay && selectedCountryID === country.id
+                            }
+                            placement="right"
+                            containerPadding={2}
+                            target={() =>
+                              document.getElementsByClassName("row")[index]
+                            } // Target the clicked row
+                          >
+                            {({
+                              arrowProps: _arrowProps,
+                              show: _show,
+                              popper: _popper,
+                              hasDoneInitialMeasure: _hasDoneInitialMeasure,
+                              ...props
+                            }) => (
+                              <div
+                                {...props}
+                                style={{
+                                  backgroundColor: "rgba(245, 245, 245, 0.85)",
+                                  padding: "2px 10px",
+                                  color: "black",
+                                  borderRadius: 3,
+                                  ...props.style,
+                                }}
+                              >
+                                {/* Delete button */}
+                                <DeleteCountry id={selectedCountryID} />
+                                {/* x button */}
+                                <button
+                                  onClick={() => toggleOverlay(null)}
+                                  className="x_button"
+                                >
+                                  <FontAwesomeIcon icon={faXmark} />
+                                </button>
+                                {/* Edit section */}
+                                <EditCountry id={selectedCountryID} />
+                              </div>
+                            )}
+                          </Overlay>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </td>
+                  </tr>
                 ))}
-              </ListGroup>
-            </div>
+              </tbody>
+            </Table>
           </div>
-        </>
+        </div>
       ) : (
         <div>
           <PermissionDenied />
