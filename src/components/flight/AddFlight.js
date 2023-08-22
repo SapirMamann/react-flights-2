@@ -45,11 +45,13 @@ export default function AddFlight() {
   }));
 
   const AddFlightValidation = object().shape({
+    // Doesnt let submitting:
     // origin_country: string().required("Origin country is required"),
     // destination_country: string().required("Destination country is required"),
     // departure_time: string().required("Departure time is required"),
     // landing_time: string().required("Landing time is required"),
-    remaining_tickets: number().required("Remaining Tickets field is required"),
+    remaining_tickets: number()
+      .required("Remaining Tickets field is required"),
   });
 
   const submitHandler = (values) => {
@@ -65,10 +67,14 @@ export default function AddFlight() {
       .then((response) => {
         console.log("Add flight submit", response);
         console.log("Add flight submit", response.data);
-        toast.success("Country added successfully!");
+        if (response.status === 201) {
+          toast.success("Fligth added successfully!");
+        } else {
+          toast.error("Error when adding fligth");
+        }
       })
       .catch((error) => {
-        console.log("creation error:", error.message);
+        console.log("Creation error:", error.message);
         // console.warn(Object.entries(error.response))
         console.error(Object.entries(error.response.data));
         for (const [key, value] of Object.entries(error.response.data)) {
@@ -90,13 +96,9 @@ export default function AddFlight() {
     // For displaying countries
     getAllCountries()
       .then((response) => {
-        console.log("useeffect getAllCountries", response);
         setCountries(response.data);
-        console.log("countries", response.data);
-        // setDestinationCountries(response.data);
       })
       .catch((error) => {
-        console.log("useeffect getAllCountries error", error);
         toast.error("Fetching error", error.name.message);
       });
   }, []);
