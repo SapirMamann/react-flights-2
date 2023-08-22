@@ -80,6 +80,7 @@ export default function FlightSearch() {
       })
       .catch((error) => {
         console.log("FlightSearch useeffect getAllCountries error", error);
+        // toast.error('Fetching error')
       });
   }, []);
 

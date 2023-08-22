@@ -6,9 +6,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useStoreState } from "easy-peasy";
 
-import { getAllFlights } from "../../api/flight/FlightApi";
+import {
+  getAllFlights,
+  getFlightsByAirlineCompany,
+} from "../../api/flight/FlightApi";
 import { deleteFlightByID } from "./DeleteFlightByID";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
+
 
 export default function GetFlightsPage() {
   //TODO: delete and edit with fontawsome action
@@ -16,21 +20,35 @@ export default function GetFlightsPage() {
   // airline can only edit their own flights
 
   const user = useStoreState((state) => state.user.user);
-  const isAdmin = user?.length > 0 && user[0]?.is_staff;
+  const isAdmin = user?.length > 0 && user[0]?.is_superuser;
   const isAirlineCompany = user?.length > 0 && user[0]?.groups[0] === 1;
 
   const [flights, setFlights] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   const getFlights = () => {
-    getAllFlights()
-      .then((response) => {
-        setFlights(response);
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("Fetching error", error.message);
-      });
+    let fetchFlightsPromise;
+
+    if (isAdmin) {
+      // Fetch all flights for admin
+      fetchFlightsPromise = getAllFlights();
+    } else if (isAirlineCompany) {
+      // Fetch flights for the specific airline company
+      fetchFlightsPromise = getFlightsByAirlineCompany();
+    }
+
+    if (fetchFlightsPromise) {
+      fetchFlightsPromise
+        .then((response) => {
+          setFlights(response);
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("Fetching error", error.message);
+        });
+    } else {
+      console.log("nothing to fetch")
+    }
   };
 
   const handleEditClick = (id) => {
@@ -50,7 +68,7 @@ export default function GetFlightsPage() {
 
   return (
     <div>
-      {isAdmin ? (
+      {(isAdmin || isAirlineCompany) ? (
         <div
           style={{
             display: "flex",

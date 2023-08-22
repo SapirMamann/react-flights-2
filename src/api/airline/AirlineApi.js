@@ -24,6 +24,21 @@ export const getAllAirlines = async () => {
   }
 };
 
+
+
+export const getAirlineByUserID = async () => {
+  try {
+    // using http for permissions check
+    const response = await http.get(`http://127.0.0.1:8000/api/airlines/get_airline_by_user_id/`);
+    console.log("api response for getAirlineByUserID", response);
+    return response;
+  } catch (error) {
+    console.log("Error in getAirlineByUserID fetching", error);
+  }
+};
+
+
+
 export const updateAirlineCompany = async (id, data) => {
   try {
     console.log("update airline api", id, data);

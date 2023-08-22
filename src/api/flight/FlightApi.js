@@ -2,17 +2,19 @@ import React from "react";
 
 import http from "../http";
 
-export function addNewFlight(data) {
-  // try {
-  //   // using http for permissions check
-  //   console.log(data);
-  //   const response = http.post("http://127.0.0.1:8000/api/countries/", data);
-  //   console.log("api response for addNewCountry", response, data);
-  //   return response;
-  // } catch (error) {
-  //   console.log("error in addNewCountry", error.message);
-  // }
-}
+
+export const addNewFlight = (data) => {
+  try {
+    // using http for permissions check
+    console.log("Api response for addNewFlight", data);
+    const response = http.post("http://127.0.0.1:8000/api/flights/", data);
+    console.log("Api response for addNewCountry", response, data);
+    return response;
+  } catch (error) {
+    console.log("error in addNewFlight", error.message);
+  }
+};
+
 
 
 // Getting all flights from api.
@@ -72,6 +74,23 @@ export const getFlightsByCountry = (country) => {
     return response;
   } catch (error) {
     console.log("Api response for getFlightsByCountry error", error);
+  }
+};
+
+
+
+// For displaying flights based on their origin_country.
+export const getFlightsByAirlineCompany = async () => {
+  try {
+    // using http for permissions check
+    // This view is set to "is_authenticated permission"
+    const response = await http.get(
+      `http://127.0.0.1:8000/api/airline_flights/`
+    );
+    console.log("Api response for getFlightsByAirlineCompany", response);
+    return response.data;
+  } catch (error) {
+    console.log("Api response for getFlightsByAirlineCompany error", error);
   }
 };
 

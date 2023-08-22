@@ -8,15 +8,17 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
-import { date, object, ref, shape, string } from "yup";
-import makeAnimated from "react-select/animated";
-
+import { date, number, object, ref, shape, string } from "yup";
 import { useStoreState } from "easy-peasy";
+
 import { PermissionDenied } from "../../api/auth/CheckGroup";
 import { getAllCountries } from "../../api/country/CountryApi";
-// import { isAirlineCompany1 } from "../../state/user";
+import { getAirlineByUserID } from "../../api/airline/AirlineApi";
+import { addNewFlight } from "../../api/flight/FlightApi";
 
 export default function AddFlight() {
+  // only airline company can add flights
+
   // TODO:
   // add api request of add flight
   // send value of coountries and not the name of them
@@ -24,101 +26,109 @@ export default function AddFlight() {
   //handle submitttion
 
   const user = useStoreState((state) => state.user.user);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const isAdmin = user?.length > 0 && user[0]?.is_superuser;
   const isAirlineCompany = user?.length > 0 && user[0]?.groups[0] === 1;
 
-  const [originCountries, setOriginCountries] = useState([]);
+  const [airlineCompanyID, setAirlineCompanyID] = useState("");
+  const [countries, setCountries] = useState([]);
+
+  const [originCountry, setOriginCountry] = useState("");
+  const [destinationCountry, setDestinationCountry] = useState("");
+
   const [departureTime, setDepartureTime] = useState(new Date());
   const [landingTime, setLandingTime] = useState(new Date());
 
-  const animatedComponents = makeAnimated();
-
   // Making the origin countries an array (where each object has a value and label) so the Select can display countries:
-  const options = originCountries.map((country) => ({
+  const options = countries.map((country) => ({
     value: country.id,
     label: country.name,
   }));
 
+  const AddFlightValidation = object().shape({
+    // origin_country: string().required("Origin country is required"),
+    // destination_country: string().required("Destination country is required"),
+    // departure_time: string().required("Departure time is required"),
+    // landing_time: string().required("Landing time is required"),
+    remaining_tickets: number().required("Remaining Tickets field is required"),
+  });
+
+  const submitHandler = (values) => {
+    values.airline_company = airlineCompanyID;
+    values.origin_country = originCountry;
+    values.destination_country = destinationCountry;
+    values.departure_time = departureTime;
+    values.landing_time = landingTime;
+    console.log("form values", values);
+
+    // Send a POST request to the API endpoint with the form data
+    addNewFlight(values)
+      .then((response) => {
+        console.log("Add flight submit", response);
+        console.log("Add flight submit", response.data);
+        toast.success("Country added successfully!");
+      })
+      .catch((error) => {
+        console.log("creation error:", error.message);
+        // console.warn(Object.entries(error.response))
+        console.error(Object.entries(error.response.data));
+        for (const [key, value] of Object.entries(error.response.data)) {
+          toast.error(`Saving failed. ${value[0]}`, {
+            position: "top-left",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      });
+  };
+
   useEffect(() => {
+    // For displaying countries
     getAllCountries()
       .then((response) => {
-        console.log("FlightSearch useeffect getAllCountries", response);
-        setOriginCountries(response.data);
-        console.log("originCountries", response.data);
+        console.log("useeffect getAllCountries", response);
+        setCountries(response.data);
+        console.log("countries", response.data);
         // setDestinationCountries(response.data);
       })
       .catch((error) => {
-        console.log("FlightSearch useeffect getAllCountries error", error);
+        console.log("useeffect getAllCountries error", error);
+        toast.error("Fetching error", error.name.message);
       });
   }, []);
 
   useEffect(() => {
-    if (user.length > 0) {
-      setIsAdmin(user[0].is_staff);
+    // For passing airline form field
+    if (isAirlineCompany) {
+      getAirlineByUserID()
+        .then((response) => {
+          console.log(response);
+          setAirlineCompanyID(response.data.id);
+        })
+        .catch((error) => {
+          console.log("AirlineByUserID error", error);
+        });
     }
   }, []);
 
-  const AddFlightValidation = object().shape({
-    origin_country: string().required("Origin country is required"),
-    destination_country: string().required("Destination country is required"),
-    departure_time: string().required("Departure time is required"),
-    landing_time: string().required("Landing time is required"),
-    remaining_tickets: string().required("Remaining Tickets field is required"),
-  });
-
-  const submitHandler = (values) => {
-    console.log("form values", values);
-    // Send a POST request to the API endpoint with the form data
-    // addNewCountry(values)
-    //   .then((response) => {
-    //     console.log("Add country fetching", response.data);
-    //     toast.success("Country added successfully!");
-    //   })
-    //   .catch((error) => {
-    //     console.log("creation error:", error.message);
-    //     // console.warn(Object.entries(error.response))
-    //     console.error(Object.entries(error.response.data));
-    //     for (const [key, value] of Object.entries(error.response.data)) {
-    //       toast.error(`Saving failed. ${value[0]}`, {
-    //         position: "top-left",
-    //         autoClose: 5000,
-    //         hideProgressBar: false,
-    //         closeOnClick: true,
-    //         pauseOnHover: true,
-    //         draggable: true,
-    //         progress: undefined,
-    //         theme: "light",
-    //       });
-    //     }
-    //   });
-  };
-
-  // Style for countries selector
-  const animatedComponentsStyles = {
-    control: (provided) => ({
-      ...provided,
-      border: "1px solid light grey",
-      borderRadius: "4px",
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isFocused ? "lightblue" : "white",
-      color: state.isFocused ? "black" : "black",
-    }),
-  };
-
   return (
     <div>
-      {isAdmin || isAirlineCompany ? (
+      {isAirlineCompany ? (
         <div>
           <ToastContainer />
           <Formik
             initialValues={{
-              airline_company: "",
+              // airline_company: "",
               origin_country: "",
               destination_country: "",
-              departure_time: "2023-09-30T10:50:38Z",
-              landing_time: "2023-09-30T10:50:38Z",
+              // departure_time: "2023-09-30T10:50:38Z",
+              // landing_time: "2023-09-30T10:50:38Z",
+              departure_time: "",
+              landing_time: "",
               remaining_tickets: "",
             }}
             onSubmit={(values) => submitHandler(values)}
@@ -127,28 +137,8 @@ export default function AddFlight() {
             {() => {
               return (
                 <Form>
-                  <h1>Add Flight #</h1>
+                  <h1>Add Flight</h1>
                   <div>
-                    {/* should be id */}
-                    <FloatingLabel
-                      controlId="floatingInput"
-                      label="Airline company"
-                    >
-                      <Field
-                        name="airline_company"
-                        type="text"
-                        placeholder="Airline company"
-                        as={bsForm.Control}
-                        value={9}
-                        readOnly
-                      />
-                      <ErrorMessage
-                        name="airline_company"
-                        component="div"
-                        className="error"
-                      />
-                    </FloatingLabel>
-
                     {/*Display countries with select: */}
                     {/* should be id */}
                     <Field name="origin_country">
@@ -156,12 +146,15 @@ export default function AddFlight() {
                         <div>
                           <label htmlFor="origin_country">From:</label>
                           <Select
-                            {...field}
+                            name="origin_country"
                             id="origin_country"
                             options={options}
                             as={bsForm.Control}
-                            components={animatedComponents}
-                            styles={animatedComponentsStyles}
+                            onChange={(e) => (
+                              setOriginCountry(e.value),
+                              console.log("origin country", e)
+                            )}
+                            //adding a style to the selector:
                             placeholder="Select origin country"
                           />
                           <ErrorMessage
@@ -181,11 +174,10 @@ export default function AddFlight() {
                       id="destination_country"
                       options={options}
                       as={bsForm.Control}
-                      // value={selectedOriginCountry}
-                      // onChange={handleOriginCountryChange}
-                      //adding a style to the selector:
-                      components={animatedComponents}
-                      styles={animatedComponentsStyles}
+                      onChange={(e) => (
+                        setDestinationCountry(e.value),
+                        console.log("destination country", e)
+                      )}
                       placeholder="Select destination country"
                     />
                     <ErrorMessage
@@ -225,8 +217,8 @@ export default function AddFlight() {
                     <label>Departure time</label>
                     <DatePicker
                       selected={departureTime}
-                      onChange={(date) => (
-                        setDepartureTime(date), console.log(date)
+                      onChange={(d_date) => (
+                        setDepartureTime(d_date), console.log(d_date)
                       )}
                       dateFormat="yyyy-MM-dd'T'HH:mm:ss'Z'"
                       showTimeInput
@@ -235,10 +227,11 @@ export default function AddFlight() {
                       name="departure_time"
                       placeholderText="Select"
                     />
+
                     <label>Landing time</label>
                     <DatePicker
                       selected={landingTime}
-                      onChange={(date) => setLandingTime(date)}
+                      onChange={(e) => (setLandingTime(e), console.log(e))}
                       dateFormat="yyyy-MM-dd'T'HH:mm:ss'Z'"
                       showTimeInput
                       timeInputLabel="Time:"
