@@ -50,8 +50,7 @@ export default function AddFlight() {
     // destination_country: string().required("Destination country is required"),
     // departure_time: string().required("Departure time is required"),
     // landing_time: string().required("Landing time is required"),
-    remaining_tickets: number()
-      .required("Remaining Tickets field is required"),
+    remaining_tickets: number().required("Remaining Tickets field is required"),
   });
 
   const submitHandler = (values) => {
@@ -142,7 +141,6 @@ export default function AddFlight() {
                   <h1>Add Flight</h1>
                   <div>
                     {/*Display countries with select: */}
-                    {/* should be id */}
                     <Field name="origin_country">
                       {({ field, form }) => (
                         <div>
@@ -169,7 +167,6 @@ export default function AddFlight() {
                     </Field>
 
                     {/*Display countries with select: */}
-                    {/* should be id */}
                     <label for="destination_country">To:</label>
                     <Select
                       name="destination_country"
@@ -187,34 +184,6 @@ export default function AddFlight() {
                       component="div"
                       className="error"
                     />
-                    {/* 
-                    <FloatingLabel controlId="floatingInput" label="Origin country">
-                      <Field
-                        name="origin_country"
-                        type="text"
-                        placeholder="Origin country"
-                        as={bsForm.Control}
-                      />
-                      <ErrorMessage
-                        name="destination_country"
-                        component="div"
-                        className="error"
-                      />
-                    </FloatingLabel> */}
-
-                    {/* <FloatingLabel controlId="floatingInput" label="Destination country">
-                      <Field
-                        name="destination_country"
-                        type="text"
-                        placeholder="Destination country"
-                        as={bsForm.Control}
-                      />
-                      <ErrorMessage
-                        name="destination_country"
-                        component="div"
-                        className="error"
-                      />
-                    </FloatingLabel> */}
 
                     <label>Departure time</label>
                     <DatePicker

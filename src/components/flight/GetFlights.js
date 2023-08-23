@@ -12,6 +12,7 @@ import {
 } from "../../api/flight/FlightApi";
 import { deleteFlightByID } from "./DeleteFlightByID";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
+import { useNavigate } from "react-router-dom";
 
 
 export default function GetFlightsPage() {
@@ -22,6 +23,7 @@ export default function GetFlightsPage() {
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_superuser;
   const isAirlineCompany = user?.length > 0 && user[0]?.groups[0] === 1;
+  const navigate = useNavigate()
 
   const [flights, setFlights] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -47,14 +49,14 @@ export default function GetFlightsPage() {
           toast.error("Fetching error", error.message);
         });
     } else {
-      console.log("nothing to fetch")
+      console.log("Nothing to fetch")
     }
   };
 
   const handleEditClick = (id) => {
     console.log("Edit clicked for ID:", id);
     // Navigate to the edit page with the specific ID
-    navigate(`edit/${id}`);
+    navigate(`${id}/edit`);
   };
 
   const handleDeleteClick = (id) => {

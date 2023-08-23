@@ -101,8 +101,7 @@ export const editFlightByID = (flight_id, data) => {
   try {
     // using http for permissions check
     const response = http.put(
-      `http://127.0.0.1:8000/api/flights/${flight_id}/`,
-      data
+      `http://127.0.0.1:8000/api/flights/${flight_id}/`, data
     );
     console.log("Api response for editFlightByID", data);
     console.log(flight_id);
