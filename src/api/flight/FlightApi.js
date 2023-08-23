@@ -121,16 +121,8 @@ export const deleteFlight = async (flightID) => {
       `http://127.0.0.1:8000/api/flights/${flightID}/`
     );
     console.log("api response for deleteFlight", response);
-
-    if (response.status === 204) {
-      // Deletion successful with a "No Content" status
-      return response;
-    } else {
-      // Unexpected response status
-      throw new Error(`Unexpected response status: ${response.status}`);
-    }
+    return response;
   } catch (error) {
     console.log("error in deleteFlight", error.message);
-    // throw error; // Re-throw the error for the calling code to handle
   }
 };

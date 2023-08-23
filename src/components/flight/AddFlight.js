@@ -119,11 +119,17 @@ export default function AddFlight() {
   return (
     <div>
       {isAirlineCompany ? (
-        <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
           <ToastContainer />
           <Formik
             initialValues={{
-              // airline_company: "",
               origin_country: "",
               destination_country: "",
               // departure_time: "2023-09-30T10:50:38Z",
@@ -137,7 +143,7 @@ export default function AddFlight() {
           >
             {() => {
               return (
-                <Form>
+                <Form style={{ width: "40%" }}>
                   <h1>Add Flight</h1>
                   <div>
                     {/*Display countries with select: */}

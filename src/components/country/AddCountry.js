@@ -7,11 +7,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import { default as bsForm } from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+import { useStoreState } from "easy-peasy";
 
 import { PermissionDenied } from "../../api/auth/CheckGroup";
 import { addNewCountry } from "../../api/country/CountryApi";
-import { useStoreState } from "easy-peasy";
-
 
 export default function AddCountry() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -60,7 +59,14 @@ export default function AddCountry() {
   return (
     <div>
       {isAdmin ? (
-        <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
           <ToastContainer />
           <Formik
             initialValues={{
@@ -71,7 +77,7 @@ export default function AddCountry() {
           >
             {() => {
               return (
-                <Form>
+                <Form style={{ width: "40%" }}>
                   <h1>Add Country</h1>
                   <div>
                     <FloatingLabel controlId="floatingInput" label="Name">

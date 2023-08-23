@@ -13,7 +13,7 @@ import {
 import { deleteFlightByID } from "./DeleteFlightByID";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
 import { useNavigate } from "react-router-dom";
-
+import { ToastContainer } from "react-toastify";
 
 export default function GetFlightsPage() {
   //TODO: delete and edit with fontawsome action
@@ -23,7 +23,7 @@ export default function GetFlightsPage() {
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_superuser;
   const isAirlineCompany = user?.length > 0 && user[0]?.groups[0] === 1;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [flights, setFlights] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -49,7 +49,7 @@ export default function GetFlightsPage() {
           toast.error("Fetching error", error.message);
         });
     } else {
-      console.log("Nothing to fetch")
+      console.log("Nothing to fetch");
     }
   };
 
@@ -60,7 +60,6 @@ export default function GetFlightsPage() {
   };
 
   const handleDeleteClick = (id) => {
-    // console.log("here", id);
     deleteFlightByID(id);
   };
 
@@ -70,7 +69,8 @@ export default function GetFlightsPage() {
 
   return (
     <div>
-      {(isAdmin || isAirlineCompany) ? (
+      <ToastContainer/>
+      {isAdmin || isAirlineCompany ? (
         <div
           style={{
             display: "flex",
@@ -118,8 +118,10 @@ export default function GetFlightsPage() {
                       <td>{flight.airline_company}</td>
                       <td>{flight.origin_country}</td>
                       <td>{flight.destination_country}</td>
-                      <td>{flight.departure_time}</td>
-                      <td>{flight.landing_time}</td>
+                      <td>
+                        {new Date(flight.departure_time).toLocaleString()}
+                      </td>
+                      <td>{new Date(flight.landing_time).toLocaleString()}</td>
                       <td>{flight.remaining_tickets}</td>
                       <td>
                         <Badge bg="primary" pill>

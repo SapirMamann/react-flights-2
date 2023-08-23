@@ -73,11 +73,10 @@ export default function Register() {
       .catch((error) => console.debug("getGroups fetching error", error));
   };
 
-  
   const submitHandler = async (values) => {
     //TODO: make the group required. cant do that because it has a problem with saving the value of the select and not sending the form for submission
     console.debug("values", values);
-    
+
     const userCreationValues = {
       username: values.username.toLowerCase(),
       email: values.email,
@@ -86,12 +85,12 @@ export default function Register() {
       groups: "Customer",
     };
     console.log("userCreationValues", userCreationValues);
-    
+
     // console.log("customerValues", customerCreationValues);
-    
+
     try {
       apiRegister(userCreationValues)
-      .then((response) => {
+        .then((response) => {
           console.log("response", response);
           //TODO: log the user after successful registration:
           if (response.status === 201) {
@@ -104,20 +103,20 @@ export default function Register() {
               phone: values.phone,
               credit_card: values.credit_card,
             };
-            
+
             addNewCustomer(customerCreationValues)
-            .then((response) => {
-              console.log("response of creating customer", response);
-              if (response.status === 201) {
-                // localStorage.setItem("customer_id", response.data.id)
-                toast.success("Registration successful. You can now login.");
+              .then((response) => {
+                console.log("response of creating customer", response);
+                if (response.status === 201) {
+                  // localStorage.setItem("customer_id", response.data.id)
+                  toast.success("Registration successful. You can now login.");
                 }
               })
               .catch((error) => {
                 console.log("error creating customer", error);
                 for (const [key, value] of Object.entries(
                   error.response.data
-                  )) {
+                )) {
                   toast.error(`RegisterCustomer failed. ${key}: ${value[0]}`, {
                     // toast.error(`Login failed. ${error.response.data.detail}`, {
                     position: "top-left",
@@ -141,9 +140,9 @@ export default function Register() {
           for (const [key, value] of Object.entries(error.response.data)) {
             toast.error(`RegisterCustomer failed. ${key}: ${value[0]}`, {
               // toast.error(`Login failed. ${error.response.data.detail}`, {
-                position: "top-left",
-                autoClose: 5000,
-                hideProgressBar: false,
+              position: "top-left",
+              autoClose: 5000,
+              hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
@@ -152,19 +151,27 @@ export default function Register() {
             });
           }
         });
-      } catch (error) {
-        console.debug("here", error);
-        console.log("Registration failed.", error.message);
-      }
-    };
-    
-    useEffect(() => {
-      // Fetch the groups from the API
-      getGroups();
-    }, []);
-  
-    return (
-      <>
+    } catch (error) {
+      console.debug("here", error);
+      console.log("Registration failed.", error.message);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch the groups from the API
+    getGroups();
+  }, []);
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      {" "}
       <ToastContainer />
       <Formik
         initialValues={{
@@ -172,7 +179,6 @@ export default function Register() {
           email: "sapir@outlook.com",
           password: "sapir1999",
           password2: "sapir1999",
-          // groups: "",
           first_name: "",
           last_name: "",
           address: "",
@@ -184,7 +190,7 @@ export default function Register() {
       >
         {() => {
           return (
-            <Form>
+            <Form style={{ width: "40%" }}>
               <FloatingLabel controlId="username" label="Username">
                 <Field
                   name="username"
@@ -315,6 +321,6 @@ export default function Register() {
           );
         }}
       </Formik>
-    </>
+    </div>
   );
 }

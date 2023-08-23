@@ -7,9 +7,9 @@ import GetUserTickets from "../components/ticket/GetUserTickets";
 
 export default function ProfilePage() {
   const user = useStoreState((state) => state.user.user);
-  const userID = user?.length > 0 && user[0]?.id
   const isAdmin = user?.length > 0 && user[0]?.is_superuser;
-  
+  const isAirlineCompany = user?.length > 0 && user[0]?.groups[0] === 1;
+
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "0 auto", maxWidth: "800px" }}>
       {/* Left side: Button */}
@@ -22,7 +22,9 @@ export default function ProfilePage() {
               </Button>
             </Link>
           </div>
-        ): (
+        ) : isAirlineCompany ? (
+          <li><a className="dropdown-item" href="/airline-profile">Airline Profile</a></li>
+        ) : (
           <div>
             <Link to="/customers/edit" style={{ display: "inline-block", textDecoration: "none" }}>
               <Button variant="light" size="sm" style={{ background: "#f8f9fa", color: "#6c757d", border: "1px solid #dee2e6", padding: "5px 20px", borderRadius: "3px" }}>

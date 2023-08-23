@@ -14,10 +14,12 @@ import Input from "../common/Input";
 import { updateCountry } from "../../api/country/CountryApi";
 import { getAllCountries } from "../../api/country/CountryApi";
 import { updateAirlineCompany } from "../../api/airline/AirlineApi";
+import { PermissionDenied } from "../../api/auth/CheckGroup";
+
 
 export default function EditAirline(props) {
   //TODO: add user information edit
-  
+
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_staff;
 
@@ -116,8 +118,15 @@ export default function EditAirline(props) {
 
   return (
     <>
-      {isAdmin && (
-        <div>
+      {isAdmin ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
           <ToastContainer />
           <Formik
             initialValues={{
@@ -129,7 +138,7 @@ export default function EditAirline(props) {
           >
             {() => {
               return (
-                <Form className="input">
+                <Form style={{ width: "40%" }}>
                   <div>
                     <div>
                       <FloatingLabel controlId="floatingInput" label="Name">
@@ -182,6 +191,11 @@ export default function EditAirline(props) {
               );
             }}
           </Formik>
+        </div>
+      ) : (
+        <div>
+          {PermissionDenied()}
+          <Link to="/login">Login</Link>
         </div>
       )}
     </>

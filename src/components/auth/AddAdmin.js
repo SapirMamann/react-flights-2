@@ -7,11 +7,16 @@ import Button from "react-bootstrap/Button";
 import { default as bsForm } from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import "react-toastify/dist/ReactToastify.css";
+import { useStoreState } from "easy-peasy";
 
 import { ApiLogin, apiRegister } from "../../api/auth/AuthApi";
 import { addNewAdmin } from "../../api/admin/AdminApi";
+import { PermissionDenied } from "../../api/auth/CheckGroup";
 
 export default function AddAdmin() {
+  const user = useStoreState((state) => state.user.user);
+  const isAdmin = user?.length > 0 && user[0]?.is_superuser;
+
   const navigate = useNavigate();
 
   const AddAdminValidation = object().shape({
@@ -104,80 +109,93 @@ export default function AddAdmin() {
   };
 
   return (
-    <>
-      <ToastContainer />
-      <Formik
-        initialValues={{
-          username: "sapir",
-          email: "sapir@outlook.com",
-          password: "sapir1999",
-          password2: "sapir1999",
-          // groups: "",
-          first_name: "",
-          last_name: "",
-        }}
-        onSubmit={(values) => submitHandler(values)}
-        validationSchema={AddAdminValidation}
-      >
-        {() => {
-          return (
-            <Form>
-              <FloatingLabel controlId="username" label="Username">
-                <Field
-                  name="username"
-                  type="text"
-                  placeholder="Username"
-                  as={bsForm.Control}
-                  autoComplete="username"
-                />
-                <ErrorMessage
-                  name="username"
-                  component="div"
-                  className="error"
-                />
-              </FloatingLabel>
+    <div>
+      {isAdmin ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          <ToastContainer />
+          <Formik
+            initialValues={{
+              username: "sapir",
+              email: "sapir@outlook.com",
+              password: "sapir1999",
+              password2: "sapir1999",
+              // groups: "",
+              first_name: "",
+              last_name: "",
+            }}
+            onSubmit={(values) => submitHandler(values)}
+            validationSchema={AddAdminValidation}
+          >
+            {() => {
+              return (
+                <Form style={{ width: "40%" }}>
+                  <FloatingLabel controlId="username" label="Username">
+                    <Field
+                      name="username"
+                      type="text"
+                      placeholder="Username"
+                      as={bsForm.Control}
+                      autoComplete="username"
+                    />
+                    <ErrorMessage
+                      name="username"
+                      component="div"
+                      className="error"
+                    />
+                  </FloatingLabel>
 
-              <FloatingLabel controlId="email" label="Email">
-                <Field
-                  name="email"
-                  type="email"
-                  placeholder="Email"
-                  as={bsForm.Control}
-                />
-                <ErrorMessage name="email" component="div" className="error" />
-              </FloatingLabel>
+                  <FloatingLabel controlId="email" label="Email">
+                    <Field
+                      name="email"
+                      type="email"
+                      placeholder="Email"
+                      as={bsForm.Control}
+                    />
+                    <ErrorMessage
+                      name="email"
+                      component="div"
+                      className="error"
+                    />
+                  </FloatingLabel>
 
-              <FloatingLabel controlId="password" label="Password">
-                <Field
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                  as={bsForm.Control}
-                  autoComplete="current-password"
-                />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="error"
-                />
-              </FloatingLabel>
+                  <FloatingLabel controlId="password" label="Password">
+                    <Field
+                      name="password"
+                      type="password"
+                      placeholder="Password"
+                      as={bsForm.Control}
+                      autoComplete="current-password"
+                    />
+                    <ErrorMessage
+                      name="password"
+                      component="div"
+                      className="error"
+                    />
+                  </FloatingLabel>
 
-              <FloatingLabel controlId="password2" label="Password">
-                <Field
-                  name="password2"
-                  type="password"
-                  placeholder="Password"
-                  as={bsForm.Control}
-                  autoComplete="current-password"
-                />
-                <ErrorMessage
-                  name="password2"
-                  component="div"
-                  className="error"
-                />
-              </FloatingLabel>
+                  <FloatingLabel controlId="password2" label="Password">
+                    <Field
+                      name="password2"
+                      type="password"
+                      placeholder="Password"
+                      as={bsForm.Control}
+                      autoComplete="current-password"
+                    />
+                    <ErrorMessage
+                      name="password2"
+                      component="div"
+                      className="error"
+                    />
+                  </FloatingLabel>
 
-              {/* <FloatingLabel controlId="groups" label="Group">
+                  {/* <FloatingLabel controlId="groups" label="Group">
                 <Field
                   name="groups"
                   component={bsForm.Select}
@@ -197,45 +215,52 @@ export default function AddAdmin() {
                 </Field>
                 <ErrorMessage name="groups" component="div" className="error" />
               </FloatingLabel> */}
-              <br />
+                  <br />
 
-              <FloatingLabel controlId="first_name" label="First name">
-                <Field
-                  name="first_name"
-                  type="text"
-                  placeholder="First name"
-                  as={bsForm.Control}
-                />
-                <ErrorMessage
-                  name="first_name"
-                  component="div"
-                  className="error"
-                />
-              </FloatingLabel>
+                  <FloatingLabel controlId="first_name" label="First name">
+                    <Field
+                      name="first_name"
+                      type="text"
+                      placeholder="First name"
+                      as={bsForm.Control}
+                    />
+                    <ErrorMessage
+                      name="first_name"
+                      component="div"
+                      className="error"
+                    />
+                  </FloatingLabel>
 
-              <FloatingLabel controlId="last_name" label="Last name">
-                <Field
-                  name="last_name"
-                  type="text"
-                  placeholder="Last name"
-                  as={bsForm.Control}
-                />
-                <ErrorMessage
-                  name="last_name"
-                  component="div"
-                  className="error"
-                />
-              </FloatingLabel>
+                  <FloatingLabel controlId="last_name" label="Last name">
+                    <Field
+                      name="last_name"
+                      type="text"
+                      placeholder="Last name"
+                      as={bsForm.Control}
+                    />
+                    <ErrorMessage
+                      name="last_name"
+                      component="div"
+                      className="error"
+                    />
+                  </FloatingLabel>
 
-              <div className="d-grid gap-2">
-                <Button type="submit" variant="secondary" size="lg">
-                  Register
-                </Button>
-              </div>
-            </Form>
-          );
-        }}
-      </Formik>
-    </>
+                  <div className="d-grid gap-2">
+                    <Button type="submit" variant="secondary" size="lg">
+                      Register
+                    </Button>
+                  </div>
+                </Form>
+              );
+            }}
+          </Formik>
+        </div>
+      ) : (
+        <div>
+          {PermissionDenied()}
+          <Link to="/login">Login</Link>
+        </div>
+      )}
+    </div>
   );
 }

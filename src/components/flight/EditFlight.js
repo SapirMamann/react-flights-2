@@ -15,6 +15,7 @@ import { useStoreState } from "easy-peasy";
 import { getAllCountries } from "../../api/country/CountryApi";
 import { editFlightByID } from "../../api/flight/FlightApi";
 import { getAirlineByUserID } from "../../api/airline/AirlineApi";
+import { PermissionDenied } from "../../api/auth/CheckGroup";
 
 // Function for editing flights
 export default function EditFlight(props) {
@@ -115,7 +116,14 @@ export default function EditFlight(props) {
   return (
     <div>
       {isAirlineCompany ? (
-        <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
           <ToastContainer />
           <Formik
             initialValues={{
@@ -133,7 +141,7 @@ export default function EditFlight(props) {
           >
             {() => {
               return (
-                <Form>
+                <Form style={{ width: "40%" }}>
                   <h1>Edit Flight #{flight_id}</h1>
                   <div>
                     {/*Display countries with select: */}
