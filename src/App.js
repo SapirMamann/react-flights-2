@@ -20,7 +20,6 @@ import Trying from "./components/common/trying";
 import DecodeToken from "./components/auth/DecodeToken";
 import GetUserTickets from "./components/ticket/GetUserTickets";
 import EditFlight from "./components/flight/EditFlight";
-import { NavbarDark } from "./components/common/Trynavbar";
 import RegisterAirlineCompany from "./components/auth/RegisterAirlineCompany";
 import GetAirlineCompanies from "./components/airline/GetAirlines";
 import EditAirline from "./components/airline/EditAirline";

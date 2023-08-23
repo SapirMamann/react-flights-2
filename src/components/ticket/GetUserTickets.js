@@ -15,6 +15,7 @@ export default function GetUserTickets() {
 
   const user = useStoreState((state) => state.user.user);
   const userID = user?.length > 0 && user[0]?.id;
+  const isAuthenticated = useStoreState((state) => state.user.isAuthenticated);
 
   const navigate = useNavigate();
   const [tickets, setTickets] = useState([]);
@@ -43,7 +44,7 @@ export default function GetUserTickets() {
   };
 
   useEffect(() => {
-    if (user.length > 0) {
+    if (isAuthenticated) {
       console.log("GetUserTickets userID", userID);
       getUserTickets(userID);
     } else {
@@ -64,7 +65,7 @@ export default function GetUserTickets() {
       }}
     >
       {/* Check if user  is logged in */}
-      {user.length > 0 ? (
+      { (isAuthenticated) ? (
         <div className="w-80">
           {tickets.length > 0 ? (
             <ListGroup>

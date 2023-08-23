@@ -141,3 +141,5 @@ update  state after editing admin/cust/airline company
 formik when submitting doesnt consol log it is  a aproblem in validation schema
 
 add flight doesnt have required fields
+
+creating customer that buys ticket has no permissions and returns anonymous user
