@@ -6,7 +6,6 @@ import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 
-// change name because its just a login pop up
 export default function LoginOptions() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);

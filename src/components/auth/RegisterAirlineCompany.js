@@ -16,16 +16,12 @@ import { PermissionDenied } from "../../api/auth/CheckGroup";
 
 
 export default function RegisterAirlineCompany() {
-  //TODO: only admin can access it
-  // get all countries as a select input.
-  // send the user, name and country to the api view of create airline company as well as a create user
-  // turn name to lower case
+  //TODO: 
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_superuser;
 
   const navigate = useNavigate();
   const [groups, setGroups] = useState([]);
-  // const [selectedGroup, setSelectedGroup] = useState("");
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
 

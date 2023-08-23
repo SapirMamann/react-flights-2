@@ -10,7 +10,6 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { default as bsForm } from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-import Input from "../common/Input";
 import { updateCountry } from "../../api/country/CountryApi";
 import { getAllCountries } from "../../api/country/CountryApi";
 import { updateAirlineCompany } from "../../api/airline/AirlineApi";

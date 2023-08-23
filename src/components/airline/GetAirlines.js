@@ -11,6 +11,8 @@ import { useStoreState } from "easy-peasy";
 
 import { getAllAirlines } from "../../api/airline/AirlineApi";
 import { deleteAirlineByID } from "./DeleteAirlineByID";
+import { PermissionDenied } from "../../api/auth/CheckGroup";
+
 
 export default function GetAirlineCompanies() {
   // country name and not as id
@@ -21,14 +23,6 @@ export default function GetAirlineCompanies() {
   const [airlineCompanies, setAirlineCompanies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // const getAirlinesCompanies = () => {
-  //   getAllAirlines()
-  //     .then((response) => {
-  //       console.log("air", response);
-  //       setAirlineCompanies(response);
-  //     })
-  //     .catch((error) => console.debug("airline fetching error", error));
-  // };
   const getAirlinesCompanies = () => {
     getAllAirlines()
       .then((response) => {
@@ -42,7 +36,8 @@ export default function GetAirlineCompanies() {
                 .toString()
                 .toLowerCase()
                 .includes(searchQuery.toLowerCase())) ||
-            airline.id.toString().includes(searchQuery)
+            airline.id.toString().includes(searchQuery) ||
+            airline.user.toString().includes(searchQuery)
         );
         setAirlineCompanies(filteredAirlines);
       })
@@ -83,8 +78,8 @@ export default function GetAirlineCompanies() {
             <input
               type="text"
               placeholder="Search"
-              // value={searchQuery}
-              // onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               style={{ marginRight: "10px" }}
             />
             <br />
@@ -102,6 +97,7 @@ export default function GetAirlineCompanies() {
                 <tr>
                   <th>Airline Name</th>
                   <th>Airline Country</th>
+                  <th>User ID</th>
                   <th>Airline ID</th>
                   <th></th>
                 </tr>
@@ -111,6 +107,7 @@ export default function GetAirlineCompanies() {
                   <tr key={index}>
                     <td>{airline.name}</td>
                     <td>{airline.country}</td>
+                    <td>{airline.user}</td>
                     <td>
                       <Badge bg="primary" pill>
                         {airline.id}

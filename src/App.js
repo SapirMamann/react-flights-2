@@ -16,7 +16,6 @@ import GetFlightsPage from "./components/flight/GetFlights";
 import AddFlight from "./components/flight/AddFlight";
 import AddCountry from "./components/country/AddCountry";
 import BookFlight from "./components/flight/BookFlight";
-import Bla from "./components/common/bla";
 import Trying from "./components/common/trying";
 import DecodeToken from "./components/auth/DecodeToken";
 import GetUserTickets from "./components/ticket/GetUserTickets";

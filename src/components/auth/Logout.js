@@ -8,6 +8,7 @@ import { useStoreState } from "easy-peasy";
 import { ApiLogout } from "../../api/auth/AuthApi";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
 
+
 export default function Logout() {
   const navigate = useNavigate();
   const clearUserState = useStoreActions(

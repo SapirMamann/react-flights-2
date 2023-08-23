@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 import { getAllCountries } from "../../api/country/CountryApi";
 
+
 export default function CarouselComponent() {
   const [countries, setCountries] = useState([]);
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ export default function CarouselComponent() {
 
   return (
     <div>
-      <ToastContainer/>
+      <ToastContainer />
       <div
         style={{
           display: "flex",

@@ -12,6 +12,8 @@ import { ApiLogin, apiRegister, getAllGroups } from "../../api/auth/AuthApi";
 import { addNewCustomer } from "../../api/customer/CustomerApi";
 
 export default function Register() {
+  //TODO: permission denied when isauthenticate except isadmin that can add user
+  
   const navigate = useNavigate();
   const [groups, setGroups] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState("");
@@ -171,7 +173,6 @@ export default function Register() {
         flexDirection: "column",
       }}
     >
-      {" "}
       <ToastContainer />
       <Formik
         initialValues={{
