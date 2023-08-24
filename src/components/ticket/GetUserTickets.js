@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStoreState } from "easy-peasy";
-import ListGroup from "react-bootstrap/ListGroup";
-import Alert from "react-bootstrap/Alert";
 import { toast, ToastContainer } from "react-toastify";
-import Badge from "react-bootstrap/Badge";
-import Table from "react-bootstrap/Table";
-import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPlus,
-  faEllipsisV,
-  faPenToSquare, faTrash
-} from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { getTicketsByUser } from "../../api/ticket/TicketApi";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
@@ -20,8 +11,8 @@ import "./Ticket.css";
 import ticketQR from "../../images/ticket_qr.png"; // Import the image
 import { deleteTicketByID } from "./DeleteTicketByID";
 
+
 export default function GetUserTickets() {
-  //TODO: get all flights details of tickets
   // permission is allowed for customers only
 
   const user = useStoreState((state) => state.user.user);
@@ -43,16 +34,7 @@ export default function GetUserTickets() {
       });
   };
 
-  const getFlightDetailsOfTicket = () => {
-    try {
-      //TODO: get all flights details of tickets
-    } catch (error) {
-      console.log("Error fetching flight details of ticket:", error);
-    }
-  };
-
   const handleDeleteClick = (ticketID) => {
-    console.log("deleteHandler", ticketID);
     deleteTicketByID(ticketID);
   };
 
