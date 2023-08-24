@@ -3,11 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { useStoreState } from "easy-peasy";
 import ListGroup from "react-bootstrap/ListGroup";
 import Alert from "react-bootstrap/Alert";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import Badge from "react-bootstrap/Badge";
+import Table from "react-bootstrap/Table";
+import Dropdown from "react-bootstrap/Dropdown";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 
 import { getTicketsByUser } from "../../api/ticket/TicketApi";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
-
+import "./Ticket.css";
+import ticketQR from "../../images/ticket_qr.png"; // Import the image
 
 export default function GetUserTickets() {
   //TODO: get all flights details of tickets
@@ -21,18 +27,15 @@ export default function GetUserTickets() {
   const [tickets, setTickets] = useState([]);
 
   const getUserTickets = (userID) => {
-    try {
-      getTicketsByUser(userID)
-        .then((response) => {
-          console.log("GetUserTickets response", response);
-          setTickets(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching user tickets:", error);
-        });
-    } catch (error) {
-      console.error("Error fetching user tickets:", error);
-    }
+    getTicketsByUser(userID)
+      .then((response) => {
+        console.log("GetUserTickets response", response);
+        setTickets(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user tickets:", error);
+        toast.error("Error fetching user tickets:", error.message);
+      });
   };
 
   const getFlightDetailsOfTicket = () => {
@@ -56,30 +59,54 @@ export default function GetUserTickets() {
   }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      {/* Check if user  is logged in */}
-      { (isAuthenticated) ? (
-        <div className="w-80">
-          {tickets.length > 0 ? (
-            <ListGroup>
-              <ListGroup.Item className="font-weight-bold">
-                Your Tickets
-              </ListGroup.Item>
-              {tickets.map((ticket, index) => (
-                <ListGroup.Item key={index}>
-                  Ticket ID: {ticket.id}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
+    <div>
+      <ToastContainer />
+      {isAuthenticated ? (
+        <div className="ticket-list">
+          <h1>Your Tickets</h1>
+          <br />
+          {tickets && tickets.length > 0 ? (
+            tickets.map((ticket, index) => (
+              <div className="ticket" key={index}>
+                <header>
+                  <div className="company-name">
+                    {ticket.flight_no.airline_company.name}
+                  </div>
+                </header>
+                <div className="airports">
+                  <div className="airport">
+                    <div className="airport-name">From</div>
+                    <div className="airport-code">
+                      {ticket.flight_no.origin_country.name}
+                    </div>
+                    <div className="dep-arr-label">Departure</div>
+                    <div className="time">
+                      {new Date(ticket.flight_no.departure_time).toLocaleString()}
+                    </div>
+                  </div>
+                  <div className="airport">
+                    <div className="airport-name">To</div>
+                    <div className="airport-code">
+                      {ticket.flight_no.destination_country.name}
+                    </div>
+                    <div className="dep-arr-label">Arrival</div>
+                    <div className="time">
+                      {new Date(ticket.flight_no.landing_time).toLocaleString()}
+                    </div>
+                  </div>
+                </div>                
+                <div className="qr">
+                  <img
+                    src={ticketQR}
+                    alt="QR Code"
+                    width={150} 
+                    height={150} 
+                  />
+                </div>
+              </div>
+            ))
           ) : (
-            <Alert variant="info">You don't have any tickets.</Alert>
+            <p>No tickets.</p>
           )}
         </div>
       ) : (
