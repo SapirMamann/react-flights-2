@@ -16,6 +16,7 @@ import { getAllCountries } from "../../api/country/CountryApi";
 import { getAirlineByUserID } from "../../api/airline/AirlineApi";
 import { addNewFlight } from "../../api/flight/FlightApi";
 
+
 export default function AddFlight() {
   // only airline company can add flights
 

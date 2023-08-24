@@ -17,6 +17,7 @@ import { editFlightByID } from "../../api/flight/FlightApi";
 import { getAirlineByUserID } from "../../api/airline/AirlineApi";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
 
+
 // Function for editing flights
 export default function EditFlight(props) {
   const { flight_id } = useParams();

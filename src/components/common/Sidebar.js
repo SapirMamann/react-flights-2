@@ -36,7 +36,7 @@ export default function Sidebar(props) {
 
         {/* Body of the toggle menu: */}
         <Offcanvas.Body>
-          <Nav className="justify-content-end flex-grow-1 pe-3">
+          <Nav className="justify-content-end flex-grow-1 pe-3 text-start">
             {/* First link */}
             <Nav.Link href="#action1">Home</Nav.Link>
 

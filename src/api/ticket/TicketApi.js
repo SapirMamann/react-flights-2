@@ -30,6 +30,20 @@ export const getTicketsByUser = async (user_id) => {
   }
 };
 
+
+export const deleteTicket = async (ticketID) => {
+  try {
+    // using http for permissions check
+    const response = await http.delete(
+      `http://127.0.0.1:8000/api/tickets/${ticketID}/`
+    );
+    console.log("api response for deleteticket", response);
+    return response;
+  } catch (error) {
+    console.log("error in deleteticket", error.message);
+  }
+};
+
 // Getting all tickets from api
 // export const getAllTickets = async () => {
 //   // using http for permissions check

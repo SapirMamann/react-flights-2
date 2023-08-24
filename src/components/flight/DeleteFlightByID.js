@@ -7,7 +7,8 @@ import { deleteFlight } from "../../api/flight/FlightApi";
 export const deleteFlightByID = (FlightID) => {
   try {
     console.log("Button clicked for ID:", FlightID);
-    deleteFlight(FlightID).then((response) => {
+    deleteFlight(FlightID)
+      .then((response) => {
       console.log("api response for deleteFlightCompany", response);
       console.log("api response for deleteFlightCompany", response.status);
       if (response.status === 204) {

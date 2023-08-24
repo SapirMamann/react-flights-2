@@ -9,6 +9,7 @@ import { getFlightByID } from "../../api/flight/FlightApi";
 import { addNewTicket } from "../../api/ticket/TicketApi";
 import { useStoreState } from "easy-peasy";
 
+
 export default function BookFlight() {
   const user = useStoreState((state) => state.user.user);
   const userID = user?.length > 0 && user[0]?.id;

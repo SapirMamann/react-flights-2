@@ -8,12 +8,17 @@ import Badge from "react-bootstrap/Badge";
 import Table from "react-bootstrap/Table";
 import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faEllipsisV,
+  faPenToSquare, faTrash
+} from "@fortawesome/free-solid-svg-icons";
 
 import { getTicketsByUser } from "../../api/ticket/TicketApi";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
 import "./Ticket.css";
 import ticketQR from "../../images/ticket_qr.png"; // Import the image
+import { deleteTicketByID } from "./DeleteTicketByID";
 
 export default function GetUserTickets() {
   //TODO: get all flights details of tickets
@@ -46,6 +51,11 @@ export default function GetUserTickets() {
     }
   };
 
+  const handleDeleteClick = (ticketID) => {
+    console.log("deleteHandler", ticketID);
+    deleteTicketByID(ticketID);
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
       console.log("GetUserTickets userID", userID);
@@ -68,9 +78,14 @@ export default function GetUserTickets() {
           {tickets && tickets.length > 0 ? (
             tickets.map((ticket, index) => (
               <div className="ticket" key={index}>
-                <header>
+                <header className="header">
                   <div className="company-name">
                     {ticket.flight_no.airline_company.name}
+                    <div className="delete-button">
+                      <button onClick={() => handleDeleteClick(ticket.id)}>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
+                    </div>
                   </div>
                 </header>
                 <div className="airports">
@@ -81,7 +96,9 @@ export default function GetUserTickets() {
                     </div>
                     <div className="dep-arr-label">Departure</div>
                     <div className="time">
-                      {new Date(ticket.flight_no.departure_time).toLocaleString()}
+                      {new Date(
+                        ticket.flight_no.departure_time
+                      ).toLocaleString()}
                     </div>
                   </div>
                   <div className="airport">
@@ -94,14 +111,9 @@ export default function GetUserTickets() {
                       {new Date(ticket.flight_no.landing_time).toLocaleString()}
                     </div>
                   </div>
-                </div>                
+                </div>
                 <div className="qr">
-                  <img
-                    src={ticketQR}
-                    alt="QR Code"
-                    width={150} 
-                    height={150} 
-                  />
+                  <img src={ticketQR} alt="QR Code" width={150} height={150} />
                 </div>
               </div>
             ))
