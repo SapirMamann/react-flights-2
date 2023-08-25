@@ -26,6 +26,7 @@ export default function GetCountries() {
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_superuser;
 
+  const [searchQuery, setSearchQuery] = useState(""); 
   const [countries, setCountries] = useState([]);
   const [selectedCountryID, setSelectedCountryID] = useState(null);
   const target = useRef(null);
@@ -33,10 +34,14 @@ export default function GetCountries() {
 
   const getCountriesList = () => {
     getAllCountries()
-      .then((response) => {
-        setCountries(response.data);
-        // console.log("getCountriesList", response.data);
-      })
+    .then((response) => {
+      const filteredCountries = response.data.filter(
+        (country) =>
+          country.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          country.id.toString().includes(searchQuery)
+      );
+      setCountries(filteredCountries);
+    })
       .catch((error) => {
         console.debug("getCountriesList fetching error", error);
         toast.error("Fetching error", error.message);
@@ -50,7 +55,7 @@ export default function GetCountries() {
 
   useEffect(() => {
     getCountriesList();
-  }, []);
+  }, [searchQuery]);
 
   return (
     <div>
@@ -69,8 +74,8 @@ export default function GetCountries() {
             <input
               type="text"
               placeholder="Search"
-              // value={searchQuery}
-              // onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               style={{ marginRight: "10px" }}
             />
             <br />
