@@ -86,10 +86,10 @@ export default function FlightSearch() {
   };
 
   const submitHandler = (values) => {
-    // console.log("here", selectedDestinationCountry, selectedOriginCountry)
     values.origin_country = selectedOriginCountry;
     values.destination_country = selectedDestinationCountry;
-    values.departure_time = selectedDateTime.toISOString();
+    //Maybe remove split to select hour and then get the same day:
+    values.departure_time = selectedDateTime.toISOString().split('T')[0];
     console.log("values", values);
 
     getFlightsByParameters(values)
@@ -173,32 +173,19 @@ export default function FlightSearch() {
                       placeholder="Select destination country"
                     />
                   </div>
-                  {/* <div style={{ marginBottom: "10px" }}>
-                  <label htmlFor="departure_time">Departure time:</label>
-                  <DatePicker
-                    name="departure_time"
-                    id="departure_time"
-                    selected={departureTime}
-                    onChange={(date) => {
-                      handleDateTimeChange(date);
-                    }}
-                    dateFormat="yyyy-MM-dd'T'HH:mm:ss'Z'"
-                    showTimeInput
-                    timeInputLabel="Time:"
-                    withPortal
-                  />
-                </div> */}
                   <div>
                     <label>Departure time</label>
                     <DatePicker
                       selected={selectedDateTime}
                       onChange={(d_date) => handleDateTimeChange(d_date)}
-                      dateFormat="yyyy-MM-dd'T'HH:mm:ss'Z'"
+                      dateFormat="yyyy-MM-dd"
                       showTimeInput
                       timeInputLabel="Time:"
                       withPortal
                       name="departure_time"
                       placeholderText="Select"
+                      shouldCloseOnSelect={true}
+                      onClick={(e) => e.stopPropagation()} // Prevent propagation
                     />
                   </div>
 
@@ -228,13 +215,11 @@ export default function FlightSearch() {
         {desiredFlights.length > 0 && (
           <div>
             <h2>Desired Flights</h2>
-            <ul>
-              {desiredFlights.map((flight) => (
-                <div key={flight.id}>
-                  <FlightDetail id={flight.id} />
-                </div>
-              ))}
-            </ul>
+            {desiredFlights.map((flight) => (
+              <div key={flight.id}>
+                <FlightDetail id={flight.id} />
+              </div>
+            ))}
           </div>
         )}
       </div>

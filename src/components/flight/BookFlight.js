@@ -94,10 +94,21 @@ export default function BookFlight() {
               </Card.Text>
               Destination: {selectedFlight.destination_country}{" "}
               {selectedFlight.landing_time}
-              {isCustomer && (
+              {isCustomer ? (
                 <Button onClick={bookingSubmissionHandler} variant="primary">
                   Book
                 </Button>
+              ) : (
+                <div
+                  style={{
+                    border: "1px solid #ccc",
+                    padding: "1px",
+                    borderRadius: "24px",
+                    color: "blue",
+                  }}
+                >
+                  <p>Sign in as a customer to book this flight</p>
+                </div>
               )}
             </Card.Body>
           </Card>
