@@ -5,19 +5,16 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useStoreState } from "easy-peasy";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-import {
-  getAllFlights,
-  getFlightsByAirlineCompany,
-} from "../../api/flight/FlightApi";
+import { getAllFlights, getFlightsByAirlineCompany } from "../../api/flight/FlightApi";
 import { deleteFlightByID } from "./DeleteFlightByID";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
-import { useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+
 
 export default function GetFlightsPage() {
   //TODO: delete and edit with fontawsome action
-  // search component
   // airline can only edit their own flights
 
   const user = useStoreState((state) => state.user.user);
@@ -42,7 +39,23 @@ export default function GetFlightsPage() {
     if (fetchFlightsPromise) {
       fetchFlightsPromise
         .then((response) => {
-          setFlights(response);
+          console.log("getFlights response", response);
+          const filteredFlights = response.filter(
+            (flight) =>
+              flight.airline_company
+                .toString()
+                .includes(searchQuery) ||
+              flight.origin_country
+                .toString()
+                .includes(searchQuery) ||
+              flight.destination_country
+                .toString()
+                .includes(searchQuery) ||
+              flight.id
+                .toString()
+                .includes(searchQuery)
+          );
+          setFlights(filteredFlights);
         })
         .catch((error) => {
           console.log(error);
@@ -65,11 +78,11 @@ export default function GetFlightsPage() {
 
   useEffect(() => {
     getFlights();
-  }, []);
+  }, [searchQuery]);
 
   return (
     <div>
-      <ToastContainer/>
+      <ToastContainer />
       {isAdmin || isAirlineCompany ? (
         <div
           style={{
@@ -84,17 +97,19 @@ export default function GetFlightsPage() {
             <input
               type="text"
               placeholder="Search"
-              // value={searchQuery}
-              // onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               style={{ marginRight: "10px" }}
             />
             <br />
-            <a
-              href={`/flights/add`}
-              style={{ marginLeft: "auto", textAlign: "center" }}
-            >
-              <FontAwesomeIcon icon={faPlus} />
-            </a>
+            {isAirlineCompany && (
+              <a
+                href={`/flights/add`}
+                style={{ marginLeft: "auto", textAlign: "center" }}
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </a>
+            )}
           </div>
           <br />
           <div style={{ width: "80%", maxWidth: "800px" }}>

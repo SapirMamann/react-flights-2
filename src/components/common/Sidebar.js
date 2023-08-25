@@ -99,13 +99,11 @@ export default function Sidebar(props) {
                   <NavDropdown.Item href="/flights">
                     All flights
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="/flights/add">
-                    Add flight
-                  </NavDropdown.Item>
+                  
                   <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action5">
+                  {/* <NavDropdown.Item href="#action5">
                     Something else here
-                  </NavDropdown.Item>
+                  </NavDropdown.Item> */}
                 </NavDropdown>
               </>
             )}
