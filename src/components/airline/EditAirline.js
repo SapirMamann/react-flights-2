@@ -47,10 +47,10 @@ export default function EditAirline(props) {
     name: string()
       .required("Name is required")
       .min(3, "Must be at least 3 characters")
-      .matches(/^[a-zA-Z]+$/, "Only alphabetical letters are allowed"),
-    // It has a problem if it is required and not empty it says its empty
-    // country: string()
-    //   .required("Country is required"),
+      .matches(
+        /^[a-zA-Z\s]+$/,
+        "Only alphabetical letters and spaces are allowed"
+      ),
   });
 
   const submitHandler = (values) => {
@@ -58,9 +58,8 @@ export default function EditAirline(props) {
     values.name = values.name.toLowerCase();
     values.country = selectedCountry;
     console.log("values", values);
-
-    // Send a put request to the API endpoint with the form data
-    try {
+    if (values.country.length > 0) {
+      // Send a put request to the API endpoint with the form data
       updateAirlineCompany(airline_id, values)
         .then((response) => {
           console.log(response);
@@ -88,32 +87,19 @@ export default function EditAirline(props) {
             });
           }
         });
-    } catch (error) {
-      console.log("editing error:", error.message);
+    } else {
+      toast.error(`Country is required`, {
+        // toast.error(`Login failed. ${error.response.data.detail}`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
-
-    // updateCountry(id, values)
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     toast.success("Country edited successfully!");
-    //   })
-    //   .catch((error) => {
-    //     console.log("creation error:", error.message);
-    //     // console.warn(Object.entries(error.response))
-    //     console.error(Object.entries(error.response.data));
-    //     for (const [key, value] of Object.entries(error.response.data)) {
-    //       toast.error(`Saving failed. ${value[0]}`, {
-    //         position: "top-center",
-    //         autoClose: 5000,
-    //         hideProgressBar: false,
-    //         closeOnClick: true,
-    //         pauseOnHover: true,
-    //         draggable: true,
-    //         progress: undefined,
-    //         theme: "light",
-    //       });
-    //     }
-    //   });
   };
 
   return (

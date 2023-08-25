@@ -18,6 +18,7 @@ export default function GetAdmins() {
   
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_superuser;
+  const [searchQuery, setSearchQuery] = useState(""); 
 
   const navigate = useNavigate();
   const [admins, setAdmins] = useState([]);
@@ -26,9 +27,16 @@ export default function GetAdmins() {
 
   const getAdminsList = () => {
     getAllAdmins()
-      .then((response) => {
-        setAdmins(response.data);
-      })
+    .then((response) => {
+      const filteredAdmins = response.data.filter(
+        (admin) =>
+          admin.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          admin.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          admin.user.toString().includes(searchQuery) ||
+          admin.id.toString().includes(searchQuery)
+      );
+      setAdmins(filteredAdmins);
+    })
       .catch((error) => {
         console.debug("getAdminsList fetching error", error)
         toast.error("Fetching error", error.message)
@@ -42,7 +50,7 @@ export default function GetAdmins() {
 
   useEffect(() => {
     getAdminsList();
-  }, []);
+  }, [searchQuery]);
 
   return (
     <div>
@@ -61,8 +69,8 @@ export default function GetAdmins() {
             <input
               type="text"
               placeholder="Search"
-              // value={searchQuery}
-              // onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               style={{ marginRight: "10px" }}
             />
             <br />

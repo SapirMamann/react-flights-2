@@ -111,7 +111,7 @@ export default function RegisterAirlineCompany() {
             })
             .catch((error) => {
               console.log("error in addNewAirlineCompany", error);
-              toast.error("Registration successful. You can now login.");
+              toast.error("Registration successful.");
             });
         }
       })
@@ -138,6 +138,7 @@ export default function RegisterAirlineCompany() {
 
   return (
     <div>
+      <ToastContainer />
       {isAdmin ? (
         <div
           style={{
@@ -149,10 +150,10 @@ export default function RegisterAirlineCompany() {
         >
           <Formik
             initialValues={{
-              username: "test",
-              email: "test@example.com",
-              password: "sapir1999",
-              password2: "sapir1999",
+              username: "",
+              email: "",
+              password: "",
+              password2: "",
              
               name: "",
               country: "",
