@@ -19,13 +19,24 @@ export default function GetCustomers() {
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_superuser;
 
+  const [searchQuery, setSearchQuery] = useState("");
+
   const [customers, setCustomers] = useState([]);
   const target = useRef(null);
 
   const getCustomersList = () => {
     getAllCustomers()
       .then((response) => {
-        setCustomers(response.data);
+        const filteredCustomers = response.data.filter(
+          (customer) =>
+            customer.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            customer.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            customer.phone.toString().includes(searchQuery) ||
+            customer.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            customer.user.toString().includes(searchQuery) ||
+            customer.id.toString().includes(searchQuery)
+        );
+        setCustomers(filteredCustomers);
       })
       .catch((error) => {
         console.debug("getCustomersList fetching error", error);
@@ -39,7 +50,7 @@ export default function GetCustomers() {
 
   useEffect(() => {
     getCustomersList();
-  }, []);
+  }, [searchQuery]);
 
   return (
     <div>
@@ -58,8 +69,8 @@ export default function GetCustomers() {
             <input
               type="text"
               placeholder="Search"
-              // value={searchQuery}
-              // onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               style={{ marginRight: "10px" }}
             />
             <br />

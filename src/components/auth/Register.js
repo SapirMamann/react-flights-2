@@ -177,10 +177,10 @@ export default function Register() {
       <ToastContainer />
       <Formik
         initialValues={{
-          username: "sapir",
-          email: "sapir@outlook.com",
-          password: "sapir1999",
-          password2: "sapir1999",
+          username: "",
+          email: "",
+          password: "",
+          password2: "",
           first_name: "",
           last_name: "",
           address: "",

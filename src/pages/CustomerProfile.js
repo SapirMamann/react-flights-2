@@ -77,7 +77,7 @@ export default function CustomerProfilePage() {
       </div>
 
       {/* Right side: Ticket Component */}
-      <div>{/* <GetUserTickets /> */}</div>
+      <div><GetUserTickets /></div>
     </div>
   );
 }

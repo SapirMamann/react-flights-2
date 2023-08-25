@@ -89,7 +89,7 @@ export default function FlightSearch() {
     values.origin_country = selectedOriginCountry;
     values.destination_country = selectedDestinationCountry;
     //Maybe remove split to select hour and then get the same day:
-    values.departure_time = selectedDateTime.toISOString().split('T')[0];
+    values.departure_time = selectedDateTime.toISOString().split("T")[0];
     console.log("values", values);
 
     getFlightsByParameters(values)
@@ -188,7 +188,7 @@ export default function FlightSearch() {
                       onClick={(e) => e.stopPropagation()} // Prevent propagation
                     />
                   </div>
-
+                  <br />
                   <div>
                     <button
                       style={{
