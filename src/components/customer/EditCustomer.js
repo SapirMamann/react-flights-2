@@ -13,29 +13,27 @@ import {
   editCustomerByID,
   getCustomerByUserID,
 } from "../../api/customer/CustomerApi";
-import { getAllGroups } from "../../api/auth/AuthApi";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
-import { getUserByID } from "../../api/user/UserApi";
 import { editUserByID } from "../../api/user/UserApi";
+
 
 export default function EditCustomer() {
   const user = useStoreState((state) => state.user.user);
   const userID = user?.length > 0 && user[0]?.id;
   const isAuthenticated = useStoreState((state) => state.user.isAuthenticated);
-  const [customerID, setCustomerID] = useState("")
-  // const customerID = localStorage.getItem("customer_id");
+  const [customerID, setCustomerID] = useState("");
 
   useEffect(() => {
     getCustomerByUserID()
       .then((response) => {
-        console.log("Customerbyuserid info", response)
-        setCustomerID(response.data.id)
+        console.log("Customerbyuserid info", response);
+        setCustomerID(response.data.id);
       })
       .catch((error) => {
-        console.log("Customer didnt info by user id", error)
-      })
-  }, [])
-  
+        console.log("Customer didnt info by user id", error);
+      });
+  }, []);
+
   const EditCustomerValidation = object().shape({
     username: string()
       .required("A username is required")
@@ -48,11 +46,6 @@ export default function EditCustomer() {
     password: string()
       .required("A password is required")
       .min(8, "Must be at least 8 characters"),
-
-    // password2: string()
-    //   .required("This field is required")
-    //   .min(8, "Must be at least 8 characters")
-    //   .oneOf([ref("password")], "Passwords must match"),
 
     first_name: string()
       .required("First name is required")
@@ -80,16 +73,12 @@ export default function EditCustomer() {
       .max(16, "Credit card must be exactly 16 digits")
       .matches(/^[0-9]+$/, "Only numbers are allowed"),
   });
-  
-  const submitHandler = async (values) => {
-    // console.debug("values", values);
-    // console.debug("values user id", userID);
 
+  const submitHandler = async (values) => {
     const userEditValues = {
       username: values.username.toLowerCase(),
       email: values.email,
       password: values.password,
-      // password2: values.password2,
     };
 
     console.log("userEditValues", userEditValues);
@@ -108,7 +97,7 @@ export default function EditCustomer() {
             credit_card: values.credit_card,
           };
           // Send api request to update the customer info
-          console.log("updateCustomerInfo", customerEditValues)
+          console.log("updateCustomerInfo", customerEditValues);
 
           editCustomerByID(customerID, customerEditValues)
             .then((response) => {
@@ -142,33 +131,16 @@ export default function EditCustomer() {
       });
   };
 
-
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div style={{ maxWidth: "500px", width: "100%", padding: "20px" }}>
         <ToastContainer />
-        {/* <p>hi</p> */}
-        {/* {customerInitialValues.map((field) => (
-          <p>{field.first_name}</p>
-        ))} */}
-        {/* {Object.keys(customerInitialValues).map((fieldName) => (
-          <p>{customerInitialValues[fieldName]}</p> */}
-          {/* // <FloatingLabel key={fieldName} controlId={fieldName} label={fieldName.replace(/_/g, " ")}>
-          //   <Field
-          //     name={fieldName}
-          //     type="text"
-          //     as={bsForm.Control}
-          //   />
-          //   <ErrorMessage name={fieldName} component="div" className="error" />
-          // </FloatingLabel>
-        ))} */}
         {isAuthenticated ? (
           <Formik
             initialValues={{
               username: user[0]?.username || "", // Using stored state to pre-populate the form
               email: user[0]?.email || "",
-              // password: "",
-              // password2: "",
+              password: "",
               first_name: "",
               last_name: "",
               address: "",
@@ -314,5 +286,5 @@ export default function EditCustomer() {
         )}
       </div>
     </div>
-  )
+  );
 }

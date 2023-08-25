@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 
-import http from "../../api/http";
 import FlightDetail from "./FlightDetail";
 import { getFlightsByCountry } from "../../api/flight/FlightApi";
 

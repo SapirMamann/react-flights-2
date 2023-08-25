@@ -11,7 +11,6 @@ import "./Ticket.css";
 import ticketQR from "../../images/ticket_qr.png"; // Import the image
 import { deleteTicketByID } from "./DeleteTicketByID";
 
-
 export default function GetUserTickets() {
   // permission is allowed for customers only
 
@@ -38,6 +37,8 @@ export default function GetUserTickets() {
     deleteTicketByID(ticketID);
   };
 
+  const getFlightDetails = (flightID) => {};
+
   useEffect(() => {
     if (isAuthenticated) {
       console.log("GetUserTickets userID", userID);
@@ -62,7 +63,8 @@ export default function GetUserTickets() {
               <div className="ticket" key={index}>
                 <header className="header">
                   <div className="company-name">
-                    {ticket.flight_no.airline_company.name}
+                    {ticket.flight_no}
+                    {/* {ticket.flight_no.airline_company.name} */}
                     <div className="delete-button">
                       <button onClick={() => handleDeleteClick(ticket.id)}>
                         <FontAwesomeIcon icon={faTrash} />
@@ -74,19 +76,19 @@ export default function GetUserTickets() {
                   <div className="airport">
                     <div className="airport-name">From</div>
                     <div className="airport-code">
-                      {ticket.flight_no.origin_country.name}
+                      {/* {ticket.flight_no.origin_country.name} */}
+                      {ticket.flight_no}
                     </div>
                     <div className="dep-arr-label">Departure</div>
                     <div className="time">
-                      {new Date(
-                        ticket.flight_no.departure_time
-                      ).toLocaleString()}
+                      {new Date(ticket.flight_no.departure_time).toLocaleString()}
                     </div>
                   </div>
                   <div className="airport">
                     <div className="airport-name">To</div>
                     <div className="airport-code">
-                      {ticket.flight_no.destination_country.name}
+                      {/* {ticket.flight_no.destination_country.name} */}
+                      {ticket.flight_no}
                     </div>
                     <div className="dep-arr-label">Arrival</div>
                     <div className="time">

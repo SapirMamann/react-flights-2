@@ -47,12 +47,15 @@ export const getFlightByID = (flightID) => {
 
 // Getting flights by search parameters.
 // export const getFlightsByParameters= async (originCountry, destinationCountry, departureTime, landingTime) => {
-export const getFlightsByParameters = async (originCountry) => {
+export const getFlightsByParameters = async (values) => {
   try {
+    console.log("values getFlightsByParameters", values)
+    const query = new URLSearchParams(values).toString();
+
     // using http for permissions check
     const response = await http.get(
-      `http://127.0.0.1:8000/api/searchflights/?origin_country=2/`
-    ); //add this function in django
+      `http://127.0.0.1:8000/api/searchflights/?${query}`
+    );
     console.log("Api response for getFlightsByParameters", response);
     return response;
   } catch (error) {

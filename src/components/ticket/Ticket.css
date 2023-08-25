@@ -101,8 +101,8 @@ body {
           content: "\f072";
           position: absolute;
           font-size: 55px;
-          top: calc(50% - 25px);
-          right: -55%;
+          top: calc(50% - 35px);
+          right: -90%;
         }
       }
     }

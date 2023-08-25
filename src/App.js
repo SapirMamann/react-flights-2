@@ -90,6 +90,7 @@ export default function App() {
             <Route path=":country" element={<GetFlightsByCountryId />} />
             <Route path=":flight_id/book" element={<BookFlight />} />
             <Route path=":flight_id/edit" element={<EditFlight />} />
+            <Route path="by_parameters" element={<EditFlight />} />
           </Route>
 
           <Route path="/my_tickets" element={<GetUserTickets />} />
