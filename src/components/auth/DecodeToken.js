@@ -5,6 +5,8 @@ import { getUserByID } from '../../api/user/UserApi';
 
 
 export default function DecodeToken() {
+  // I Left this because its cool but doesnt have use in the project
+  
   const [user, setUser] = useState(null);
   const [userID, setUserID] = useState(null);
   

@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import { useStoreState } from "easy-peasy";
 
-import GetUserTickets from "../components/ticket/GetUserTickets";
+import GetFlightsPage from "../components/flight/GetFlights";
+
 
 export default function AirlineProfilePage() {
   const user = useStoreState((state) => state.user.user);
@@ -124,15 +125,10 @@ export default function AirlineProfilePage() {
         )}
       </div>
 
-      {/* {isAdmin ? (
-          // Admin profile
-          <li><a className="dropdown-item" href="/profile">Your profile</a></li>
-        ) : (
-          // Customer profile
-          <li><a className="dropdown-item" href="/profile">Your profile</a></li>
-        )} */}
       {/* Right side: Ticket Component */}
-      <div>{/* <GetUserTickets /> */}</div>
+      <div>
+        <GetFlightsPage/>
+      </div>
     </div>
   );
 }
