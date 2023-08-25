@@ -117,8 +117,8 @@ export default function EditAdmin() {
         initialValues={{
           username: user[0]?.username || "",
           email: user[0]?.email || "",
-          password: "sapir1999",
-          password2: "sapir1999",
+          password: "",
+          password2: "",
           // groups: "",
           first_name: "",
           last_name: "",

@@ -14,9 +14,8 @@ import { getAllCountries } from "../../api/country/CountryApi";
 import { addNewAirlineCompany } from "../../api/airline/AirlineApi";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
 
-
 export default function RegisterAirlineCompany() {
-  //TODO: 
+  //TODO:
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_superuser;
 
@@ -49,7 +48,10 @@ export default function RegisterAirlineCompany() {
     name: string()
       .required("A name is required")
       .min(3, "Must be at least 3 characters")
-      .matches(/^[a-zA-Z]+$/, "Only alphabetical letters are allowed"),
+      .matches(
+        /^[a-zA-Z\s]+$/,
+        "Only alphabetical letters and spaces are allowed"
+      ),
   });
 
   const getGroups = () => {
@@ -89,49 +91,49 @@ export default function RegisterAirlineCompany() {
       groups: "Airline company",
     };
 
-    try {
-      apiRegister(userCreationValues)
-        .then((response) => {
-          console.log("response", response);
-          //TODO: log the user after successful registration:
-          if (response.status === 201) {
-            // const user =
-            const airlinrCreationValues = {
-              user: response.data.id,
-              name: values.name.toLowerCase(),
-              country: parseInt(selectedCountry),
-            };
-            try {
-              addNewAirlineCompany(airlinrCreationValues);
+    apiRegister(userCreationValues)
+      .then((response) => {
+        console.log("response", response);
+        //TODO: log the user after successful registration:
+        if (response.status === 201) {
+          // const user =
+          const airlinrCreationValues = {
+            user: response.data.id,
+            name: values.name.toLowerCase(),
+            country: parseInt(selectedCountry),
+          };
+          console.log("airlinrCreationValues", airlinrCreationValues);
+
+          addNewAirlineCompany(airlinrCreationValues)
+            .then((response) => {
+              console.log("response", response);
               toast.success("Registration successful. You can now login.");
-            } catch (error) {
-              console.log("error in addNewAirlineCompany", error.message);
-            }
-          }
-        })
-        .catch((error) => {
-          console.debug(error);
-          console.log("Registration failed.", error.message);
-          console.debug("RegisterAirlineCompany failed", error.response.data);
-          // Set an error message for the form
-          for (const [key, value] of Object.entries(error.response.data)) {
-            toast.error(`RegisterAirlineCompany failed. ${key}: ${value[0]}`, {
-              // toast.error(`Login failed. ${error.response.data.detail}`, {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
+            })
+            .catch((error) => {
+              console.log("error in addNewAirlineCompany", error);
+              toast.error("Registration successful. You can now login.");
             });
-          }
-        });
-    } catch (error) {
-      console.debug("here", error);
-      console.log("Registration failed.", error.message);
-    }
+        }
+      })
+      .catch((error) => {
+        console.debug(error);
+        console.log("Registration failed.", error);
+        console.debug("RegisterAirlineCompany failed", error.response.data);
+        // Set an error message for the form
+        for (const [key, value] of Object.entries(error.response.data)) {
+          toast.error(`RegisterAirlineCompany failed. ${key}: ${value[0]}`, {
+            // toast.error(`Login failed. ${error.response.data.detail}`, {
+            position: "top-left",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      });
   };
 
   return (
@@ -151,7 +153,7 @@ export default function RegisterAirlineCompany() {
               email: "test@example.com",
               password: "sapir1999",
               password2: "sapir1999",
-              groups: "",
+             
               name: "",
               country: "",
             }}
@@ -220,24 +222,6 @@ export default function RegisterAirlineCompany() {
                     />
                   </FloatingLabel>
 
-                  {/* <FloatingLabel controlId="groups" label="Group">
-                <Field
-                  name="groups"
-                  component={bsForm.Select}
-                  as="select"
-                  disabled  
-                  value="Airline company" 
-                >
-                  <option>Select a group</option>
-                  {groups.map((group, index) => (
-                    <option key={index}>
-                      {console.log(value)}
-                      {group}
-                    </option>
-                  ))}
-                </Field>
-                <ErrorMessage name="groups" component="div" className="error" />
-              </FloatingLabel> */}
                   <br />
 
                   <FloatingLabel controlId="name" label="Name">
@@ -246,7 +230,6 @@ export default function RegisterAirlineCompany() {
                       type="text"
                       placeholder="Name"
                       as={bsForm.Control}
-                      // readOnly
                     />
                     <ErrorMessage
                       name="name"
@@ -261,8 +244,8 @@ export default function RegisterAirlineCompany() {
                       component={bsForm.Select}
                       as="select"
                       onChange={(e) => {
-                        // console.log("selecttttt", e)
-                        // console.log("selecttttt", e.target.value)
+                        console.log("selecttttt", e)
+                        console.log("selecttttt", e.target.value)
                         setSelectedCountry(e.target.value);
                       }}
                     >

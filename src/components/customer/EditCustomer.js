@@ -49,10 +49,10 @@ export default function EditCustomer() {
       .required("A password is required")
       .min(8, "Must be at least 8 characters"),
 
-    password2: string()
-      .required("This field is required")
-      .min(8, "Must be at least 8 characters")
-      .oneOf([ref("password")], "Passwords must match"),
+    // password2: string()
+    //   .required("This field is required")
+    //   .min(8, "Must be at least 8 characters")
+    //   .oneOf([ref("password")], "Passwords must match"),
 
     first_name: string()
       .required("First name is required")
@@ -89,7 +89,7 @@ export default function EditCustomer() {
       username: values.username.toLowerCase(),
       email: values.email,
       password: values.password,
-      password2: values.password2,
+      // password2: values.password2,
     };
 
     console.log("userEditValues", userEditValues);
@@ -167,8 +167,8 @@ export default function EditCustomer() {
             initialValues={{
               username: user[0]?.username || "", // Using stored state to pre-populate the form
               email: user[0]?.email || "",
-              password: "",
-              password2: "",
+              // password: "",
+              // password2: "",
               first_name: "",
               last_name: "",
               address: "",
@@ -225,41 +225,6 @@ export default function EditCustomer() {
                     />
                   </FloatingLabel>
 
-                  <FloatingLabel controlId="password2" label="Password">
-                    <Field
-                      name="password2"
-                      type="password"
-                      placeholder="Password"
-                      as={bsForm.Control}
-                      autoComplete="current-password"
-                    />
-                    <ErrorMessage
-                      name="password2"
-                      component="div"
-                      className="error"
-                    />
-                  </FloatingLabel>
-
-                  {/* <FloatingLabel controlId="groups" label="Group">
-                <Field
-                  name="groups"
-                  component={bsForm.Select}
-                  as="select"
-                  onChange={(e) => {
-                    console.log("selecttttt", e.target.value)
-                    setSelectedGroup(e.target.value);
-                  }}
-                >
-                  <option>Select a group</option>
-                  {groups.map((group, index) => (
-                    <option key={index}>
-                      {console.log(value)}
-                      {group}
-                    </option>
-                  ))}
-                </Field>
-                <ErrorMessage name="groups" component="div" className="error" />
-              </FloatingLabel> */}
                   <br />
 
                   <FloatingLabel controlId="first_name" label="First name">

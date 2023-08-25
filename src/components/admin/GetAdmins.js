@@ -12,6 +12,7 @@ import { getAllAdmins } from "../../api/admin/AdminApi";
 import { deleteAdminByID } from "./DeleteAdmin";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
 
+
 export default function GetAdmins() {
   // removed admins useeffects dependency because of infinite loop
   

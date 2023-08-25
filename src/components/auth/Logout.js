@@ -8,7 +8,6 @@ import { useStoreState } from "easy-peasy";
 import { ApiLogout } from "../../api/auth/AuthApi";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
 
-
 export default function Logout() {
   const navigate = useNavigate();
   const clearUserState = useStoreActions(
@@ -25,25 +24,20 @@ export default function Logout() {
 
   const submitHandler = (event) => {
     // Send a POST request to the API endpoint with the form data
-    try {
-      ApiLogout(data)
-        .then((response) => {
-          console.log(response.data);
-          console.log("logged out");
-          setIsAuthenticated(false);
-          navigate("/");
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    ApiLogout(data)
+      .then((response) => {
+        console.log("logged out");
+        setIsAuthenticated(false);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
-      // Remove tokens from local storage
-      localStorage.removeItem("access");
-      localStorage.removeItem("refresh");
-      clearUserState();
-    } catch {
-      console.error("Logout error");
-    }
+    // Remove tokens from local storage
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+    clearUserState();
   };
 
   // Check if refresh token exists in local storage

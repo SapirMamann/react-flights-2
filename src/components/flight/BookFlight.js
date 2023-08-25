@@ -4,15 +4,16 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 import { getFlightByID } from "../../api/flight/FlightApi";
 import { addNewTicket } from "../../api/ticket/TicketApi";
 import { useStoreState } from "easy-peasy";
 
-
 export default function BookFlight() {
   const user = useStoreState((state) => state.user.user);
   const userID = user?.length > 0 && user[0]?.id;
+  const isCustomer = user?.length > 0 && user[0]?.groups[0] === 2;
 
   const navigate = useNavigate();
   const { flight_id } = useParams();
@@ -31,7 +32,6 @@ export default function BookFlight() {
       );
   };
 
-  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>30.07
   const bookingSubmissionHandler = () => {
     console.log(user);
     // console.log("user not in, ", user === "")
@@ -94,21 +94,16 @@ export default function BookFlight() {
               </Card.Text>
               Destination: {selectedFlight.destination_country}{" "}
               {selectedFlight.landing_time}
-              <Button onClick={bookingSubmissionHandler} variant="primary">
-                Book
-              </Button>
+              {isCustomer && (
+                <Button onClick={bookingSubmissionHandler} variant="primary">
+                  Book
+                </Button>
+              )}
             </Card.Body>
           </Card>
           <div
             style={{ textAlign: "center", margin: "0 auto", maxWidth: "600px" }}
-          >
-            <h2>Traveller information</h2>
-            !!give form to create customer (edit customer)
-            {/* if anonymous -> user needs to create user customer
-            if logged (is customer/ not customer, he has to fill in formation)
-              -> display customer fields */}
-            {/* <CreateCustomer /> */}
-          </div>
+          ></div>
         </div>
       ) : (
         <p>No flight selected.</p>

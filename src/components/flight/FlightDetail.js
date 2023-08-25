@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
-import { date } from 'yup';
+import { useStoreState } from "easy-peasy";
 
-import http from '../../api/http';
 import { getFlightByID } from '../../api/flight/FlightApi';
 
 
 export default function FlightDetail(props) {
+ 
   const [flight, setFlight] = useState([]);
-  
+
   // Switch date format 
   const departureDate = new Date(flight.departure_time);
   const formattedDate = departureDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
@@ -45,6 +45,7 @@ export default function FlightDetail(props) {
             {flight.origin_country} {flight.destination_country} with {flight.airline_company}
           </Card.Text>
           {/* {flight.id} */}
+          
           <Link to={`/flights/${flight.id}/book`} variant="btn btn-secondary">Select</Link>
         </Card.Body>
       </Card>

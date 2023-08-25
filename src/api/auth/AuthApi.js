@@ -15,8 +15,6 @@ export async function apiRegister(values) {
     return response;
   } catch (error) {
     console.log("error in apiRegister", error);
-    console.log("error in apiRegister", error.message);
-    console.log("error in apiRegister", error.response.data);
     throw error; // Re-throw the error to propagate it
   }
 }
@@ -62,5 +60,19 @@ export async function getAllGroups() {
     console.log("error in getAllGroups", error.message);
     throw error; // Re-throw the error to propagate it
 
+  }
+}
+
+
+export async function ApiPasswordChange(data) {
+  try {
+    // using http for permissions check
+    console.log(data, "change password data")
+    const response = await http.put("http://127.0.0.1:8000/api/auth/password/change/", data);
+    console.log("api response for ApiPasswordChange", response);
+    return response;
+  } catch (error) {
+    console.log("error in ApiPasswordChange", error.message);
+    throw error; 
   }
 }

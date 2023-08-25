@@ -5,7 +5,7 @@ import { useStoreState } from "easy-peasy";
 
 import GetUserTickets from "../components/ticket/GetUserTickets";
 
-export default function ProfilePage() {
+export default function AirlineProfilePage() {
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_superuser;
   const isAirlineCompany = user?.length > 0 && user[0]?.groups[0] === 1;

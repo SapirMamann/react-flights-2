@@ -31,6 +31,9 @@ import AddAdmin from "./components/auth/AddAdmin";
 import EditAdmin from "./components/admin/EditAdmin";
 import GetCustomers from "./components/customer/GetCustomers";
 import GetAdmins from "./components/admin/GetAdmins";
+import PasswordChange from "./components/auth/PasswordChange";
+import CustomerProfilePage from "./pages/CustomerProfile";
+import AirlineProfilePage from "./pages/AirlineProfile";
 
 export default function App() {
   return (
@@ -42,11 +45,11 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/register_airline_company" element={<RegisterAirlineCompany />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          {/* <Route path="/admins/add" element={<AddAdmin />} /> */}
-          {/* <Route path="/logout" element={<Logout />} /> */}
-          {/* <Route path="/car" element={<CarouselComponent />} /> */}
+          <Route path="/password/change" element={<PasswordChange />} />
+          <Route path="/profile/customer" element={<CustomerProfilePage />} />
+          <Route path="/profile/airline" element={<AirlineProfilePage />} />
 
+          
           <Route path="/de" element={<DecodeToken />} />
           <Route path="/try" element={<Trying />} />
 

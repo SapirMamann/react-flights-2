@@ -106,7 +106,8 @@ export default function GetAirlineCompanies() {
                 {airlineCompanies.map((airline, index) => (
                   <tr key={index}>
                     <td>{airline.name}</td>
-                    <td>{airline.country.name}</td>
+                    {/* <td>{airline.country.name}</td> */}
+                    <td>{airline.country}</td>
                     <td>{airline.user}</td>
                     <td>
                       <Badge bg="primary" pill>

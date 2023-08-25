@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ApiLogin, apiRegister, getAllGroups } from "../../api/auth/AuthApi";
 import { addNewCustomer } from "../../api/customer/CustomerApi";
 
+
 export default function Register() {
   //TODO: permission denied when isauthenticate except isadmin that can add user
   

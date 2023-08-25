@@ -9,6 +9,7 @@ import { useStoreState } from "easy-peasy";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { default as bsForm } from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { Link } from "react-router-dom";
 
 import { updateCountry } from "../../api/country/CountryApi";
 import { getAllCountries } from "../../api/country/CountryApi";
@@ -194,7 +195,6 @@ export default function EditAirline(props) {
       ) : (
         <div>
           {PermissionDenied()}
-          <Link to="/login">Login</Link>
         </div>
       )}
     </>

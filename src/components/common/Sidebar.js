@@ -9,7 +9,6 @@ import {
 } from "react-bootstrap";
 import { useStoreState } from "easy-peasy";
 
-
 export default function Sidebar(props) {
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_staff;
@@ -114,7 +113,7 @@ export default function Sidebar(props) {
 
           {/* When airline: */}
           {isAirlineCompany && (
-            <>
+            <Nav className="justify-content-end flex-grow-1 pe-3 text-start">
               <NavDropdown
                 title="Flights"
                 id={`offcanvasNavbarDropdown-expand`}
@@ -128,11 +127,11 @@ export default function Sidebar(props) {
                   Something else here
                 </NavDropdown.Item>
               </NavDropdown>
-            </>
+            </Nav>
           )}
 
           <br />
-          
+
           {/* Search section: */}
           <Form className="d-flex">
             <Form.Control
