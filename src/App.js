@@ -29,7 +29,7 @@ import GetAdmins from "./components/admin/GetAdmins";
 import PasswordChange from "./components/auth/PasswordChange";
 import CustomerProfilePage from "./pages/CustomerProfile";
 import AirlineProfilePage from "./pages/AirlineProfile";
-import AdminProfilePage from "./pages/AdmiinProfile";
+import AdminProfilePage from "./pages/AdminProfile";
 
 export default function App() {
   return (

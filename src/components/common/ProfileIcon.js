@@ -58,6 +58,7 @@ const ProfileIcon = () => {
             </li>
           </>
         )}
+
         {isAirlineCompany && (
           <>
             <li>
@@ -65,10 +66,14 @@ const ProfileIcon = () => {
                 My Profile
               </a>
             </li>
+          </>
+        )}
+        {isAdmin && (
+          <>
             <li>
-              {/* <a className="dropdown-item" href={`/my_tickets`}>
-                My tickets
-              </a> */}
+              <a className="dropdown-item" href="/profile/admin">
+                My Profile
+              </a>
             </li>
           </>
         )}
