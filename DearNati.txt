@@ -1,5 +1,6 @@
 1. Why is it wrong to do try and except in the api calls?
   What if the api call fails? shouldnt we display that error?
+  a: we should !
 
 
 
@@ -41,4 +42,8 @@ formik when submitting doesnt consol log it is  a aproblem in validation schema
 
 add flight doesnt have required fields
 
-creating customer that buys ticket has no permissions and returns anonymous user
+creating customer that buys ticket has no permissions and returns anonymous 
+
+
+Problem in updating objects:
+set_password change the password to the hashed one
