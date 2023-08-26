@@ -56,18 +56,24 @@ export default function FlightSearch() {
   const handleOriginCountryChange = (o_selectedOption) => {
     console.log("selectedOption", o_selectedOption.value);
     setSelectedOriginCountry(o_selectedOption.value);
+    setDesiredFlights([]); // Reset desiredFlights when destination country changes
+
   };
 
   // Handling the change of the destination country:
   const handleDestinationCountryChange = (d_selectedOption) => {
     console.log("dest selectedOption", d_selectedOption.value);
     setSelectedDestinationCountry(d_selectedOption.value);
+    setDesiredFlights([]); // Reset desiredFlights when destination country changes
+
   };
 
   // Handling the change of the time:
   const handleDateTimeChange = (date) => {
     console.log("date", date);
     setSelectedDateTime(date);
+    setDesiredFlights([]); // Reset desiredFlights when destination country changes
+
   };
 
   const submitHandler = (values) => {
