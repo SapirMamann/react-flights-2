@@ -20,25 +20,10 @@ export default function FlightSearch() {
   // const [departureTime, setDepartureTime] = useState(new Date());
 
   const [selectedOriginCountry, setSelectedOriginCountry] = useState("");
-  const [selectedDestinationCountry, setSelectedDestinationCountry] =
-    useState("");
+  const [selectedDestinationCountry, setSelectedDestinationCountry] = useState("");
   const [selectedDateTime, setSelectedDateTime] = useState(null);
 
   const [desiredFlights, setDesiredFlights] = useState([]);
-
-  const animatedComponents = makeAnimated();
-  const animatedComponentsStyles = {
-    control: (provided) => ({
-      ...provided,
-      border: "1px solid gray",
-      borderRadius: "4px",
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isFocused ? "lightblue" : "white",
-      color: state.isFocused ? "white" : "black",
-    }),
-  };
 
   useEffect(() => {
     getAllCountries()
@@ -212,15 +197,18 @@ export default function FlightSearch() {
       </div>
       <div>
         {/* Display the desired flights */}
-        {desiredFlights.length > 0 && (
+        {desiredFlights.length > 0 ? (
           <div>
-            <h2>Desired Flights</h2>
+            <h2></h2>
             {desiredFlights.map((flight) => (
               <div key={flight.id}>
                 <FlightDetail id={flight.id} />
               </div>
             ))}
           </div>
+        ) : (
+            // <p>No flights matching those params...</p>
+            <p></p>
         )}
       </div>
     </div>

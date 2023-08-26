@@ -1,50 +1,16 @@
 1. Why is it wrong to do try and except in the api calls?
   What if the api call fails? shouldnt we display that error?
 
-2. I dont know how to debug django and react. 
-  Please show me how you are doing this. 
-  (i have a problem with register view- 
-  validate password and user_role )
 
-3. I should redo home page. getcountries
-  it has an unknown problem that it just keep rendering 
-  and never stops  
-  and i should redo the edit buttons display because its not 
-  the best way to check if a user is an admin everytime
-  this component renders.
-  so i should have a state? (redux) 
-
-  another question related to this,
-  how can i know what requests are being processed after some 
-  component is mounted.. (hope i used the right words)
-
-4. V Everytime i call an api endpoint, 
-      i should call the variable i created on the api folder.
-      cant remember how you did this.
 
 5. navbar component - not that important but i would
   like to know what i did wrong with darkmode.
 
-6. Passing a date to flight search component has a problem.
 
 7. In api calls folder:  is there a point to use async and await ?
 
-8. why for example in main page every time this component is mounted it sends 
-  multiple requests?
   
-9.Change files name to be first capital letter (index.js, http, etc.)
-
-10. Change all api calls to be from the api folder and not manually written
-
-11. After login theres a problem :
- Uncaught runtime errors:
-  ×
-  ERROR
-  Cannot read properties of undefined (reading 'map')
-
-12. update ticket api file
-
-13. why state in index.js doesnt set username
+13. State dosent update after objects gets updated
 
 14. 10.7: i fixed it. there was a problem on the profileicon component it tried to get the username but couldnt
   Must fix !!!!!!! the http.js. it makes the token to be expired,
@@ -52,77 +18,15 @@
   
 15. decode token component does not work
 
-16.for example in register if password not match i want it a toast
-
-
-
-for today 12.7:
-page for all flights in a desired country and each fligth detail page
-
-
-flight detail
-book flight
-
-admin state
-
-
 decode token needs to be fixed. because the view of get user by id has permission.
 tried printing permission of request.user in this view but it doesnt seems to get there... weird..
-
-
-
-LIKE BOOK FLIGHT WHY IT RENDERS TWICE?
-
-
-Note!!
-decode token return changed
-
-
-
-get username in backend has a problem:
-  i think its because im using a customized user model. (is inheriting
-  from abstarctuser but it wont get the functioallity for example
-  is authenticated
-  im getting anonymous even though a user is logged in react.)
-
-
-  do i have to use await async in api requests
-
-
-edit flight sends only the initial values and not the selected ones
-
-
 
 edit country when theres a server django error it doesnt catch it
 
 
 
-1.auth login
-2.logout
---register
-
---airline
-
---flight
-
-3.country create
-4.get all
---get by id
-5.update
-6.delete
-
---tickets
-
-
-
 
 permission for create flight commented
-
-
-catch errors register new airline company.
-
-
-when register as customer: user succesfully gets 201 but then error in create customer. then dont create user!
 
 
 
