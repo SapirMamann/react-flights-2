@@ -12,6 +12,8 @@
   
 13. State dosent update after objects gets updated
 
+update  state after editing admin/cust/airline company
+
 14. 10.7: i fixed it. there was a problem on the profileicon component it tried to get the username but couldnt
   Must fix !!!!!!! the http.js. it makes the token to be expired,
   and causing authorization problem on the site.
@@ -26,11 +28,6 @@ edit country when theres a server django error it doesnt catch it
 
 
 
-permission for create flight commented
-
-
-
-
 add this [] independency in get objects rerenders in infinite loops
 
   useEffect(() => {
@@ -38,8 +35,6 @@ add this [] independency in get objects rerenders in infinite loops
   }, [admins]);
   and
 
-
-update  state after editing admin/cust/airline company
 
 
 formik when submitting doesnt consol log it is  a aproblem in validation schema
