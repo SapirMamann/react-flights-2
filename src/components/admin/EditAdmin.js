@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { number, object, ref, string } from "yup";
-import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Button from "react-bootstrap/Button";
 import { default as bsForm } from "react-bootstrap/Form";
@@ -12,7 +11,9 @@ import { useStoreState } from "easy-peasy";
 import { editUserByID } from "../../api/user/UserApi";
 import { UpdateAdmin, getAdminByUserID } from "../../api/admin/AdminApi";
 
+
 export default function EditAdmin() {
+  // Problem is that it changes the password. if i want to update password go to password change url
   // TODO: update user state after changing admin information
 
   const user = useStoreState((state) => state.user.user);
@@ -36,8 +37,6 @@ export default function EditAdmin() {
       username: values.username.toLowerCase(),
       email: values.email,
       password: values.password,
-      password2: values.password2,
-      // groups: "Administrator",
     };
 
     console.log("values of admin user", values);
@@ -94,11 +93,6 @@ export default function EditAdmin() {
       .required("A password is required")
       .min(8, "Must be at least 8 characters"),
 
-    password2: string()
-      .required("This field is required")
-      .min(8, "Must be at least 8 characters")
-      .oneOf([ref("password")], "Passwords must match"),
-
     first_name: string()
       .required("First name is required")
       .min(2, "Must be at least 2 characters")
@@ -118,8 +112,6 @@ export default function EditAdmin() {
           username: user[0]?.username || "",
           email: user[0]?.email || "",
           password: "",
-          password2: "",
-          // groups: "",
           first_name: "",
           last_name: "",
         }}
@@ -168,42 +160,6 @@ export default function EditAdmin() {
                   className="error"
                 />
               </FloatingLabel>
-
-              <FloatingLabel controlId="password2" label="Password">
-                <Field
-                  name="password2"
-                  type="password"
-                  placeholder="Password"
-                  as={bsForm.Control}
-                  autoComplete="current-password"
-                />
-                <ErrorMessage
-                  name="password2"
-                  component="div"
-                  className="error"
-                />
-              </FloatingLabel>
-
-              {/* <FloatingLabel controlId="groups" label="Group">
-                <Field
-                  name="groups"
-                  component={bsForm.Select}
-                  as="select"
-                  onChange={(e) => {
-                    console.log("selecttttt", e.target.value)
-                    setSelectedGroup(e.target.value);
-                  }}
-                >
-                  <option>Select a group</option>
-                  {groups.map((group, index) => (
-                    <option key={index}>
-                      {console.log(value)}
-                      {group}
-                    </option>
-                  ))}
-                </Field>
-                <ErrorMessage name="groups" component="div" className="error" />
-              </FloatingLabel> */}
               <br />
 
               <FloatingLabel controlId="first_name" label="First name">
@@ -236,7 +192,7 @@ export default function EditAdmin() {
 
               <div className="d-grid gap-2">
                 <Button type="submit" variant="secondary" size="lg">
-                  Register
+                  Save
                 </Button>
               </div>
             </Form>

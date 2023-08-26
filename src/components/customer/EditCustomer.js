@@ -34,6 +34,7 @@ export default function EditCustomer() {
       });
   }, []);
 
+
   const EditCustomerValidation = object().shape({
     username: string()
       .required("A username is required")
@@ -102,7 +103,7 @@ export default function EditCustomer() {
           editCustomerByID(customerID, customerEditValues)
             .then((response) => {
               if (response.status === 200) {
-                console.log("response of edit customer", response);
+                console.log("response of edit customer", response, customerID);
                 toast.success("Edited successfully.");
               }
             })

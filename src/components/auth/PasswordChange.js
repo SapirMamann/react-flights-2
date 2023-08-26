@@ -48,7 +48,7 @@ export default function PasswordChange() {
       })
       .catch((error) => {
         console.log("error in changing password", error);
-        for (const [key, value] of Object.entries(error.response.data)) {
+        for (const [key, value] of Object.entries(error.message)) {
           toast.error(`Password change failed. ${key}: ${value[0]}`, {
             // toast.error(`Login failed. ${error.response.data.detail}`, {
             position: "top-left",

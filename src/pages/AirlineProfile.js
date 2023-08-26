@@ -5,6 +5,7 @@ import { useStoreState } from "easy-peasy";
 
 import GetFlightsPage from "../components/flight/GetFlights";
 
+
 export default function AirlineProfilePage() {
   const user = useStoreState((state) => state.user.user);
   const isAdmin = user?.length > 0 && user[0]?.is_superuser;
@@ -23,8 +24,8 @@ export default function AirlineProfilePage() {
       <div style={{ borderRight: "1px solid #ccc", paddingRight: "20px" }}>
         {isAirlineCompany && (
           <div>
-            <Link
-              to="/airline-profile"
+            {/* <Link
+              to="/"
               style={{
                 display: "inline-block",
                 textDecoration: "none",
@@ -46,7 +47,7 @@ export default function AirlineProfilePage() {
               >
                 Edit Profile
               </Button>
-            </Link>
+            </Link> */}
             <br />
             <Link
               to="/password/change"
