@@ -29,7 +29,7 @@ export default function GetFlightsByCountryId(props) {
   return (
     <div>
       <h1>
-        Book a flight to {country.charAt(0).toUpperCase() + country.slice(1)}
+        Book a flight from {country.charAt(0).toUpperCase() + country.slice(1)}
       </h1>
       {flights.length !== 0 ? (
         // Display the filtered data

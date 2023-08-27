@@ -40,7 +40,7 @@ export default function Sidebar(props) {
             <Nav.Link href="#action1">Home</Nav.Link>
 
             {/* Second link */}
-            <Nav.Link href="#action2">Link</Nav.Link>
+            {/* <Nav.Link href="#action2">Link</Nav.Link> */}
 
             {/* Third section (dropdown) flights for admin and airline company */}
             {/* When admin: */}

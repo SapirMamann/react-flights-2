@@ -88,7 +88,9 @@ export default function AboutPage() {
         To start the Django backend server, follow these steps:
         <br />
         1. Sign in to computer with the username "user" and the password i provided.
+        <br/>
         2. Open PowerShell.
+        <br/>
         3. Navigate to the directory: C:\Users\user\Desktop\API-Flight-mng-Project\flightsite
         by typing:
         <h5>
