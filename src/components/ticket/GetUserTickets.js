@@ -7,9 +7,10 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { getTicketsByUser } from "../../api/ticket/TicketApi";
 import { PermissionDenied } from "../../api/auth/CheckGroup";
-import "./Ticket.css";
-import ticketQR from "../../images/ticket_qr.png"; // Import the image
 import { deleteTicketByID } from "./DeleteTicketByID";
+import ticketQR from "../../images/ticket_qr.png"; // Import the image
+import "./Ticket.css";
+
 
 export default function GetUserTickets() {
   // permission is allowed for customers only
