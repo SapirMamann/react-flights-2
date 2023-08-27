@@ -89,27 +89,31 @@ export default function BookFlight() {
             <Card.Body>
               <Card.Title>Flight Number: {selectedFlight.id}</Card.Title>
               <Card.Text>
-                Departure: {selectedFlight.origin_country}{" "}
-                {selectedFlight.departure_time}{" "}
+                Departure: {selectedFlight.origin_country}
+                <br />
+                {selectedFlight.departure_time}
               </Card.Text>
-              Destination: {selectedFlight.destination_country}{" "}
-              {selectedFlight.landing_time}
-              {isCustomer ? (
-                <Button onClick={bookingSubmissionHandler} variant="primary">
-                  Book
-                </Button>
-              ) : (
-                <div
-                  style={{
-                    border: "1px solid #ccc",
-                    padding: "1px",
-                    borderRadius: "24px",
-                    color: "blue",
-                  }}
-                >
-                  <p>Sign in as a customer to book this flight</p>
-                </div>
-              )}
+              <Card.Text>
+                Destination: {selectedFlight.destination_country}
+                <br />
+                {selectedFlight.landing_time}
+                {isCustomer ? (
+                  <Button onClick={bookingSubmissionHandler} variant="primary">
+                    Book
+                  </Button>
+                ) : (
+                  <div
+                    style={{
+                      border: "1px solid #ccc",
+                      padding: "1px",
+                      borderRadius: "24px",
+                      color: "blue",
+                    }}
+                  >
+                    <p>Sign in as a customer to book this flight</p>
+                  </div>
+                )}
+              </Card.Text>
             </Card.Body>
           </Card>
           <div
